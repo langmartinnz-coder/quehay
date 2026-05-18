@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.expo.dev)",
+      "PowerShell(cd \"C:\\\\Users\\\\langm\\\\Desktop\\\\ProjectSunrise\" ; $env:CI = \"1\" ; npx expo start --port 8090 2>&1 | Select-Object -First 25)",
+      "Bash(eas --version)",
+      "Bash(eas whoami *)",
+      "PowerShell(eas *)",
+      "PowerShell(npm install *)"
+    ]
+  }
+}

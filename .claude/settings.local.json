@@ -11,7 +11,8 @@
       "Bash(npx tsc *)",
       "Bash(grep -v \"//.*import\\(\")",
       "Bash(grep -v \"^\\\\s*//\")",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash(npx expo *)"
     ]
   }
 }

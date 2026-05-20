@@ -14,6 +14,7 @@ import { useApp } from '../../store/AppContext';
 import { Colors } from '../../constants/colors';
 import ModeSwitch from '../../components/ModeSwitch';
 import EventCard from '../../components/EventCard';
+import { t } from '../../i18n';
 
 export default function PerfilScreen() {
   const { mode, setMode, favorites, isFavorite, toggleFavorite, events, user, authLoading, signIn, signUp, signOut } = useApp();
@@ -45,7 +46,7 @@ export default function PerfilScreen() {
     if (error) {
       setAuthError(error);
     } else {
-      setAuthError('Revisa tu email para confirmar tu cuenta y luego inicia sesión.');
+      setAuthError(t.signUpConfirmEmail);
     }
   }
 
@@ -54,7 +55,7 @@ export default function PerfilScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>Mi perfil</Text>
+          <Text style={styles.title}>{t.profileTitle}</Text>
         </View>
 
         {/* Auth section */}
@@ -66,26 +67,26 @@ export default function PerfilScreen() {
               <View style={styles.authRow}>
                 <Text style={styles.authEmoji}>👤</Text>
                 <View style={styles.authInfo}>
-                  <Text style={styles.authTitle}>Cuenta conectada</Text>
+                  <Text style={styles.authTitle}>{t.accountConnected}</Text>
                   <Text style={styles.authEmail} numberOfLines={1}>{user.email}</Text>
                 </View>
                 <View style={styles.syncBadge}>
-                  <Text style={styles.syncBadgeText}>✓ Sync</Text>
+                  <Text style={styles.syncBadgeText}>{t.syncBadge}</Text>
                 </View>
               </View>
               <TouchableOpacity style={styles.signOutBtn} onPress={signOut}>
-                <Text style={styles.signOutBtnText}>Cerrar sesión</Text>
+                <Text style={styles.signOutBtnText}>{t.signOut}</Text>
               </TouchableOpacity>
             </View>
           ) : (
             <View style={styles.authCard}>
-              <Text style={styles.authCardTitle}>Inicia sesión</Text>
-              <Text style={styles.authCardSub}>Sincroniza tus favoritos en todos tus dispositivos</Text>
+              <Text style={styles.authCardTitle}>{t.signInTitle}</Text>
+              <Text style={styles.authCardSub}>{t.signInSubtitle}</Text>
               <TextInput
                 style={styles.authInput}
                 value={email}
                 onChangeText={setEmail}
-                placeholder="tu@email.com"
+                placeholder={t.emailPlaceholder}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 placeholderTextColor={Colors.textLight}
@@ -94,7 +95,7 @@ export default function PerfilScreen() {
                 style={styles.authInput}
                 value={password}
                 onChangeText={setPassword}
-                placeholder="Contraseña"
+                placeholder={t.passwordPlaceholder}
                 secureTextEntry
                 placeholderTextColor={Colors.textLight}
               />
@@ -107,14 +108,14 @@ export default function PerfilScreen() {
                 >
                   {authSubmitting
                     ? <ActivityIndicator color={Colors.white} size="small" />
-                    : <Text style={styles.authBtnPrimaryText}>Entrar</Text>}
+                    : <Text style={styles.authBtnPrimaryText}>{t.signInBtn}</Text>}
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[styles.authBtn, styles.authBtnSecondary, authSubmitting && { opacity: 0.6 }]}
                   onPress={handleSignUp}
                   disabled={authSubmitting}
                 >
-                  <Text style={styles.authBtnSecondaryText}>Crear cuenta</Text>
+                  <Text style={styles.authBtnSecondaryText}>{t.signUpBtn}</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -123,14 +124,12 @@ export default function PerfilScreen() {
 
         {/* Mode switch */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>Modo de uso</Text>
+          <Text style={styles.sectionLabel}>{t.modeLabel}</Text>
           <View style={styles.modeSwitchWrap}>
             <ModeSwitch mode={mode} onChange={setMode} />
           </View>
           <Text style={styles.modeDesc}>
-            {mode === 'viajero'
-              ? '🧭 Modo Viajero: descubre eventos y festividades cerca de ti o en tu destino.'
-              : '🏠 Modo Anfitrión: gestiona tu alojamiento y anticipa la demanda turística.'}
+            {mode === 'viajero' ? t.modeTravelerDesc : t.modeHostDesc}
           </Text>
         </View>
 
@@ -143,8 +142,8 @@ export default function PerfilScreen() {
             <View style={styles.hostCardLeft}>
               <Text style={styles.hostCardEmoji}>🏠</Text>
               <View>
-                <Text style={styles.hostCardTitle}>Panel Anfitrión</Text>
-                <Text style={styles.hostCardSub}>Gestión de eventos y demanda</Text>
+                <Text style={styles.hostCardTitle}>{t.hostPanelCardTitle}</Text>
+                <Text style={styles.hostCardSub}>{t.hostPanelCardSub}</Text>
               </View>
             </View>
             <Text style={styles.hostCardArrow}>›</Text>
@@ -154,14 +153,12 @@ export default function PerfilScreen() {
         {/* Saved events */}
         <View style={styles.section}>
           <Text style={styles.sectionLabel}>
-            Eventos guardados {savedEvents.length > 0 && `(${savedEvents.length})`}
+            {t.savedEventsLabel} {savedEvents.length > 0 && `(${savedEvents.length})`}
           </Text>
           {savedEvents.length === 0 ? (
             <View style={styles.emptyFav}>
               <Text style={styles.emptyFavEmoji}>🤍</Text>
-              <Text style={styles.emptyFavText}>
-                Guarda eventos tocando el corazón en las tarjetas
-              </Text>
+              <Text style={styles.emptyFavText}>{t.emptyFavorites}</Text>
             </View>
           ) : (
             savedEvents.map((event) => (
@@ -178,13 +175,13 @@ export default function PerfilScreen() {
 
         {/* Info / about */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>Información</Text>
+          <Text style={styles.sectionLabel}>{t.infoLabel}</Text>
           <View style={styles.infoCard}>
             {[
-              { emoji: '🗺️', text: 'Cubrimos Teruel y Catalunya' },
-              { emoji: '📅', text: 'Actualizado diariamente' },
-              { emoji: '📱', text: 'Eventos de WhatsApp, Facebook, Instagram, Milanuncios y Ayuntamientos' },
-              { emoji: '📤', text: 'Comparte eventos de tu pueblo en la pestaña ➕' },
+              { emoji: '🗺️', text: t.infoRegion },
+              { emoji: '📅', text: t.infoUpdated },
+              { emoji: '📱', text: t.infoSources },
+              { emoji: '📤', text: t.infoShare },
             ].map((item, i) => (
               <View key={i} style={styles.infoRow}>
                 <Text style={styles.infoEmoji}>{item.emoji}</Text>
@@ -194,7 +191,7 @@ export default function PerfilScreen() {
           </View>
         </View>
 
-        <Text style={styles.version}>QuéHay v1.0 · Hecho con ❤️ para el turismo rural</Text>
+        <Text style={styles.version}>{t.appVersion}</Text>
       </ScrollView>
     </SafeAreaView>
   );

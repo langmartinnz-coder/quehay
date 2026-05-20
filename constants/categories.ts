@@ -1,4 +1,5 @@
 import { EventCategory, Region, DateFilter } from '../types';
+import { t } from '../i18n';
 
 export interface CategoryConfig {
   id: EventCategory | 'all';
@@ -8,27 +9,27 @@ export interface CategoryConfig {
 }
 
 export const CATEGORIES: CategoryConfig[] = [
-  { id: 'all', label: 'Todos', emoji: '✨', color: '#6B7280' },
-  { id: 'festival', label: 'Festivales', emoji: '🎉', color: '#C0392B' },
-  { id: 'fiesta', label: 'Fiestas', emoji: '🔥', color: '#E67E22' },
-  { id: 'mercado', label: 'Mercados', emoji: '🛒', color: '#16A085' },
-  { id: 'concierto', label: 'Conciertos', emoji: '🎵', color: '#8E44AD' },
-  { id: 'gastronomia', label: 'Gastronomía', emoji: '🍷', color: '#D35400' },
-  { id: 'deportes', label: 'Deportes', emoji: '⚽', color: '#2980B9' },
-  { id: 'comunidad', label: 'Comunidad', emoji: '🤝', color: '#27AE60' },
+  { id: 'all', label: t.catAll, emoji: '✨', color: '#6B7280' },
+  { id: 'festival', label: t.catFestival, emoji: '🎉', color: '#C0392B' },
+  { id: 'fiesta', label: t.catFiesta, emoji: '🔥', color: '#E67E22' },
+  { id: 'mercado', label: t.catMercado, emoji: '🛒', color: '#16A085' },
+  { id: 'concierto', label: t.catConcierto, emoji: '🎵', color: '#8E44AD' },
+  { id: 'gastronomia', label: t.catGastronomia, emoji: '🍷', color: '#D35400' },
+  { id: 'deportes', label: t.catDeportes, emoji: '⚽', color: '#2980B9' },
+  { id: 'comunidad', label: t.catComunidad, emoji: '🤝', color: '#27AE60' },
 ];
 
 export const DATE_FILTERS: { id: DateFilter; label: string }[] = [
-  { id: 'todas', label: 'Todas' },
-  { id: 'hoy', label: 'Hoy' },
-  { id: 'semana', label: 'Esta semana' },
-  { id: 'mes', label: 'Este mes' },
+  { id: 'todas', label: t.dfAll },
+  { id: 'hoy', label: t.dfToday },
+  { id: 'semana', label: t.dfWeek },
+  { id: 'mes', label: t.dfMonth },
 ];
 
 export const REGIONS: { id: Region; label: string; flag: string }[] = [
-  { id: 'todas', label: 'Toda España', flag: '🇪🇸' },
-  { id: 'teruel', label: 'Teruel', flag: '🏔️' },
-  { id: 'cataluña', label: 'Catalunya', flag: '🌊' },
+  { id: 'todas', label: t.rAll, flag: '🇪🇸' },
+  { id: 'teruel', label: t.rTeruel, flag: '🏔️' },
+  { id: 'cataluña', label: t.rCatalunya, flag: '🌊' },
 ];
 
 export const SOURCE_LABELS: Record<string, { label: string; emoji: string; color: string }> = {
@@ -41,9 +42,9 @@ export const SOURCE_LABELS: Record<string, { label: string; emoji: string; color
 };
 
 export const SIZE_CONFIG: Record<string, { label: string; color: string; dot: string }> = {
-  grande: { label: 'Gran evento', color: '#E74C3C', dot: '🔴' },
-  mediano: { label: 'Evento mediano', color: '#F39C12', dot: '🟡' },
-  pequeño: { label: 'Evento local', color: '#27AE60', dot: '🟢' },
+  grande: { label: t.sizeBig, color: '#E74C3C', dot: '🔴' },
+  mediano: { label: t.sizeMedium, color: '#F39C12', dot: '🟡' },
+  pequeño: { label: t.sizeSmall, color: '#27AE60', dot: '🟢' },
 };
 
 export const RADIUS_OPTIONS = [

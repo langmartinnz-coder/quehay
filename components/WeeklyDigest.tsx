@@ -4,6 +4,7 @@ import { Colors } from '../constants/colors';
 import { Event } from '../types';
 import { formatDateRange } from '../data/mockData';
 import { CATEGORIES, SIZE_CONFIG } from '../constants/categories';
+import { t } from '../i18n';
 
 interface WeeklyDigestProps {
   events: Event[];
@@ -24,15 +25,15 @@ export default function WeeklyDigest({ events }: WeeklyDigestProps) {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.header} onPress={() => setExpanded((e) => !e)}>
-        <Text style={styles.title}>📅 Digest semanal</Text>
-        <Text style={styles.count}>{upcoming.length} eventos próximos</Text>
+        <Text style={styles.title}>{t.weeklyDigestTitle}</Text>
+        <Text style={styles.count}>{t.weeklyDigestCount(upcoming.length)}</Text>
         <Text style={styles.chevron}>{expanded ? '▲' : '▼'}</Text>
       </TouchableOpacity>
 
       {expanded && (
         <View style={styles.list}>
           {upcoming.length === 0 ? (
-            <Text style={styles.empty}>Sin eventos esta semana en tu zona</Text>
+            <Text style={styles.empty}>{t.weeklyDigestEmpty}</Text>
           ) : (
             upcoming.map((event) => {
               const cat = CATEGORIES.find((c) => c.id === event.category);
@@ -54,9 +55,7 @@ export default function WeeklyDigest({ events }: WeeklyDigestProps) {
             })
           )}
           <View style={styles.digestNote}>
-            <Text style={styles.noteText}>
-              📧 Recibirás este resumen cada lunes en tu email
-            </Text>
+            <Text style={styles.noteText}>{t.weeklyDigestNote}</Text>
           </View>
         </View>
       )}

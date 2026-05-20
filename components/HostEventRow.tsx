@@ -4,6 +4,7 @@ import { Colors } from '../constants/colors';
 import { Event } from '../types';
 import { CATEGORIES, SIZE_CONFIG } from '../constants/categories';
 import { formatDateRange } from '../data/mockData';
+import { t } from '../i18n';
 
 interface HostEventRowProps {
   event: Event;
@@ -27,7 +28,7 @@ export default function HostEventRow({ event, distanceKm, onPress }: HostEventRo
           </Text>
           {isPricingAlert && (
             <View style={styles.pricingBadge}>
-              <Text style={styles.pricingText}>💰 PRECIO ALTO</Text>
+              <Text style={styles.pricingText}>{t.pricingHighAlert}</Text>
             </View>
           )}
         </View>

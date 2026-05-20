@@ -14,6 +14,7 @@ import { Colors } from '../../constants/colors';
 import { CATEGORIES } from '../../constants/categories';
 import { Event } from '../../types';
 import { useApp } from '../../store/AppContext';
+import { t } from '../../i18n';
 
 const { height } = Dimensions.get('window');
 
@@ -60,9 +61,9 @@ export default function MapaScreen() {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>
-          Qué<Text style={styles.titleAccent}>Hay</Text> — Mapa
+          Qué<Text style={styles.titleAccent}>Hay</Text>
         </Text>
-        <Text style={styles.subtitle}>{visibleEvents.length} eventos</Text>
+        <Text style={styles.subtitle}>{t.eventsCount(visibleEvents.length)}</Text>
       </View>
 
       {/* Region selector */}
@@ -74,7 +75,7 @@ export default function MapaScreen() {
             onPress={() => goToRegion(r)}
           >
             <Text style={[styles.regionText, activeRegion === r && styles.regionTextActive]}>
-              {r === 'todas' ? '🇪🇸 Todas' : r === 'teruel' ? '🏔️ Teruel' : '🌊 Catalunya'}
+              {r === 'todas' ? t.mapRegionAll : r === 'teruel' ? t.mapRegionTeruel : t.mapRegionCatalunya}
             </Text>
           </TouchableOpacity>
         ))}
@@ -141,7 +142,7 @@ export default function MapaScreen() {
                       router.push(`/evento/${selectedEvent.id}`);
                     }}
                   >
-                    <Text style={styles.viewBtnText}>Ver detalles →</Text>
+                    <Text style={styles.viewBtnText}>{t.viewDetails}</Text>
                   </TouchableOpacity>
                 </>
               );

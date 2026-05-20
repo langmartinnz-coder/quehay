@@ -17,6 +17,7 @@ import { CATEGORIES, REGIONS } from '../../constants/categories';
 import { EventCategory } from '../../types';
 import { useApp } from '../../store/AppContext';
 import { submitEvent } from '../../lib/api';
+import { t } from '../../i18n';
 
 interface FormState {
   name: string;
@@ -88,7 +89,7 @@ export default function EnviarScreen() {
 
   async function handleSubmit() {
     if (!form.name || !form.date || !form.town || !form.region || !form.category) {
-      Alert.alert('Faltan datos', 'Completa nombre, fecha, municipio, región y categoría.');
+      Alert.alert(t.alertMissingData, t.alertMissingDataMsg);
       return;
     }
     setSubmitting(true);
@@ -104,7 +105,7 @@ export default function EnviarScreen() {
       }, user?.id);
       setSubmitted(true);
     } catch {
-      Alert.alert('Error', 'No se pudo enviar el evento. Inténtalo de nuevo.');
+      Alert.alert(t.alertError, t.alertErrorMsg);
     } finally {
       setSubmitting(false);
     }
@@ -115,10 +116,8 @@ export default function EnviarScreen() {
       <SafeAreaView style={styles.container} edges={['top']}>
         <View style={styles.successWrap}>
           <Text style={styles.successEmoji}>✅</Text>
-          <Text style={styles.successTitle}>¡Evento enviado!</Text>
-          <Text style={styles.successSubtitle}>
-            Tu evento ha sido enviado para revisión. Aparecerá en la app en 24-48 horas.
-          </Text>
+          <Text style={styles.successTitle}>{t.successTitle}</Text>
+          <Text style={styles.successSubtitle}>{t.successSubtitle}</Text>
           <TouchableOpacity
             style={styles.submitBtn}
             onPress={() => {
@@ -128,7 +127,7 @@ export default function EnviarScreen() {
               setExtracted(false);
             }}
           >
-            <Text style={styles.submitBtnText}>Enviar otro evento</Text>
+            <Text style={styles.submitBtnText}>{t.submitAnother}</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -140,10 +139,8 @@ export default function EnviarScreen() {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>Comparte un evento</Text>
-          <Text style={styles.subtitle}>
-            Sube el póster y extraemos los datos automáticamente
-          </Text>
+          <Text style={styles.title}>{t.submitTitle}</Text>
+          <Text style={styles.subtitle}>{t.submitSubtitle}</Text>
         </View>
 
         {/* Image upload */}
@@ -152,28 +149,26 @@ export default function EnviarScreen() {
             <View style={styles.previewWrap}>
               <Image source={{ uri: image }} style={styles.previewImg} resizeMode="cover" />
               <TouchableOpacity style={styles.changeImgBtn} onPress={() => setImage(null)}>
-                <Text style={styles.changeImgText}>Cambiar imagen</Text>
+                <Text style={styles.changeImgText}>{t.changeImage}</Text>
               </TouchableOpacity>
             </View>
           ) : (
             <View style={styles.uploadBox}>
               <Text style={styles.uploadEmoji}>🖼️</Text>
-              <Text style={styles.uploadTitle}>Sube el póster del evento</Text>
-              <Text style={styles.uploadSubtitle}>
-                Foto de cartel, imagen de WhatsApp o redes sociales
-              </Text>
+              <Text style={styles.uploadTitle}>{t.uploadTitle}</Text>
+              <Text style={styles.uploadSubtitle}>{t.uploadSubtitle}</Text>
               <View style={styles.uploadBtns}>
                 <TouchableOpacity
                   style={[styles.uploadBtn, { backgroundColor: Colors.primary }]}
                   onPress={() => pickImage(false)}
                 >
-                  <Text style={styles.uploadBtnText}>📂 Galería</Text>
+                  <Text style={styles.uploadBtnText}>{t.galleryBtn}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[styles.uploadBtn, { backgroundColor: Colors.accent }]}
                   onPress={() => pickImage(true)}
                 >
-                  <Text style={styles.uploadBtnText}>📷 Cámara</Text>
+                  <Text style={styles.uploadBtnText}>{t.cameraBtn}</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -190,11 +185,11 @@ export default function EnviarScreen() {
             {isExtracting ? (
               <>
                 <ActivityIndicator color={Colors.white} size="small" />
-                <Text style={styles.extractBtnText}>Analizando póster con IA...</Text>
+                <Text style={styles.extractBtnText}>{t.analyzing}</Text>
               </>
             ) : (
               <>
-                <Text style={styles.extractBtnText}>🤖 Analizar póster automáticamente</Text>
+                <Text style={styles.extractBtnText}>{t.analyzeBtn}</Text>
               </>
             )}
           </TouchableOpacity>
@@ -202,25 +197,23 @@ export default function EnviarScreen() {
 
         {extracted && (
           <View style={styles.extractedNote}>
-            <Text style={styles.extractedNoteText}>
-              ✨ Datos extraídos del póster. Revisa y corrige si es necesario.
-            </Text>
+            <Text style={styles.extractedNoteText}>{t.extractedNote}</Text>
           </View>
         )}
 
         {/* Form */}
         <View style={styles.form}>
           <FormField
-            label="Nombre del evento *"
+            label={t.fieldEventName}
             value={form.name}
             onChangeText={(v) => setForm((p) => ({ ...p, name: v }))}
-            placeholder="Ej: Fiestas del Ángel"
+            placeholder={t.fieldEventNamePlaceholder}
             highlighted={extracted && !!form.name}
           />
           <View style={styles.row}>
             <View style={{ flex: 1 }}>
               <FormField
-                label="Fecha inicio *"
+                label={t.fieldDateStart}
                 value={form.date}
                 onChangeText={(v) => setForm((p) => ({ ...p, date: v }))}
                 placeholder="2026-07-10"
@@ -229,7 +222,7 @@ export default function EnviarScreen() {
             </View>
             <View style={{ flex: 1 }}>
               <FormField
-                label="Hora"
+                label={t.fieldTime}
                 value={form.time}
                 onChangeText={(v) => setForm((p) => ({ ...p, time: v }))}
                 placeholder="20:00"
@@ -238,15 +231,15 @@ export default function EnviarScreen() {
             </View>
           </View>
           <FormField
-            label="Municipio *"
+            label={t.fieldTown}
             value={form.town}
             onChangeText={(v) => setForm((p) => ({ ...p, town: v }))}
-            placeholder="Ej: Mora de Rubielos"
+            placeholder={t.fieldTownPlaceholder}
             highlighted={extracted && !!form.town}
           />
 
           {/* Region picker */}
-          <Text style={styles.fieldLabel}>Región *</Text>
+          <Text style={styles.fieldLabel}>{t.fieldRegion}</Text>
           <View style={styles.pickerRow}>
             {REGIONS.filter((r) => r.id !== 'todas').map((r) => (
               <TouchableOpacity
@@ -268,7 +261,7 @@ export default function EnviarScreen() {
           </View>
 
           {/* Category picker */}
-          <Text style={styles.fieldLabel}>Categoría *</Text>
+          <Text style={styles.fieldLabel}>{t.fieldCategory}</Text>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -297,20 +290,18 @@ export default function EnviarScreen() {
           </ScrollView>
 
           <FormField
-            label="Descripción"
+            label={t.fieldDescription}
             value={form.description}
             onChangeText={(v) => setForm((p) => ({ ...p, description: v }))}
-            placeholder="Describe brevemente el evento..."
+            placeholder={t.fieldDescriptionPlaceholder}
             multiline
             highlighted={extracted && !!form.description}
           />
 
           {/* Source info */}
           <View style={styles.sourceInfo}>
-            <Text style={styles.sourceInfoTitle}>📱 Fuente del evento</Text>
-            <Text style={styles.sourceInfoText}>
-              Tu evento se publicará como "Compartido por la comunidad". Si eres el Ayuntamiento u organización oficial, contacta con nosotros para verificar tu cuenta.
-            </Text>
+            <Text style={styles.sourceInfoTitle}>{t.sourceInfoTitle}</Text>
+            <Text style={styles.sourceInfoText}>{t.sourceInfoText}</Text>
           </View>
 
           <TouchableOpacity
@@ -320,12 +311,10 @@ export default function EnviarScreen() {
           >
             {submitting
               ? <ActivityIndicator color={Colors.white} />
-              : <Text style={styles.submitBtnText}>Enviar evento →</Text>}
+              : <Text style={styles.submitBtnText}>{t.submitBtn}</Text>}
           </TouchableOpacity>
 
-          <Text style={styles.disclaimer}>
-            Al enviar confirmas que tienes permiso para compartir este evento y que los datos son correctos.
-          </Text>
+          <Text style={styles.disclaimer}>{t.submitDisclaimer}</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Colors } from '../constants/colors';
 import { AppMode } from '../types';
+import { t } from '../i18n';
 
 interface ModeSwitchProps {
   mode: AppMode;
@@ -16,14 +17,14 @@ export default function ModeSwitch({ mode, onChange }: ModeSwitchProps) {
         onPress={() => onChange('viajero')}
       >
         <Text style={styles.emoji}>🧭</Text>
-        <Text style={[styles.label, mode === 'viajero' && styles.labelActive]}>Viajero</Text>
+        <Text style={[styles.label, mode === 'viajero' && styles.labelActive]}>{t.modeTraveler}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.tab, mode === 'anfitrion' && styles.tabActiveAnfitrion]}
         onPress={() => onChange('anfitrion')}
       >
         <Text style={styles.emoji}>🏠</Text>
-        <Text style={[styles.label, mode === 'anfitrion' && styles.labelActive]}>Anfitrión</Text>
+        <Text style={[styles.label, mode === 'anfitrion' && styles.labelActive]}>{t.modeHost}</Text>
       </TouchableOpacity>
     </View>
   );

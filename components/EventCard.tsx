@@ -11,6 +11,7 @@ import { Event } from '../types';
 import { Colors } from '../constants/colors';
 import { CATEGORIES, SOURCE_LABELS, SIZE_CONFIG } from '../constants/categories';
 import { formatDateRange } from '../data/mockData';
+import { t } from '../i18n';
 
 interface EventCardProps {
   event: Event;
@@ -52,7 +53,7 @@ export default function EventCard({
         {/* Free badge */}
         {event.isFree && (
           <View style={styles.freeBadge}>
-            <Text style={styles.freeText}>GRATIS</Text>
+            <Text style={styles.freeText}>{t.freeBadge}</Text>
           </View>
         )}
       </View>
@@ -83,7 +84,7 @@ export default function EventCard({
           <Text style={styles.metaIcon}>📍</Text>
           <Text style={styles.metaText} numberOfLines={1}>
             {event.town}
-            {event.region === 'teruel' ? ', Teruel' : ', Catalunya'}
+            {event.region === 'teruel' ? `, ${t.regionTeruel}` : `, ${t.regionCatalunya}`}
           </Text>
         </View>
 

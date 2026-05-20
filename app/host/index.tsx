@@ -16,6 +16,7 @@ import HostDemandAlert from '../../components/HostDemandAlert';
 import HostEventRow from '../../components/HostEventRow';
 import WeeklyDigest from '../../components/WeeklyDigest';
 import { Event } from '../../types';
+import { t } from '../../i18n';
 
 export default function HostDashboard() {
   const { hostProperty, setHostProperty, events } = useApp();
@@ -54,15 +55,13 @@ export default function HostDashboard() {
       <SafeAreaView style={styles.container}>
         <View style={styles.setupPrompt}>
           <Text style={styles.setupEmoji}>🏠</Text>
-          <Text style={styles.setupTitle}>Configura tu propiedad</Text>
-          <Text style={styles.setupText}>
-            Añade tu alojamiento para ver eventos cercanos y alertas de demanda.
-          </Text>
+          <Text style={styles.setupTitle}>{t.hostSetupTitle}</Text>
+          <Text style={styles.setupText}>{t.hostSetupText}</Text>
           <TouchableOpacity
             style={styles.setupBtn}
             onPress={() => router.push('/host/configurar')}
           >
-            <Text style={styles.setupBtnText}>Configurar ahora →</Text>
+            <Text style={styles.setupBtnText}>{t.hostSetupBtn}</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -87,20 +86,20 @@ export default function HostDashboard() {
             style={styles.editBtn}
             onPress={() => router.push('/host/configurar')}
           >
-            <Text style={styles.editBtnText}>Editar</Text>
+            <Text style={styles.editBtnText}>{t.hostEdit}</Text>
           </TouchableOpacity>
         </View>
 
         {/* Stats row */}
         <View style={styles.statsRow}>
-          <StatCard emoji="📅" value={nearbyEvents.length.toString()} label="Eventos próximos" />
-          <StatCard emoji="👥" value={`~${formatNumber(totalEstimatedVisitors)}`} label="Visitantes estimados" />
-          <StatCard emoji="🔴" value={highDemandWeekends.length.toString()} label="Alta demanda" />
+          <StatCard emoji="📅" value={nearbyEvents.length.toString()} label={t.hostStatUpcoming} />
+          <StatCard emoji="👥" value={`~${formatNumber(totalEstimatedVisitors)}`} label={t.hostStatVisitors} />
+          <StatCard emoji="🔴" value={highDemandWeekends.length.toString()} label={t.hostStatHighDemand} />
         </View>
 
         {/* Radius selector */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Radio de búsqueda</Text>
+          <Text style={styles.sectionTitle}>{t.hostSearchRadius}</Text>
           <View style={styles.radiusRow}>
             {RADIUS_OPTIONS.map((opt) => (
               <TouchableOpacity
@@ -121,7 +120,7 @@ export default function HostDashboard() {
         {/* Demand alerts */}
         {bigEvents.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>🚨 Alertas de demanda</Text>
+            <Text style={styles.sectionTitle}>{t.hostDemandAlerts}</Text>
             {bigEvents.slice(0, 3).map((event) => {
               const dist = getDistanceKm(
                 hostProperty.coordinates.latitude,
@@ -144,10 +143,9 @@ export default function HostDashboard() {
         {/* Pricing tips */}
         {highDemandWeekends.length > 0 && (
           <View style={styles.pricingCard}>
-            <Text style={styles.pricingTitle}>💰 Consejo de precios</Text>
+            <Text style={styles.pricingTitle}>{t.hostPricingTitle}</Text>
             <Text style={styles.pricingText}>
-              Hay {highDemandWeekends.length} gran{highDemandWeekends.length > 1 ? 'des eventos' : ' evento'} próximamente en tu zona.
-              Considera ajustar tus tarifas para los siguientes fines de semana:
+              {t.hostPricingText(highDemandWeekends.length)}
             </Text>
             {highDemandWeekends.slice(0, 3).map((event) => (
               <View key={event.id} style={styles.pricingItem}>
@@ -155,7 +153,7 @@ export default function HostDashboard() {
                   🗓 {formatDateRange(event.dateStart, event.dateEnd)}
                 </Text>
                 <View style={styles.pricingBadge}>
-                  <Text style={styles.pricingBadgeText}>+20-40% recomendado</Text>
+                  <Text style={styles.pricingBadgeText}>{t.hostPricingRecommended}</Text>
                 </View>
               </View>
             ))}
@@ -164,20 +162,20 @@ export default function HostDashboard() {
 
         {/* Weekly digest */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>📅 Digest semanal</Text>
+          <Text style={styles.sectionTitle}>{t.hostWeeklyDigest}</Text>
         </View>
         <WeeklyDigest events={nearbyEvents} />
 
         {/* All nearby events */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>
-            Todos los eventos ({nearbyEvents.length})
+            {t.hostAllEvents(nearbyEvents.length)}
           </Text>
         </View>
         {nearbyEvents.length === 0 ? (
           <View style={styles.noEvents}>
             <Text style={styles.noEventsText}>
-              Sin eventos en un radio de {radius} km. Amplía el radio de búsqueda.
+              {t.hostNoEvents(radius)}
             </Text>
           </View>
         ) : (

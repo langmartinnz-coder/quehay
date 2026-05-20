@@ -14,6 +14,7 @@ import { useApp } from '../../store/AppContext';
 import { Colors } from '../../constants/colors';
 import { RADIUS_OPTIONS } from '../../constants/categories';
 import { HostProperty } from '../../types';
+import { t } from '../../i18n';
 
 const SAMPLE_PROPERTIES = [
   {
@@ -60,7 +61,7 @@ export default function ConfigurarScreen() {
 
   function handleSave() {
     if (!name.trim() || !town.trim()) {
-      Alert.alert('Faltan datos', 'Por favor introduce el nombre y municipio de tu alojamiento.');
+      Alert.alert(t.configAlertMissingTitle, t.configAlertMissingMsg);
       return;
     }
     const property: HostProperty = {
@@ -70,8 +71,8 @@ export default function ConfigurarScreen() {
       radiusKm,
     };
     setHostProperty(property);
-    Alert.alert('¡Guardado!', 'Tu propiedad ha sido configurada correctamente.', [
-      { text: 'Ver panel', onPress: () => router.replace('/host') },
+    Alert.alert(t.configAlertSavedTitle, t.configAlertSavedMsg, [
+      { text: t.configAlertViewPanel, onPress: () => router.replace('/host') },
     ]);
   }
 
@@ -80,15 +81,13 @@ export default function ConfigurarScreen() {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
         <View style={styles.hero}>
           <Text style={styles.heroEmoji}>🏠</Text>
-          <Text style={styles.heroTitle}>Tu alojamiento</Text>
-          <Text style={styles.heroSubtitle}>
-            Configura los datos de tu propiedad para recibir alertas de demanda personalizadas
-          </Text>
+          <Text style={styles.heroTitle}>{t.configHeroTitle}</Text>
+          <Text style={styles.heroSubtitle}>{t.configHeroSubtitle}</Text>
         </View>
 
         {/* Quick templates */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>Ejemplos de propiedades</Text>
+          <Text style={styles.sectionLabel}>{t.configExamplesLabel}</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.templates}>
             {SAMPLE_PROPERTIES.map((p) => (
               <TouchableOpacity
@@ -106,44 +105,40 @@ export default function ConfigurarScreen() {
         {/* Form */}
         <View style={styles.form}>
           <View style={styles.field}>
-            <Text style={styles.fieldLabel}>Nombre del alojamiento *</Text>
+            <Text style={styles.fieldLabel}>{t.configNameLabel}</Text>
             <TextInput
               style={styles.input}
               value={name}
               onChangeText={setName}
-              placeholder="Ej: Casa Rural El Olmo"
+              placeholder={t.configNamePlaceholder}
               placeholderTextColor={Colors.textLight}
             />
           </View>
 
           <View style={styles.field}>
-            <Text style={styles.fieldLabel}>Municipio *</Text>
+            <Text style={styles.fieldLabel}>{t.configTownLabel}</Text>
             <TextInput
               style={styles.input}
               value={town}
               onChangeText={setTown}
-              placeholder="Ej: Mora de Rubielos"
+              placeholder={t.configTownPlaceholder}
               placeholderTextColor={Colors.textLight}
             />
           </View>
 
           {/* Coordinates display */}
           <View style={styles.coordsCard}>
-            <Text style={styles.coordsTitle}>📌 Coordenadas (ajustadas al municipio)</Text>
+            <Text style={styles.coordsTitle}>{t.configCoordsTitle}</Text>
             <Text style={styles.coordsText}>
               Lat: {selectedCoords.latitude.toFixed(4)} · Lng: {selectedCoords.longitude.toFixed(4)}
             </Text>
-            <Text style={styles.coordsNote}>
-              En la versión completa podrás marcar tu ubicación exacta en el mapa
-            </Text>
+            <Text style={styles.coordsNote}>{t.configCoordsNote}</Text>
           </View>
 
           {/* Radius selector */}
           <View style={styles.field}>
-            <Text style={styles.fieldLabel}>Radio de alerta de eventos</Text>
-            <Text style={styles.fieldSubLabel}>
-              Recibe alertas de eventos dentro de este radio
-            </Text>
+            <Text style={styles.fieldLabel}>{t.configRadiusLabel}</Text>
+            <Text style={styles.fieldSubLabel}>{t.configRadiusSub}</Text>
             <View style={styles.radiusRow}>
               {RADIUS_OPTIONS.map((opt) => (
                 <TouchableOpacity
@@ -164,21 +159,14 @@ export default function ConfigurarScreen() {
 
         {/* Features summary */}
         <View style={styles.featuresCard}>
-          <Text style={styles.featuresTitle}>Con el panel Anfitrión recibirás:</Text>
-          {[
-            '📢 Alertas cuando haya un gran evento cerca',
-            '📅 Digest semanal de eventos en tu zona',
-            '💰 Consejos de precios para fines de semana de alta demanda',
-            '📊 Indicador de tamaño de evento para estimar afluencia',
-          ].map((f, i) => (
-            <Text key={i} style={styles.featureItem}>
-              {f}
-            </Text>
+          <Text style={styles.featuresTitle}>{t.configFeaturesTitle}</Text>
+          {t.configFeatures.map((f, i) => (
+            <Text key={i} style={styles.featureItem}>{f}</Text>
           ))}
         </View>
 
         <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
-          <Text style={styles.saveBtnText}>Guardar y activar Panel →</Text>
+          <Text style={styles.saveBtnText}>{t.configSaveBtn}</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>

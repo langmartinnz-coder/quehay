@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Colors } from '../constants/colors';
+import { t } from '../i18n';
 
 interface SearchBarProps {
   value: string;
@@ -11,7 +12,7 @@ interface SearchBarProps {
 export default function SearchBar({
   value,
   onChange,
-  placeholder = 'Buscar eventos, pueblos...',
+  placeholder,
 }: SearchBarProps) {
   return (
     <View style={styles.container}>
@@ -20,7 +21,7 @@ export default function SearchBar({
         style={styles.input}
         value={value}
         onChangeText={onChange}
-        placeholder={placeholder}
+        placeholder={placeholder ?? t.searchPlaceholder}
         placeholderTextColor={Colors.textLight}
         returnKeyType="search"
         clearButtonMode="while-editing"

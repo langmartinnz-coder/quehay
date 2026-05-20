@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Colors } from '../constants/colors';
+import { t } from '../i18n';
 
 interface EmptyStateProps {
   emoji?: string;
@@ -10,14 +11,14 @@ interface EmptyStateProps {
 
 export default function EmptyState({
   emoji = '🗓',
-  title = 'No hay eventos',
-  subtitle = 'Prueba a cambiar los filtros o busca en otra zona.',
+  title,
+  subtitle,
 }: EmptyStateProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.emoji}>{emoji}</Text>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.subtitle}>{subtitle}</Text>
+      <Text style={styles.title}>{title ?? t.emptyStateTitle}</Text>
+      <Text style={styles.subtitle}>{subtitle ?? t.emptyStateSubtitle}</Text>
     </View>
   );
 }

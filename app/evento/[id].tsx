@@ -16,6 +16,7 @@ import { formatDateRange } from '../../data/mockData';
 import { Colors } from '../../constants/colors';
 import { CATEGORIES, SOURCE_LABELS, SIZE_CONFIG } from '../../constants/categories';
 import { useApp } from '../../store/AppContext';
+import { t } from '../../i18n';
 
 const { width } = Dimensions.get('window');
 
@@ -38,9 +39,9 @@ export default function EventoDetailScreen() {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.notFound}>
-          <Text style={styles.notFoundText}>Evento no encontrado</Text>
+          <Text style={styles.notFoundText}>{t.eventNotFound}</Text>
           <TouchableOpacity onPress={() => router.back()}>
-            <Text style={styles.backLink}>← Volver</Text>
+            <Text style={styles.backLink}>{t.backLink}</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -56,7 +57,7 @@ export default function EventoDetailScreen() {
     if (!event) return;
     await Share.share({
       title: event.name,
-      message: `${event.name}\n📍 ${event.town}\n🗓 ${formatDateRange(event.dateStart, event.dateEnd)}\n\nVia QuéHay – Agenda local`,
+      message: `${event.name}\n📍 ${event.town}\n🗓 ${formatDateRange(event.dateStart, event.dateEnd)}\n\n${t.shareVia}`,
     });
   }
 
@@ -104,21 +105,21 @@ export default function EventoDetailScreen() {
 
           {/* Key info cards */}
           <View style={styles.infoGrid}>
-            <InfoCard emoji="🗓" label="Fecha" value={formatDateRange(event.dateStart, event.dateEnd)} />
-            <InfoCard emoji="🕐" label="Hora" value={event.time} />
-            <InfoCard emoji="📍" label="Lugar" value={event.location} />
-            <InfoCard emoji="🏘️" label="Municipio" value={`${event.town}, ${event.region === 'teruel' ? 'Teruel' : 'Catalunya'}`} />
+            <InfoCard emoji="🗓" label={t.infoDate} value={formatDateRange(event.dateStart, event.dateEnd)} />
+            <InfoCard emoji="🕐" label={t.infoTime} value={event.time} />
+            <InfoCard emoji="📍" label={t.infoPlace} value={event.location} />
+            <InfoCard emoji="🏘️" label={t.infoTown} value={`${event.town}, ${event.region === 'teruel' ? t.regionTeruel : t.regionCatalunya}`} />
             {!event.isFree && event.price && (
-              <InfoCard emoji="🎟" label="Precio" value={event.price} highlight />
+              <InfoCard emoji="🎟" label={t.infoPrice} value={event.price} highlight />
             )}
             {event.isFree && (
-              <InfoCard emoji="✅" label="Precio" value="Entrada gratuita" highlight />
+              <InfoCard emoji="✅" label={t.infoPrice} value={t.infoFree} highlight />
             )}
           </View>
 
           {/* Description */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Sobre el evento</Text>
+            <Text style={styles.sectionTitle}>{t.sectionAbout}</Text>
             <Text style={styles.description}>{event.description}</Text>
           </View>
 
@@ -135,7 +136,7 @@ export default function EventoDetailScreen() {
 
           {/* Source */}
           <View style={styles.sourceCard}>
-            <Text style={styles.sourceTitle}>Fuente del evento</Text>
+            <Text style={styles.sourceTitle}>{t.sectionSource}</Text>
             <View style={styles.sourceRow}>
               <Text style={styles.sourceEmoji}>{source?.emoji}</Text>
               <Text style={[styles.sourceDetail, { color: source?.color }]}>
@@ -149,10 +150,9 @@ export default function EventoDetailScreen() {
             <View style={styles.demandNote}>
               <Text style={styles.demandNoteEmoji}>📊</Text>
               <View style={styles.demandNoteContent}>
-                <Text style={styles.demandNoteTitle}>Alta demanda prevista</Text>
+                <Text style={styles.demandNoteTitle}>{t.demandTitle}</Text>
                 <Text style={styles.demandNoteText}>
-                  Este evento puede incrementar la ocupación hotelera en la zona.
-                  {event.size === 'grande' ? ' Considerado gran evento.' : ' Considerado evento mediano.'}
+                  {event.size === 'grande' ? t.demandTextBig : t.demandTextMedium}
                 </Text>
               </View>
             </View>
@@ -161,7 +161,7 @@ export default function EventoDetailScreen() {
           {/* CTA */}
           <TouchableOpacity style={styles.favBtn} onPress={() => toggleFavorite(event.id)}>
             <Text style={styles.favBtnText}>
-              {fav ? '❤️ Guardado en favoritos' : '🤍 Guardar en favoritos'}
+              {fav ? t.savedFavorite : t.saveFavorite}
             </Text>
           </TouchableOpacity>
         </View>

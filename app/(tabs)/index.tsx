@@ -16,6 +16,7 @@ import CategoryPills from '../../components/CategoryPills';
 import FilterBar from '../../components/FilterBar';
 import EmptyState from '../../components/EmptyState';
 import { Colors } from '../../constants/colors';
+import { t } from '../../i18n';
 
 export default function HomeScreen() {
   const { mode, filters, setFilters, isFavorite, toggleFavorite, filteredEvents, eventsLoading } = useApp();
@@ -36,7 +37,7 @@ export default function HomeScreen() {
           <Text style={styles.logo}>
             Qué<Text style={styles.logoAccent}>Hay</Text>
           </Text>
-          <Text style={styles.subtitle}>Agenda local de España</Text>
+          <Text style={styles.subtitle}>{t.tagline}</Text>
         </View>
         <View style={styles.headerRight}>
           {mode === 'anfitrion' && (
@@ -44,7 +45,7 @@ export default function HomeScreen() {
               style={styles.hostBadge}
               onPress={() => router.push('/host')}
             >
-              <Text style={styles.hostBadgeText}>🏠 Panel Anfitrión</Text>
+              <Text style={styles.hostBadgeText}>{t.hostPanelBadge}</Text>
             </TouchableOpacity>
           )}
           {mode === 'viajero' && (
@@ -75,7 +76,7 @@ export default function HomeScreen() {
             <FilterBar filters={filters} onFilterChange={setFilters} />
             <View style={styles.resultsRow}>
               <Text style={styles.resultsText}>
-                {events.length} {events.length === 1 ? 'evento' : 'eventos'}
+                {events.length} {events.length === 1 ? t.eventSingular : t.eventPlural}
               </Text>
               {activeFiltersCount > 0 && (
                 <TouchableOpacity
@@ -84,7 +85,7 @@ export default function HomeScreen() {
                   }
                 >
                   <Text style={styles.clearFilters}>
-                    Limpiar filtros ({activeFiltersCount})
+                    {t.clearFilters} ({activeFiltersCount})
                   </Text>
                 </TouchableOpacity>
               )}

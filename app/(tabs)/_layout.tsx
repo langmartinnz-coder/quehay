@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router';
 import { View, Text, StyleSheet } from 'react-native';
 import { Colors } from '../../constants/colors';
+import { t } from '../../i18n';
 
 function TabIcon({ emoji, label, focused }: { emoji: string; label: string; focused: boolean }) {
   return (
@@ -25,36 +26,36 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Inicio',
+          title: t.tabHome,
           tabBarIcon: ({ focused }) => (
-            <TabIcon emoji="🏠" label="Inicio" focused={focused} />
+            <TabIcon emoji="🏠" label={t.tabHome} focused={focused} />
           ),
         }}
       />
       <Tabs.Screen
         name="mapa"
         options={{
-          title: 'Mapa',
+          title: t.tabMap,
           tabBarIcon: ({ focused }) => (
-            <TabIcon emoji="🗺️" label="Mapa" focused={focused} />
+            <TabIcon emoji="🗺️" label={t.tabMap} focused={focused} />
           ),
         }}
       />
       <Tabs.Screen
         name="enviar"
         options={{
-          title: 'Enviar',
+          title: t.tabSubmit,
           tabBarIcon: ({ focused }) => (
-            <TabIcon emoji="➕" label="Enviar" focused={focused} />
+            <TabIcon emoji="➕" label={t.tabSubmit} focused={focused} />
           ),
         }}
       />
       <Tabs.Screen
         name="perfil"
         options={{
-          title: 'Perfil',
+          title: t.tabProfile,
           tabBarIcon: ({ focused }) => (
-            <TabIcon emoji="👤" label="Perfil" focused={focused} />
+            <TabIcon emoji="👤" label={t.tabProfile} focused={focused} />
           ),
         }}
       />

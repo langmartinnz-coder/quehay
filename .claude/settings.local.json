@@ -8,7 +8,10 @@
       "PowerShell(eas *)",
       "PowerShell(npm install *)",
       "Bash(npm install *)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(grep -v \"//.*import\\(\")",
+      "Bash(grep -v \"^\\\\s*//\")",
+      "Bash(node *)"
     ]
   }
 }

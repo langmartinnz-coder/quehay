@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Image,
+  TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -13,14 +14,40 @@ import { useApp } from '../../store/AppContext';
 import { Colors } from '../../constants/colors';
 import ModeSwitch from '../../components/ModeSwitch';
 import EventCard from '../../components/EventCard';
-import { getEventById } from '../../data/mockData';
 
 export default function PerfilScreen() {
-  const { mode, setMode, favorites, isFavorite, toggleFavorite } = useApp();
+  const { mode, setMode, favorites, isFavorite, toggleFavorite, events, user, authLoading, signIn, signUp, signOut } = useApp();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [authSubmitting, setAuthSubmitting] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   const savedEvents = favorites
-    .map((id) => getEventById(id))
-    .filter(Boolean) as NonNullable<ReturnType<typeof getEventById>>[];
+    .map((id) => events.find((e) => e.id === id))
+    .filter(Boolean) as NonNullable<typeof events[number]>[];
+
+  async function handleSignIn() {
+    if (!email || !password) return;
+    setAuthSubmitting(true);
+    setAuthError(null);
+    const { error } = await signIn(email, password);
+    setAuthSubmitting(false);
+    if (error) setAuthError(error);
+  }
+
+  async function handleSignUp() {
+    if (!email || !password) return;
+    setAuthSubmitting(true);
+    setAuthError(null);
+    const { error } = await signUp(email, password);
+    setAuthSubmitting(false);
+    if (error) {
+      setAuthError(error);
+    } else {
+      setAuthError('Revisa tu email para confirmar tu cuenta y luego inicia sesión.');
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -28,6 +55,70 @@ export default function PerfilScreen() {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>Mi perfil</Text>
+        </View>
+
+        {/* Auth section */}
+        <View style={styles.section}>
+          {authLoading ? (
+            <ActivityIndicator color={Colors.primary} />
+          ) : user ? (
+            <View style={styles.authCard}>
+              <View style={styles.authRow}>
+                <Text style={styles.authEmoji}>👤</Text>
+                <View style={styles.authInfo}>
+                  <Text style={styles.authTitle}>Cuenta conectada</Text>
+                  <Text style={styles.authEmail} numberOfLines={1}>{user.email}</Text>
+                </View>
+                <View style={styles.syncBadge}>
+                  <Text style={styles.syncBadgeText}>✓ Sync</Text>
+                </View>
+              </View>
+              <TouchableOpacity style={styles.signOutBtn} onPress={signOut}>
+                <Text style={styles.signOutBtnText}>Cerrar sesión</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.authCard}>
+              <Text style={styles.authCardTitle}>Inicia sesión</Text>
+              <Text style={styles.authCardSub}>Sincroniza tus favoritos en todos tus dispositivos</Text>
+              <TextInput
+                style={styles.authInput}
+                value={email}
+                onChangeText={setEmail}
+                placeholder="tu@email.com"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                placeholderTextColor={Colors.textLight}
+              />
+              <TextInput
+                style={styles.authInput}
+                value={password}
+                onChangeText={setPassword}
+                placeholder="Contraseña"
+                secureTextEntry
+                placeholderTextColor={Colors.textLight}
+              />
+              {authError ? <Text style={styles.authError}>{authError}</Text> : null}
+              <View style={styles.authBtns}>
+                <TouchableOpacity
+                  style={[styles.authBtn, styles.authBtnPrimary, authSubmitting && { opacity: 0.6 }]}
+                  onPress={handleSignIn}
+                  disabled={authSubmitting}
+                >
+                  {authSubmitting
+                    ? <ActivityIndicator color={Colors.white} size="small" />
+                    : <Text style={styles.authBtnPrimaryText}>Entrar</Text>}
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.authBtn, styles.authBtnSecondary, authSubmitting && { opacity: 0.6 }]}
+                  onPress={handleSignUp}
+                  disabled={authSubmitting}
+                >
+                  <Text style={styles.authBtnSecondaryText}>Crear cuenta</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
         </View>
 
         {/* Mode switch */}
@@ -122,6 +213,58 @@ const styles = StyleSheet.create({
     letterSpacing: 0.8,
     marginBottom: 10,
   },
+  authCard: {
+    backgroundColor: Colors.surface,
+    borderRadius: 16,
+    padding: 16,
+    gap: 10,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  authRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  authEmoji: { fontSize: 32 },
+  authInfo: { flex: 1 },
+  authTitle: { fontSize: 14, fontWeight: '700', color: Colors.text },
+  authEmail: { fontSize: 13, color: Colors.textSecondary, marginTop: 2 },
+  syncBadge: {
+    backgroundColor: '#E8F5E9',
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  syncBadgeText: { fontSize: 11, fontWeight: '700', color: '#2E7D32' },
+  signOutBtn: {
+    backgroundColor: Colors.surfaceVariant,
+    borderRadius: 10,
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  signOutBtnText: { fontSize: 14, fontWeight: '600', color: Colors.textSecondary },
+  authCardTitle: { fontSize: 16, fontWeight: '700', color: Colors.text },
+  authCardSub: { fontSize: 13, color: Colors.textSecondary },
+  authInput: {
+    backgroundColor: Colors.background,
+    borderRadius: 10,
+    borderWidth: 1.5,
+    borderColor: Colors.border,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 14,
+    color: Colors.text,
+  },
+  authError: { fontSize: 12, color: Colors.primary, fontWeight: '600' },
+  authBtns: { flexDirection: 'row', gap: 10 },
+  authBtn: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  authBtnPrimary: { backgroundColor: Colors.primary },
+  authBtnPrimaryText: { color: Colors.white, fontWeight: '700', fontSize: 14 },
+  authBtnSecondary: { backgroundColor: Colors.surfaceVariant },
+  authBtnSecondaryText: { color: Colors.text, fontWeight: '700', fontSize: 14 },
   modeSwitchWrap: { marginBottom: 10 },
   modeDesc: {
     fontSize: 13,

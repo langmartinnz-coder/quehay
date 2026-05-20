@@ -8,10 +8,11 @@ import {
   TouchableOpacity,
   Share,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { getEventById, formatDateRange } from '../../data/mockData';
+import { formatDateRange } from '../../data/mockData';
 import { Colors } from '../../constants/colors';
 import { CATEGORIES, SOURCE_LABELS, SIZE_CONFIG } from '../../constants/categories';
 import { useApp } from '../../store/AppContext';
@@ -20,8 +21,18 @@ const { width } = Dimensions.get('window');
 
 export default function EventoDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { isFavorite, toggleFavorite } = useApp();
-  const event = getEventById(id ?? '');
+  const { isFavorite, toggleFavorite, events, eventsLoading } = useApp();
+  const event = events.find((e) => e.id === (id ?? ''));
+
+  if (eventsLoading && !event) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.notFound}>
+          <ActivityIndicator color={Colors.primary} size="large" />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   if (!event) {
     return (

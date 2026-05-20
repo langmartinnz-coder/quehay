@@ -1,16 +1,15 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   FlatList,
   StyleSheet,
   TouchableOpacity,
-  StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useApp } from '../../store/AppContext';
-import { getFilteredEvents } from '../../data/mockData';
 import EventCard from '../../components/EventCard';
 import SearchBar from '../../components/SearchBar';
 import CategoryPills from '../../components/CategoryPills';
@@ -19,9 +18,9 @@ import EmptyState from '../../components/EmptyState';
 import { Colors } from '../../constants/colors';
 
 export default function HomeScreen() {
-  const { mode, filters, setFilters, isFavorite, toggleFavorite } = useApp();
+  const { mode, filters, setFilters, isFavorite, toggleFavorite, filteredEvents, eventsLoading } = useApp();
 
-  const events = useMemo(() => getFilteredEvents(filters), [filters]);
+  const events = filteredEvents;
 
   const activeFiltersCount = [
     filters.category !== 'all',
@@ -100,7 +99,7 @@ export default function HomeScreen() {
             onPress={() => router.push(`/evento/${item.id}`)}
           />
         )}
-        ListEmptyComponent={<EmptyState />}
+        ListEmptyComponent={eventsLoading ? <ActivityIndicator style={{ marginTop: 40 }} color={Colors.primary} /> : <EmptyState />}
         contentContainerStyle={styles.list}
       />
     </SafeAreaView>

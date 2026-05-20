@@ -6,7 +6,9 @@
       "Bash(eas --version)",
       "Bash(eas whoami *)",
       "PowerShell(eas *)",
-      "PowerShell(npm install *)"
+      "PowerShell(npm install *)",
+      "Bash(npm install *)",
+      "Bash(npx tsc *)"
     ]
   }
 }

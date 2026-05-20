@@ -15,6 +15,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { Colors } from '../../constants/colors';
 import { CATEGORIES, REGIONS } from '../../constants/categories';
 import { EventCategory } from '../../types';
+import { useApp } from '../../store/AppContext';
+import { submitEvent } from '../../lib/api';
 
 interface FormState {
   name: string;
@@ -56,11 +58,13 @@ function simulateExtraction(): Promise<Partial<FormState>> {
 }
 
 export default function EnviarScreen() {
+  const { user } = useApp();
   const [image, setImage] = useState<string | null>(null);
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [isExtracting, setIsExtracting] = useState(false);
   const [extracted, setExtracted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   async function pickImage(useCamera: boolean) {
     const result = useCamera
@@ -82,12 +86,28 @@ export default function EnviarScreen() {
     setExtracted(true);
   }
 
-  function handleSubmit() {
-    if (!form.name || !form.date || !form.town) {
-      Alert.alert('Faltan datos', 'Por favor completa el nombre, la fecha y el municipio.');
+  async function handleSubmit() {
+    if (!form.name || !form.date || !form.town || !form.region || !form.category) {
+      Alert.alert('Faltan datos', 'Completa nombre, fecha, municipio, región y categoría.');
       return;
     }
-    setSubmitted(true);
+    setSubmitting(true);
+    try {
+      await submitEvent({
+        name: form.name,
+        dateStart: form.date,
+        time: form.time,
+        town: form.town,
+        region: form.region,
+        category: form.category,
+        description: form.description,
+      }, user?.id);
+      setSubmitted(true);
+    } catch {
+      Alert.alert('Error', 'No se pudo enviar el evento. Inténtalo de nuevo.');
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   if (submitted) {
@@ -293,8 +313,14 @@ export default function EnviarScreen() {
             </Text>
           </View>
 
-          <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit}>
-            <Text style={styles.submitBtnText}>Enviar evento →</Text>
+          <TouchableOpacity
+            style={[styles.submitBtn, submitting && { opacity: 0.6 }]}
+            onPress={handleSubmit}
+            disabled={submitting}
+          >
+            {submitting
+              ? <ActivityIndicator color={Colors.white} />
+              : <Text style={styles.submitBtnText}>Enviar evento →</Text>}
           </TouchableOpacity>
 
           <Text style={styles.disclaimer}>

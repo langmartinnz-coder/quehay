@@ -10,7 +10,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import { router } from 'expo-router';
-import { MOCK_EVENTS } from '../../data/mockData';
 import { Colors } from '../../constants/colors';
 import { CATEGORIES } from '../../constants/categories';
 import { Event } from '../../types';
@@ -26,7 +25,7 @@ const SPAIN_REGION = {
 };
 
 export default function MapaScreen() {
-  const { filters } = useApp();
+  const { filters, events } = useApp();
   const mapRef = useRef<MapView>(null);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [activeRegion, setActiveRegion] = useState<'todas' | 'teruel' | 'cataluña'>('todas');
@@ -45,7 +44,7 @@ export default function MapaScreen() {
     longitudeDelta: 2.8,
   };
 
-  const visibleEvents = MOCK_EVENTS.filter(
+  const visibleEvents = events.filter(
     (e) => activeRegion === 'todas' || e.region === activeRegion,
   );
 

@@ -9,7 +9,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useApp } from '../../store/AppContext';
-import { getEventsNearLocation, getDistanceKm, formatDateRange } from '../../data/mockData';
+import { getDistanceKm, formatDateRange } from '../../data/mockData';
 import { Colors } from '../../constants/colors';
 import { RADIUS_OPTIONS, SIZE_CONFIG } from '../../constants/categories';
 import HostDemandAlert from '../../components/HostDemandAlert';
@@ -18,17 +18,27 @@ import WeeklyDigest from '../../components/WeeklyDigest';
 import { Event } from '../../types';
 
 export default function HostDashboard() {
-  const { hostProperty, setHostProperty } = useApp();
+  const { hostProperty, setHostProperty, events } = useApp();
   const [radius, setRadius] = useState(hostProperty?.radiusKm ?? 50);
 
   const nearbyEvents = useMemo(() => {
     if (!hostProperty) return [];
-    return getEventsNearLocation(
-      hostProperty.coordinates.latitude,
-      hostProperty.coordinates.longitude,
-      radius,
-    );
-  }, [hostProperty, radius]);
+    return events
+      .filter((event) => {
+        const dist = getDistanceKm(
+          hostProperty.coordinates.latitude,
+          hostProperty.coordinates.longitude,
+          event.coordinates.latitude,
+          event.coordinates.longitude,
+        );
+        return dist <= radius;
+      })
+      .sort((a, b) => {
+        const dA = getDistanceKm(hostProperty.coordinates.latitude, hostProperty.coordinates.longitude, a.coordinates.latitude, a.coordinates.longitude);
+        const dB = getDistanceKm(hostProperty.coordinates.latitude, hostProperty.coordinates.longitude, b.coordinates.latitude, b.coordinates.longitude);
+        return dA - dB;
+      });
+  }, [events, hostProperty, radius]);
 
   const bigEvents = nearbyEvents.filter((e) => e.size === 'grande' || e.size === 'mediano');
   const highDemandWeekends = nearbyEvents.filter((e) => e.size === 'grande');

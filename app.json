@@ -30,7 +30,7 @@
       }
     },
     "android": {
-      "package": "com.quehay.agendalocal",
+      "package": "com.marsu123.quehay",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",

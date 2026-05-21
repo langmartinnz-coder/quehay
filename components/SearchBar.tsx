@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.surface,
+    backgroundColor: Colors.white,
     marginHorizontal: 16,
     marginVertical: 8,
     paddingHorizontal: 14,
@@ -48,6 +48,11 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: Colors.border,
     gap: 8,
+    shadowColor: '#2C1810',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.04,
+    shadowRadius: 4,
+    elevation: 1,
   },
   icon: {
     fontSize: 16,

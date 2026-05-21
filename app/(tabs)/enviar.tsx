@@ -41,7 +41,6 @@ const EMPTY_FORM: FormState = {
   source: '',
 };
 
-// Simulates AI extraction from a poster image
 function simulateExtraction(): Promise<Partial<FormState>> {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -159,13 +158,13 @@ export default function EnviarScreen() {
               <Text style={styles.uploadSubtitle}>{t.uploadSubtitle}</Text>
               <View style={styles.uploadBtns}>
                 <TouchableOpacity
-                  style={[styles.uploadBtn, { backgroundColor: Colors.primary }]}
+                  style={styles.uploadBtn}
                   onPress={() => pickImage(false)}
                 >
                   <Text style={styles.uploadBtnText}>{t.galleryBtn}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={[styles.uploadBtn, { backgroundColor: Colors.accent }]}
+                  style={[styles.uploadBtn, styles.uploadBtnSecondary]}
                   onPress={() => pickImage(true)}
                 >
                   <Text style={styles.uploadBtnText}>{t.cameraBtn}</Text>
@@ -272,7 +271,7 @@ export default function EnviarScreen() {
                 key={cat.id}
                 style={[
                   styles.catChip,
-                  form.category === cat.id && { backgroundColor: cat.color, borderColor: cat.color },
+                  form.category === cat.id && styles.catChipActive,
                 ]}
                 onPress={() => setForm((p) => ({ ...p, category: cat.id as EventCategory }))}
               >
@@ -361,7 +360,7 @@ const ffStyles = StyleSheet.create({
   label: { fontSize: 13, fontWeight: '600', color: Colors.text, marginBottom: 5 },
   input: {
     backgroundColor: Colors.surface,
-    borderRadius: 10,
+    borderRadius: 12,
     borderWidth: 1.5,
     borderColor: Colors.border,
     paddingHorizontal: 12,
@@ -394,7 +393,18 @@ const styles = StyleSheet.create({
   uploadTitle: { fontSize: 16, fontWeight: '700', color: Colors.text },
   uploadSubtitle: { fontSize: 13, color: Colors.textSecondary, textAlign: 'center' },
   uploadBtns: { flexDirection: 'row', gap: 10, marginTop: 8 },
-  uploadBtn: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, gap: 6 },
+  uploadBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 12,
+    gap: 6,
+    backgroundColor: Colors.primary,
+  },
+  uploadBtnSecondary: {
+    backgroundColor: Colors.primaryDark,
+  },
   uploadBtnText: { color: Colors.white, fontWeight: '700', fontSize: 14 },
   previewWrap: { borderRadius: 16, overflow: 'hidden' },
   previewImg: { width: '100%', height: 200, borderRadius: 16 },
@@ -405,7 +415,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 16,
-    backgroundColor: '#5B2C8D',
+    backgroundColor: Colors.primaryDark,
     borderRadius: 12,
     paddingVertical: 14,
     gap: 8,
@@ -424,13 +434,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 12,
     borderWidth: 1.5,
     borderColor: Colors.border,
     backgroundColor: Colors.surface,
     gap: 5,
   },
-  pickerChipActive: { backgroundColor: Colors.accent, borderColor: Colors.accent },
+  pickerChipActive: { backgroundColor: Colors.primary, borderColor: Colors.primary },
   pickerChipEmoji: { fontSize: 16 },
   pickerChipText: { fontSize: 13, fontWeight: '600', color: Colors.textSecondary },
   pickerChipTextActive: { color: Colors.white },
@@ -446,20 +456,26 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.surface,
     gap: 5,
   },
+  catChipActive: {
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
+  },
   catChipEmoji: { fontSize: 14 },
   catChipText: { fontSize: 12, fontWeight: '600', color: Colors.textSecondary },
   sourceInfo: {
-    backgroundColor: '#EEF2FF',
+    backgroundColor: '#FEF0E8',
     borderRadius: 12,
     padding: 14,
     marginBottom: 16,
     gap: 6,
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
-  sourceInfoTitle: { fontSize: 13, fontWeight: '700', color: Colors.accent },
+  sourceInfoTitle: { fontSize: 13, fontWeight: '700', color: Colors.primary },
   sourceInfoText: { fontSize: 12, color: Colors.textSecondary, lineHeight: 18 },
   submitBtn: {
     backgroundColor: Colors.primary,
-    borderRadius: 14,
+    borderRadius: 12,
     paddingVertical: 16,
     alignItems: 'center',
     marginBottom: 12,

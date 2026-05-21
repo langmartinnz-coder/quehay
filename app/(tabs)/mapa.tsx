@@ -61,7 +61,7 @@ export default function MapaScreen() {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>
-          Qué<Text style={styles.titleAccent}>Hay</Text>
+          <Text style={styles.titlePunct}>¿</Text>QuéHay<Text style={styles.titlePunct}>?</Text>
         </Text>
         <Text style={styles.subtitle}>{t.eventsCount(visibleEvents.length)}</Text>
       </View>
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: Colors.text,
   },
-  titleAccent: {
+  titlePunct: {
     color: Colors.primary,
   },
   subtitle: {
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingVertical: 7,
-    borderRadius: 10,
+    borderRadius: 20,
     borderWidth: 1.5,
     borderColor: Colors.border,
     backgroundColor: Colors.surface,
@@ -228,9 +228,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 2,
     borderColor: Colors.white,
-    shadowColor: '#000',
+    shadowColor: '#2C1810',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 4,
   },
@@ -239,13 +239,13 @@ const styles = StyleSheet.create({
   },
   callout: {
     backgroundColor: Colors.white,
-    borderRadius: 10,
+    borderRadius: 12,
     padding: 10,
     maxWidth: 160,
-    shadowColor: '#000',
+    shadowColor: '#2C1810',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
   },
   calloutName: {
     fontSize: 13,
@@ -263,11 +263,11 @@ const styles = StyleSheet.create({
     left: 16,
     right: 16,
     backgroundColor: Colors.surface,
-    borderRadius: 20,
+    borderRadius: 16,
     padding: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.12,
+    shadowColor: '#2C1810',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
     shadowRadius: 12,
     elevation: 8,
   },
@@ -307,8 +307,8 @@ const styles = StyleSheet.create({
   },
   viewBtn: {
     backgroundColor: Colors.primary,
-    borderRadius: 10,
-    paddingVertical: 10,
+    borderRadius: 12,
+    paddingVertical: 12,
     alignItems: 'center',
     marginTop: 4,
   },

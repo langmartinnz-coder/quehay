@@ -67,13 +67,10 @@ export default function EventoDetailScreen() {
         {/* Hero image */}
         <View style={styles.heroWrap}>
           <Image source={{ uri: event.imageUrl }} style={styles.hero} resizeMode="cover" />
-          {/* Gradient overlay */}
           <View style={styles.heroOverlay} />
-          {/* Back button */}
           <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
             <Text style={styles.backBtnText}>←</Text>
           </TouchableOpacity>
-          {/* Favorite & share */}
           <View style={styles.heroActions}>
             <TouchableOpacity style={styles.heroActionBtn} onPress={() => toggleFavorite(event.id)}>
               <Text style={styles.heroActionEmoji}>{fav ? '❤️' : '🤍'}</Text>
@@ -82,14 +79,13 @@ export default function EventoDetailScreen() {
               <Text style={styles.heroActionEmoji}>↑</Text>
             </TouchableOpacity>
           </View>
-          {/* Category + size on image */}
           <View style={styles.heroBottom}>
             <View style={[styles.catBadge, { backgroundColor: cat?.color }]}>
               <Text style={styles.catBadgeText}>
                 {cat?.emoji} {cat?.label}
               </Text>
             </View>
-            <View style={[styles.sizeBadge]}>
+            <View style={styles.sizeBadge}>
               <Text style={styles.sizeDot}>{size.dot}</Text>
               <Text style={[styles.sizeLabel, { color: size.color }]}>
                 {size.label}
@@ -100,7 +96,6 @@ export default function EventoDetailScreen() {
 
         {/* Content */}
         <View style={styles.content}>
-          {/* Title */}
           <Text style={styles.name}>{event.name}</Text>
 
           {/* Key info cards */}
@@ -200,9 +195,14 @@ const icStyles = StyleSheet.create({
     gap: 2,
     borderWidth: 1,
     borderColor: Colors.border,
+    shadowColor: '#2C1810',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 1,
   },
   cardHighlight: {
-    backgroundColor: '#FFF8E1',
+    backgroundColor: '#FEF5EF',
     borderColor: Colors.secondaryLight,
   },
   emoji: { fontSize: 18 },
@@ -285,6 +285,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 4,
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   tagText: { fontSize: 12, color: Colors.textSecondary, fontWeight: '600' },
   sourceCard: {
@@ -294,6 +296,11 @@ const styles = StyleSheet.create({
     gap: 6,
     borderWidth: 1,
     borderColor: Colors.border,
+    shadowColor: '#2C1810',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 1,
   },
   sourceTitle: { fontSize: 12, fontWeight: '700', color: Colors.textSecondary, textTransform: 'uppercase', letterSpacing: 0.5 },
   sourceRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
@@ -301,13 +308,13 @@ const styles = StyleSheet.create({
   sourceDetail: { fontSize: 14, fontWeight: '600', flex: 1 },
   demandNote: {
     flexDirection: 'row',
-    backgroundColor: '#FFF3CD',
+    backgroundColor: '#FEF5EF',
     borderRadius: 14,
     padding: 14,
     gap: 12,
     alignItems: 'flex-start',
     borderLeftWidth: 4,
-    borderLeftColor: Colors.secondaryLight,
+    borderLeftColor: Colors.secondary,
   },
   demandNoteEmoji: { fontSize: 22 },
   demandNoteContent: { flex: 1, gap: 4 },
@@ -315,7 +322,7 @@ const styles = StyleSheet.create({
   demandNoteText: { fontSize: 13, color: Colors.textSecondary, lineHeight: 18 },
   favBtn: {
     backgroundColor: Colors.primary,
-    borderRadius: 14,
+    borderRadius: 12,
     paddingVertical: 16,
     alignItems: 'center',
     marginBottom: 8,

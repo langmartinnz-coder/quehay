@@ -27,7 +27,7 @@ export default function RootLayout() {
               headerShown: true,
               headerTitle: t.navHostPanel,
               headerBackTitle: t.back,
-              headerStyle: { backgroundColor: '#8E44AD' },
+              headerStyle: { backgroundColor: '#C4622D' },
               headerTintColor: '#fff',
               headerTitleStyle: { fontWeight: '700' },
             }}
@@ -38,7 +38,7 @@ export default function RootLayout() {
               headerShown: true,
               headerTitle: t.navConfigureProperty,
               headerBackTitle: t.back,
-              headerStyle: { backgroundColor: '#8E44AD' },
+              headerStyle: { backgroundColor: '#C4622D' },
               headerTintColor: '#fff',
               headerTitleStyle: { fontWeight: '700' },
             }}

@@ -60,7 +60,6 @@ export default function EventCard({
 
       {/* Body */}
       <View style={styles.body}>
-        {/* Size indicator (host mode) */}
         {showSize && (
           <View style={styles.sizeRow}>
             <Text style={styles.sizeDot}>{size.dot}</Text>
@@ -113,12 +112,14 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginHorizontal: 16,
     marginBottom: 16,
-    shadowColor: '#000',
+    shadowColor: '#2C1810',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
-    shadowRadius: 8,
+    shadowRadius: 12,
     elevation: 3,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   imageContainer: {
     position: 'relative',

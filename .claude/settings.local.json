@@ -12,7 +12,14 @@
       "Bash(grep -v \"//.*import\\(\")",
       "Bash(grep -v \"^\\\\s*//\")",
       "Bash(node *)",
-      "Bash(npx expo *)"
+      "Bash(npx expo *)",
+      "Bash(python3 -c \"import cairosvg; print\\('cairosvg ok'\\)\")",
+      "Bash(python3 -c \"from PIL import Image; print\\('PIL ok'\\)\")",
+      "Bash(python3 -c \"print\\('python works'\\)\")",
+      "Bash(python3 -m pip list)",
+      "Bash(npm list *)",
+      "Bash(rm scripts/generate-icons.js scripts/icon.svg)",
+      "Bash(npm uninstall *)"
     ]
   }
 }

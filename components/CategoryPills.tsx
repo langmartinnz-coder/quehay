@@ -23,19 +23,12 @@ export default function CategoryPills({ selected, onChange }: CategoryPillsProps
             key={cat.id}
             style={[
               styles.pill,
-              isActive
-                ? { backgroundColor: cat.color, borderColor: cat.color }
-                : { backgroundColor: Colors.surface, borderColor: Colors.border },
+              isActive ? styles.pillActive : styles.pillInactive,
             ]}
             onPress={() => onChange(cat.id)}
           >
             <Text style={styles.emoji}>{cat.emoji}</Text>
-            <Text
-              style={[
-                styles.label,
-                { color: isActive ? Colors.white : Colors.textSecondary },
-              ]}
-            >
+            <Text style={[styles.label, isActive ? styles.labelActive : styles.labelInactive]}>
               {cat.label}
             </Text>
           </TouchableOpacity>
@@ -61,11 +54,25 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     gap: 5,
   },
+  pillActive: {
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
+  },
+  pillInactive: {
+    backgroundColor: Colors.white,
+    borderColor: Colors.border,
+  },
   emoji: {
     fontSize: 14,
   },
   label: {
     fontSize: 13,
     fontWeight: '600',
+  },
+  labelActive: {
+    color: Colors.white,
+  },
+  labelInactive: {
+    color: Colors.text,
   },
 });

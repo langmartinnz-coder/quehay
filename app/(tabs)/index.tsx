@@ -35,7 +35,7 @@ export default function HomeScreen() {
       <View style={styles.header}>
         <View>
           <Text style={styles.logo}>
-            Qué<Text style={styles.logoAccent}>Hay</Text>
+            <Text style={styles.logoPunct}>¿</Text>QuéHay<Text style={styles.logoPunct}>?</Text>
           </Text>
           <Text style={styles.subtitle}>{t.tagline}</Text>
         </View>
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     color: Colors.text,
     letterSpacing: -0.5,
   },
-  logoAccent: {
+  logoPunct: {
     color: Colors.primary,
   },
   subtitle: {
@@ -140,10 +140,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   hostBadge: {
-    backgroundColor: '#8E44AD',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
+    backgroundColor: Colors.primary,
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+    borderRadius: 12,
   },
   hostBadgeText: {
     color: Colors.white,
@@ -157,6 +157,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   mapBtnText: {
     fontSize: 20,

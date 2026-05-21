@@ -70,17 +70,19 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.surface,
     borderRadius: 16,
     overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.06,
-    shadowRadius: 4,
+    shadowColor: '#2C1810',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
     elevation: 2,
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#F0F7FF',
+    backgroundColor: '#FEF0E8',
     gap: 8,
   },
   title: {
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
   },
   count: {
     fontSize: 12,
-    color: Colors.accent,
+    color: Colors.primary,
     fontWeight: '600',
   },
   chevron: {

@@ -13,14 +13,14 @@ export default function ModeSwitch({ mode, onChange }: ModeSwitchProps) {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={[styles.tab, mode === 'viajero' && styles.tabActiveViajero]}
+        style={[styles.tab, mode === 'viajero' && styles.tabActive]}
         onPress={() => onChange('viajero')}
       >
         <Text style={styles.emoji}>🧭</Text>
         <Text style={[styles.label, mode === 'viajero' && styles.labelActive]}>{t.modeTraveler}</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.tab, mode === 'anfitrion' && styles.tabActiveAnfitrion]}
+        style={[styles.tab, mode === 'anfitrion' && styles.tabActive]}
         onPress={() => onChange('anfitrion')}
       >
         <Text style={styles.emoji}>🏠</Text>
@@ -37,21 +37,20 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 3,
     gap: 3,
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   tab: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 7,
+    paddingVertical: 8,
     borderRadius: 10,
     gap: 5,
   },
-  tabActiveViajero: {
-    backgroundColor: Colors.accent,
-  },
-  tabActiveAnfitrion: {
-    backgroundColor: '#8E44AD',
+  tabActive: {
+    backgroundColor: Colors.primary,
   },
   emoji: {
     fontSize: 14,

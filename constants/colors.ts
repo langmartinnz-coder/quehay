@@ -1,31 +1,30 @@
 export const Colors = {
-  primary: '#C0392B',
-  primaryLight: '#E74C3C',
-  primaryDark: '#96281B',
-  secondary: '#E67E22',
-  secondaryLight: '#F39C12',
-  accent: '#2980B9',
+  primary: '#C4622D',
+  primaryLight: '#E8956C',
+  primaryDark: '#A34F22',
+  secondary: '#D4813A',
+  secondaryLight: '#EEB889',
 
-  background: '#F8F6F2',
+  background: '#FAF7F2',
   surface: '#FFFFFF',
-  surfaceVariant: '#F2EFEA',
+  surfaceVariant: '#F5F0E8',
 
-  text: '#1A1A2E',
-  textSecondary: '#6B7280',
-  textLight: '#9CA3AF',
+  text: '#2C1810',
+  textSecondary: '#7A6B5D',
+  textLight: '#B5A99A',
 
-  border: '#E5E0D9',
-  divider: '#EDE9E3',
+  border: '#EDE8E0',
+  divider: '#EDE8E0',
 
   success: '#27AE60',
-  warning: '#F39C12',
-  error: '#E74C3C',
-  info: '#2980B9',
+  warning: '#D4813A',
+  error: '#C4622D',
+  info: '#C4622D',
 
   white: '#FFFFFF',
   black: '#000000',
 
-  // Category
+  // Category — keep distinct for visual differentiation on card images
   festival: '#C0392B',
   fiesta: '#E67E22',
   mercado: '#16A085',
@@ -36,11 +35,11 @@ export const Colors = {
 
   // Event size
   grande: '#E74C3C',
-  mediano: '#F39C12',
+  mediano: '#D4813A',
   pequeño: '#27AE60',
 
   // Source
-  ayuntamiento: '#2980B9',
+  ayuntamiento: '#5B7EA8',
   facebook: '#1877F2',
   instagram: '#E1306C',
   whatsapp: '#25D366',
@@ -48,10 +47,10 @@ export const Colors = {
   usuario: '#8E44AD',
 
   tab: {
-    active: '#C0392B',
-    inactive: '#9CA3AF',
+    active: '#C4622D',
+    inactive: '#B5A99A',
     background: '#FFFFFF',
-    border: '#E5E0D9',
+    border: '#EDE8E0',
   },
 } as const;
 

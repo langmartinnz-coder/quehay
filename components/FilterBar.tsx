@@ -40,7 +40,7 @@ export default function FilterBar({ filters, onFilterChange }: FilterBarProps) {
         return (
           <TouchableOpacity
             key={r.id}
-            style={[styles.chip, isActive && styles.chipActiveRegion]}
+            style={[styles.chip, isActive && styles.chipActive]}
             onPress={() => onFilterChange({ region: r.id })}
           >
             <Text style={styles.regionFlag}>{r.flag}</Text>
@@ -67,24 +67,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 16,
+    borderRadius: 20,
     borderWidth: 1,
     borderColor: Colors.border,
-    backgroundColor: Colors.surface,
+    backgroundColor: Colors.white,
     gap: 4,
   },
   chipActive: {
     backgroundColor: Colors.primary,
     borderColor: Colors.primary,
   },
-  chipActiveRegion: {
-    backgroundColor: Colors.accent,
-    borderColor: Colors.accent,
-  },
   chipText: {
     fontSize: 12,
     fontWeight: '600',
-    color: Colors.textSecondary,
+    color: Colors.text,
   },
   chipTextActive: {
     color: Colors.white,

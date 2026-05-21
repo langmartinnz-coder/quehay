@@ -27,16 +27,6 @@
       }
     }
   },
-  "update": {
-    "production": {
-      "channel": "production",
-      "branch": "main"
-    },
-    "preview": {
-      "channel": "preview",
-      "branch": "preview"
-    }
-  },
   "submit": {
     "production": {
       "android": {

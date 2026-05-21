@@ -3,6 +3,14 @@
     "name": "QuéHay",
     "slug": "quehay-agenda-local",
     "version": "1.0.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/9c68b543-93e9-4641-b47c-409a1a5c46f3",
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
+    },
     "scheme": "quehay",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,7 +19,7 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#C0392B"
+      "backgroundColor": "#FAF7F2"
     },
     "ios": {
       "supportsTablet": true,
@@ -26,7 +34,7 @@
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#C0392B"
+        "backgroundColor": "#FAF7F2"
       },
       "edgeToEdgeEnabled": true,
       "permissions": [
@@ -51,7 +59,8 @@
           "cameraPermission": "QuéHay necesita la cámara para fotografiar pósteres de eventos."
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      "expo-updates"
     ],
     "experiments": {
       "typedRoutes": true

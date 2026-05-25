@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Política de Privacidad — ¿QuéHay?</title>
+  <meta name="description" content="Política de privacidad de la app ¿QuéHay? — cómo recogemos, usamos y protegemos tus datos." />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:      #C4622D;
+      --primary-dark: #A34F22;
+      --primary-light:#E8956C;
+      --bg:           #FAF7F2;
+      --surface:      #FFFFFF;
+      --text:         #2C1810;
+      --text-sec:     #7A6B5D;
+      --text-light:   #B5A99A;
+      --border:       #EDE8E0;
+      --tint:         #FEF0E8;
+      --radius-btn:   12px;
+      --radius-card:  16px;
+      --shadow:       0 4px 24px rgba(44,24,16,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── LANGUAGE TOGGLE ─── */
+    [data-lang] { display: none; }
+    body.lang-es [data-lang="es"],
+    body.lang-en [data-lang="en"] { display: revert; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(250,247,242,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+    }
+    .nav-inner {
+      max-width: 860px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      font-size: 1.4rem; font-weight: 800; color: var(--text);
+      text-decoration: none; letter-spacing: -0.02em;
+    }
+    .logo span { color: var(--primary); }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-back {
+      font-size: 0.875rem; font-weight: 600; color: var(--text-sec);
+      text-decoration: none; display: flex; align-items: center; gap: 6px;
+      transition: color 0.15s;
+    }
+    .nav-back:hover { color: var(--primary); }
+    .lang-toggle {
+      display: flex; border: 1px solid var(--border);
+      border-radius: 8px; overflow: hidden;
+    }
+    .lang-btn {
+      padding: 6px 12px; font-size: 0.8rem; font-weight: 600;
+      border: none; background: transparent; cursor: pointer;
+      color: var(--text-sec); transition: background 0.15s, color 0.15s;
+    }
+    .lang-btn.active { background: var(--primary); color: #fff; }
+
+    /* ─── PAGE HEADER ─── */
+    .page-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 52px 24px 44px;
+    }
+    .page-header-inner {
+      max-width: 860px; margin: 0 auto;
+    }
+    .page-label {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .page-title {
+      font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 800;
+      letter-spacing: -0.025em; color: var(--text);
+      margin-bottom: 12px;
+    }
+    .page-meta {
+      font-size: 0.875rem; color: var(--text-sec);
+      display: flex; gap: 24px; flex-wrap: wrap;
+    }
+    .page-meta span { display: flex; align-items: center; gap: 6px; }
+
+    /* ─── DOCUMENT BODY ─── */
+    .doc-wrap {
+      max-width: 860px; margin: 0 auto;
+      padding: 48px 24px 80px;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* ─── TOC ─── */
+    .toc {
+      position: sticky; top: 80px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 20px;
+    }
+    .toc-title {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-sec);
+      margin-bottom: 12px;
+    }
+    .toc-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+    .toc-list a {
+      display: block; padding: 5px 8px;
+      font-size: 0.8rem; color: var(--text-sec);
+      text-decoration: none; border-radius: 6px;
+      transition: background 0.12s, color 0.12s;
+      line-height: 1.4;
+    }
+    .toc-list a:hover { background: var(--tint); color: var(--primary); }
+
+    /* ─── POLICY CONTENT ─── */
+    .policy { display: flex; flex-direction: column; gap: 40px; }
+
+    .policy-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--tint); color: var(--primary);
+      font-size: 0.75rem; font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .section-heading {
+      font-size: 1.15rem; font-weight: 700; color: var(--text);
+      margin-bottom: 14px; line-height: 1.35;
+    }
+    .policy-section p {
+      font-size: 0.95rem; color: var(--text-sec); margin-bottom: 12px;
+      line-height: 1.75;
+    }
+    .policy-section p:last-child { margin-bottom: 0; }
+    .policy-section ul {
+      list-style: none; display: flex; flex-direction: column;
+      gap: 8px; margin: 12px 0;
+    }
+    .policy-section ul li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 0.95rem; color: var(--text-sec); line-height: 1.65;
+    }
+    .policy-section ul li::before {
+      content: '';
+      min-width: 6px; height: 6px; border-radius: 50%;
+      background: var(--primary); margin-top: 8px; flex-shrink: 0;
+    }
+    .policy-section strong { color: var(--text); font-weight: 600; }
+    .policy-section a { color: var(--primary); text-decoration: none; }
+    .policy-section a:hover { text-decoration: underline; }
+
+    .highlight-box {
+      background: var(--tint);
+      border-left: 3px solid var(--primary);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 0.9rem; color: var(--text);
+      line-height: 1.65;
+    }
+    .highlight-box strong { color: var(--primary); }
+
+    .rights-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px; margin-top: 16px;
+    }
+    .right-item {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px 16px;
+    }
+    .right-title {
+      font-size: 0.85rem; font-weight: 700; color: var(--text);
+      margin-bottom: 4px;
+    }
+    .right-desc { font-size: 0.8rem; color: var(--text-sec); line-height: 1.5; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--text); color: rgba(250,247,242,0.7);
+      padding: 48px 24px;
+    }
+    .footer-inner {
+      max-width: 860px; margin: 0 auto;
+      display: flex; flex-direction: column; gap: 28px;
+    }
+    .footer-top {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo { font-size: 1.3rem; font-weight: 800; color: #FAF7F2; }
+    .footer-logo span { color: var(--primary-light); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      color: rgba(250,247,242,0.65); text-decoration: none;
+      font-size: 0.875rem; transition: color 0.15s;
+    }
+    .footer-links a:hover { color: #FAF7F2; }
+    .footer-divider { border: none; border-top: 1px solid rgba(250,247,242,0.1); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 8px; font-size: 0.8rem;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 720px) {
+      .doc-wrap { grid-template-columns: 1fr; }
+      .toc { display: none; }
+      .rights-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .policy-section { padding: 24px 20px; }
+      nav { padding: 0 16px; }
+    }
+  </style>
+</head>
+
+<body class="lang-es">
+
+<!-- ─── NAV ─── -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo"><span>¿</span>QuéHay<span>?</span></a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        <span data-lang="es">Inicio</span>
+        <span data-lang="en">Home</span>
+      </a>
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-es" onclick="setLang('es')">ES</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── PAGE HEADER ─── -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="page-label" data-lang="es">Legal</div>
+    <div class="page-label" data-lang="en">Legal</div>
+    <h1 class="page-title" data-lang="es">Política de Privacidad</h1>
+    <h1 class="page-title" data-lang="en">Privacy Policy</h1>
+    <div class="page-meta">
+      <span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span data-lang="es">Última actualización: 25 de mayo de 2026</span>
+        <span data-lang="en">Last updated: 25 May 2026</span>
+      </span>
+      <span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span data-lang="es">Aplicable a la app móvil y a quehayagendalocal.com</span>
+        <span data-lang="en">Applies to the mobile app and quehayagendalocal.com</span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── DOCUMENT ─── -->
+<div class="doc-wrap">
+
+  <!-- TABLE OF CONTENTS -->
+  <aside class="toc">
+    <div class="toc-title" data-lang="es">Contenido</div>
+    <div class="toc-title" data-lang="en">Contents</div>
+    <ul class="toc-list">
+      <li><a href="#responsable" data-lang="es">1. Responsable</a><a href="#responsable" data-lang="en">1. Controller</a></li>
+      <li><a href="#datos" data-lang="es">2. Datos que recogemos</a><a href="#datos" data-lang="en">2. Data we collect</a></li>
+      <li><a href="#uso" data-lang="es">3. Cómo los usamos</a><a href="#uso" data-lang="en">3. How we use it</a></li>
+      <li><a href="#base" data-lang="es">4. Base legal</a><a href="#base" data-lang="en">4. Legal basis</a></li>
+      <li><a href="#terceros" data-lang="es">5. Terceros y procesadores</a><a href="#terceros" data-lang="en">5. Third parties</a></li>
+      <li><a href="#retencion" data-lang="es">6. Retención de datos</a><a href="#retencion" data-lang="en">6. Data retention</a></li>
+      <li><a href="#derechos" data-lang="es">7. Tus derechos</a><a href="#derechos" data-lang="en">7. Your rights</a></li>
+      <li><a href="#menores" data-lang="es">8. Menores de edad</a><a href="#menores" data-lang="en">8. Minors</a></li>
+      <li><a href="#cambios" data-lang="es">9. Cambios</a><a href="#cambios" data-lang="en">9. Changes</a></li>
+      <li><a href="#contacto" data-lang="es">10. Contacto</a><a href="#contacto" data-lang="en">10. Contact</a></li>
+    </ul>
+  </aside>
+
+  <!-- POLICY SECTIONS -->
+  <main class="policy">
+
+    <!-- 1. RESPONSABLE / CONTROLLER -->
+    <div class="policy-section" id="responsable">
+      <div class="section-num">1</div>
+      <h2 class="section-heading" data-lang="es">Responsable del tratamiento</h2>
+      <h2 class="section-heading" data-lang="en">Data controller</h2>
+
+      <p data-lang="es">
+        El responsable del tratamiento de los datos personales recogidos a través de la aplicación
+        <strong>¿QuéHay?</strong> y del sitio web <strong>quehayagendalocal.com</strong> es:
+      </p>
+      <p data-lang="en">
+        The data controller for personal data collected through the <strong>¿QuéHay?</strong> app
+        and the website <strong>quehayagendalocal.com</strong> is:
+      </p>
+
+      <div class="highlight-box">
+        <strong>QuéHay</strong><br/>
+        <span data-lang="es">Correo de contacto:</span><span data-lang="en">Contact email:</span>
+        <a href="mailto:soporte.quehayar@gmail.com">soporte.quehayar@gmail.com</a><br/>
+        <span data-lang="es">Sitio web:</span><span data-lang="en">Website:</span>
+        quehayagendalocal.com
+      </div>
+
+      <p data-lang="es">
+        Esta política se aplica en el marco del Reglamento General de Protección de Datos (RGPD, UE 2016/679)
+        y la Ley Orgánica 3/2018 de Protección de Datos Personales (LOPDGDD).
+      </p>
+      <p data-lang="en">
+        This policy is governed by the General Data Protection Regulation (GDPR, EU 2016/679)
+        and Spanish data protection law (LOPDGDD 3/2018).
+      </p>
+    </div>
+
+    <!-- 2. DATOS QUE RECOGEMOS / DATA WE COLLECT -->
+    <div class="policy-section" id="datos">
+      <div class="section-num">2</div>
+      <h2 class="section-heading" data-lang="es">Datos que recogemos</h2>
+      <h2 class="section-heading" data-lang="en">Data we collect</h2>
+
+      <p data-lang="es">Recogemos únicamente los datos necesarios para que la app funcione correctamente:</p>
+      <p data-lang="en">We collect only the data necessary for the app to function:</p>
+
+      <p data-lang="es"><strong>Datos de cuenta (usuarios registrados)</strong></p>
+      <p data-lang="en"><strong>Account data (registered users)</strong></p>
+      <ul>
+        <li data-lang="es"><strong>Dirección de correo electrónico</strong> — para crear y autenticar tu cuenta.</li>
+        <li data-lang="en"><strong>Email address</strong> — to create and authenticate your account.</li>
+        <li data-lang="es"><strong>Contraseña</strong> — almacenada de forma cifrada; nunca tenemos acceso a tu contraseña en texto plano.</li>
+        <li data-lang="en"><strong>Password</strong> — stored encrypted; we never have access to your password in plain text.</li>
+      </ul>
+
+      <p data-lang="es"><strong>Datos de ubicación</strong></p>
+      <p data-lang="en"><strong>Location data</strong></p>
+      <ul>
+        <li data-lang="es"><strong>Ubicación aproximada o precisa del dispositivo</strong> — únicamente cuando concedes permiso y mientras usas la app, para mostrarte eventos cercanos. No registramos tu historial de ubicaciones.</li>
+        <li data-lang="en"><strong>Approximate or precise device location</strong> — only when you grant permission and while using the app, to show you nearby events. We do not record your location history.</li>
+      </ul>
+
+      <p data-lang="es"><strong>Contenido publicado (anfitriones)</strong></p>
+      <p data-lang="en"><strong>Published content (hosts)</strong></p>
+      <ul>
+        <li data-lang="es"><strong>Eventos que publicas</strong> — título, descripción, fecha, lugar, categoría e imágenes de los eventos que creas como anfitrión.</li>
+        <li data-lang="en"><strong>Events you post</strong> — title, description, date, venue, category and images of events you create as a host.</li>
+        <li data-lang="es"><strong>Imágenes de pósteres</strong> — fotografías de carteles en papel que subes para extraer información del evento.</li>
+        <li data-lang="en"><strong>Poster images</strong> — photographs of paper posters you upload for event data extraction.</li>
+      </ul>
+
+      <p data-lang="es"><strong>Datos técnicos (automáticos)</strong></p>
+      <p data-lang="en"><strong>Technical data (automatic)</strong></p>
+      <ul>
+        <li data-lang="es">Registros de acceso básicos (dirección IP, tipo de dispositivo, versión del sistema operativo) generados automáticamente por la infraestructura. Se usan exclusivamente para diagnóstico de errores y seguridad.</li>
+        <li data-lang="en">Basic access logs (IP address, device type, OS version) generated automatically by the infrastructure. Used solely for error diagnosis and security.</li>
+      </ul>
+
+      <div class="highlight-box" data-lang="es">
+        <strong>No recogemos</strong> datos de pago, número de teléfono, documentos de identidad ni ningún otro dato sensible.
+      </div>
+      <div class="highlight-box" data-lang="en">
+        <strong>We do not collect</strong> payment data, phone numbers, identity documents or any other sensitive personal data.
+      </div>
+    </div>
+
+    <!-- 3. USO DE LOS DATOS / HOW WE USE IT -->
+    <div class="policy-section" id="uso">
+      <div class="section-num">3</div>
+      <h2 class="section-heading" data-lang="es">Cómo usamos tus datos</h2>
+      <h2 class="section-heading" data-lang="en">How we use your data</h2>
+
+      <p data-lang="es">Usamos los datos recogidos para los siguientes fines:</p>
+      <p data-lang="en">We use the data collected for the following purposes:</p>
+
+      <ul>
+        <li data-lang="es"><strong>Mostrar eventos relevantes</strong> — tu ubicación nos permite filtrar y ordenar los eventos más cercanos a ti.</li>
+        <li data-lang="en"><strong>Show relevant events</strong> — your location allows us to filter and rank events nearest to you.</li>
+        <li data-lang="es"><strong>Gestión de cuentas</strong> — tu correo y contraseña permiten crear una cuenta, iniciar sesión y recuperar el acceso.</li>
+        <li data-lang="en"><strong>Account management</strong> — your email and password allow account creation, login and access recovery.</li>
+        <li data-lang="es"><strong>Publicación de eventos</strong> — el contenido que subes como anfitrión se almacena y muestra a otros usuarios de la app.</li>
+        <li data-lang="en"><strong>Event publishing</strong> — content you upload as a host is stored and displayed to other app users.</li>
+        <li data-lang="es"><strong>Mejora del servicio</strong> — los datos técnicos nos ayudan a detectar errores y mejorar el rendimiento de la app.</li>
+        <li data-lang="en"><strong>Service improvement</strong> — technical data helps us detect errors and improve app performance.</li>
+        <li data-lang="es"><strong>Comunicaciones esenciales</strong> — podemos enviarte correos relacionados con tu cuenta (p. ej. restablecimiento de contraseña). No enviamos boletines comerciales sin tu consentimiento explícito.</li>
+        <li data-lang="en"><strong>Essential communications</strong> — we may send you account-related emails (e.g. password reset). We do not send marketing emails without your explicit consent.</li>
+      </ul>
+
+      <p data-lang="es">No usamos tus datos para publicidad personalizada ni para crear perfiles de comportamiento.</p>
+      <p data-lang="en">We do not use your data for personalised advertising or behavioural profiling.</p>
+    </div>
+
+    <!-- 4. BASE LEGAL / LEGAL BASIS -->
+    <div class="policy-section" id="base">
+      <div class="section-num">4</div>
+      <h2 class="section-heading" data-lang="es">Base legal del tratamiento</h2>
+      <h2 class="section-heading" data-lang="en">Legal basis for processing</h2>
+
+      <p data-lang="es">Conforme al RGPD, el tratamiento de tus datos se apoya en las siguientes bases legales:</p>
+      <p data-lang="en">Under the GDPR, our processing of your data is based on the following legal grounds:</p>
+
+      <ul>
+        <li data-lang="es"><strong>Ejecución de un contrato</strong> (art. 6.1.b RGPD) — para gestionar tu cuenta y prestarte el servicio de la app.</li>
+        <li data-lang="en"><strong>Performance of a contract</strong> (Art. 6.1.b GDPR) — to manage your account and provide the app service.</li>
+        <li data-lang="es"><strong>Consentimiento</strong> (art. 6.1.a RGPD) — para acceder a tu ubicación. Puedes retirar este consentimiento en cualquier momento desde los ajustes de tu dispositivo.</li>
+        <li data-lang="en"><strong>Consent</strong> (Art. 6.1.a GDPR) — to access your location. You can withdraw this consent at any time through your device settings.</li>
+        <li data-lang="es"><strong>Interés legítimo</strong> (art. 6.1.f RGPD) — para el mantenimiento de la seguridad y el diagnóstico técnico del servicio.</li>
+        <li data-lang="en"><strong>Legitimate interest</strong> (Art. 6.1.f GDPR) — for security maintenance and technical diagnosis of the service.</li>
+      </ul>
+    </div>
+
+    <!-- 5. TERCEROS Y PROCESADORES / THIRD PARTIES -->
+    <div class="policy-section" id="terceros">
+      <div class="section-num">5</div>
+      <h2 class="section-heading" data-lang="es">Terceros y encargados del tratamiento</h2>
+      <h2 class="section-heading" data-lang="en">Third parties and data processors</h2>
+
+      <div class="highlight-box" data-lang="es">
+        <strong>No vendemos, alquilamos ni cedemos tus datos personales a terceros</strong> con fines comerciales o publicitarios, bajo ninguna circunstancia.
+      </div>
+      <div class="highlight-box" data-lang="en">
+        <strong>We do not sell, rent or share your personal data with third parties</strong> for commercial or advertising purposes, under any circumstances.
+      </div>
+
+      <p data-lang="es">Para prestar el servicio, utilizamos los siguientes proveedores de infraestructura como encargados del tratamiento:</p>
+      <p data-lang="en">To provide the service, we use the following infrastructure providers as data processors:</p>
+
+      <p data-lang="es"><strong>Supabase (base de datos y autenticación)</strong></p>
+      <p data-lang="en"><strong>Supabase (database and authentication)</strong></p>
+      <ul>
+        <li data-lang="es">Supabase, Inc. actúa como encargado del tratamiento para el almacenamiento de datos de cuenta, eventos publicados e imágenes.</li>
+        <li data-lang="en">Supabase, Inc. acts as data processor for the storage of account data, published events and images.</li>
+        <li data-lang="es">Los datos se almacenan en servidores en la Unión Europea. Supabase cumple con el RGPD y ofrece garantías adecuadas conforme al art. 46 RGPD.</li>
+        <li data-lang="en">Data is stored on servers within the European Union. Supabase is GDPR-compliant and provides appropriate safeguards under Art. 46 GDPR.</li>
+        <li data-lang="es">Puedes consultar la política de privacidad de Supabase en <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer">supabase.com/privacy</a>.</li>
+        <li data-lang="en">You can review Supabase's privacy policy at <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer">supabase.com/privacy</a>.</li>
+      </ul>
+
+      <p data-lang="es"><strong>Expo / EAS (distribución de la app)</strong></p>
+      <p data-lang="en"><strong>Expo / EAS (app distribution)</strong></p>
+      <ul>
+        <li data-lang="es">Expo Application Services gestiona las actualizaciones de la app. No tiene acceso a tus datos personales.</li>
+        <li data-lang="en">Expo Application Services manages app updates. It does not have access to your personal data.</li>
+      </ul>
+
+      <p data-lang="es"><strong>Google Play Store</strong></p>
+      <p data-lang="en"><strong>Google Play Store</strong></p>
+      <ul>
+        <li data-lang="es">La descarga de la app a través de Google Play está sujeta a la política de privacidad de Google. QuéHay no recibe datos de identificación personal de Google relacionados con la descarga.</li>
+        <li data-lang="en">Downloading the app through Google Play is subject to Google's privacy policy. QuéHay does not receive personally identifiable data from Google relating to the download.</li>
+      </ul>
+
+      <p data-lang="es">Podremos divulgar datos cuando sea legalmente exigible (p. ej. en cumplimiento de una orden judicial), en cuyo caso te informaremos en la medida en que la ley lo permita.</p>
+      <p data-lang="en">We may disclose data when legally required (e.g. in compliance with a court order), in which case we will notify you to the extent permitted by law.</p>
+    </div>
+
+    <!-- 6. RETENCIÓN / DATA RETENTION -->
+    <div class="policy-section" id="retencion">
+      <div class="section-num">6</div>
+      <h2 class="section-heading" data-lang="es">Retención de datos</h2>
+      <h2 class="section-heading" data-lang="en">Data retention</h2>
+
+      <ul>
+        <li data-lang="es"><strong>Datos de cuenta</strong> — se conservan mientras tu cuenta esté activa. Si eliminas tu cuenta, tus datos personales se borran en un plazo de 30 días.</li>
+        <li data-lang="en"><strong>Account data</strong> — retained while your account is active. If you delete your account, your personal data is erased within 30 days.</li>
+        <li data-lang="es"><strong>Eventos publicados</strong> — se conservan mientras tu cuenta esté activa o hasta que los elimines manualmente. Tras la eliminación de la cuenta, los eventos se borran junto con los datos personales.</li>
+        <li data-lang="en"><strong>Published events</strong> — retained while your account is active or until you delete them manually. Upon account deletion, events are erased along with personal data.</li>
+        <li data-lang="es"><strong>Datos de ubicación</strong> — no se almacenan de forma persistente; se usan solo en tiempo real durante la sesión activa de la app.</li>
+        <li data-lang="en"><strong>Location data</strong> — not stored persistently; used only in real time during the active app session.</li>
+        <li data-lang="es"><strong>Registros técnicos</strong> — se conservan durante un máximo de 90 días con fines de seguridad y diagnóstico.</li>
+        <li data-lang="en"><strong>Technical logs</strong> — retained for a maximum of 90 days for security and diagnostic purposes.</li>
+      </ul>
+    </div>
+
+    <!-- 7. DERECHOS / YOUR RIGHTS -->
+    <div class="policy-section" id="derechos">
+      <div class="section-num">7</div>
+      <h2 class="section-heading" data-lang="es">Tus derechos</h2>
+      <h2 class="section-heading" data-lang="en">Your rights</h2>
+
+      <p data-lang="es">Como usuario en la Unión Europea, el RGPD te reconoce los siguientes derechos sobre tus datos personales:</p>
+      <p data-lang="en">As a user in the European Union, the GDPR grants you the following rights over your personal data:</p>
+
+      <div class="rights-grid">
+        <div class="right-item">
+          <div class="right-title" data-lang="es">Acceso</div>
+          <div class="right-title" data-lang="en">Access</div>
+          <div class="right-desc" data-lang="es">Solicitar una copia de los datos que tenemos sobre ti.</div>
+          <div class="right-desc" data-lang="en">Request a copy of the data we hold about you.</div>
+        </div>
+        <div class="right-item">
+          <div class="right-title" data-lang="es">Rectificación</div>
+          <div class="right-title" data-lang="en">Rectification</div>
+          <div class="right-desc" data-lang="es">Corregir datos inexactos o incompletos.</div>
+          <div class="right-desc" data-lang="en">Correct inaccurate or incomplete data.</div>
+        </div>
+        <div class="right-item">
+          <div class="right-title" data-lang="es">Supresión</div>
+          <div class="right-title" data-lang="en">Erasure</div>
+          <div class="right-desc" data-lang="es">Pedir la eliminación de tus datos («derecho al olvido»).</div>
+          <div class="right-desc" data-lang="en">Request deletion of your data ("right to be forgotten").</div>
+        </div>
+        <div class="right-item">
+          <div class="right-title" data-lang="es">Portabilidad</div>
+          <div class="right-title" data-lang="en">Portability</div>
+          <div class="right-desc" data-lang="es">Recibir tus datos en un formato estructurado y legible por máquina.</div>
+          <div class="right-desc" data-lang="en">Receive your data in a structured, machine-readable format.</div>
+        </div>
+        <div class="right-item">
+          <div class="right-title" data-lang="es">Limitación</div>
+          <div class="right-title" data-lang="en">Restriction</div>
+          <div class="right-desc" data-lang="es">Solicitar que restrinjamos el tratamiento de tus datos en determinadas circunstancias.</div>
+          <div class="right-desc" data-lang="en">Ask us to restrict processing of your data in certain circumstances.</div>
+        </div>
+        <div class="right-item">
+          <div class="right-title" data-lang="es">Oposición</div>
+          <div class="right-title" data-lang="en">Objection</div>
+          <div class="right-desc" data-lang="es">Oponerte al tratamiento basado en interés legítimo.</div>
+          <div class="right-desc" data-lang="en">Object to processing based on legitimate interest.</div>
+        </div>
+      </div>
+
+      <p data-lang="es" style="margin-top: 20px;">
+        Para ejercer cualquiera de estos derechos, escríbenos a
+        <a href="mailto:soporte.quehayar@gmail.com">soporte.quehayar@gmail.com</a>.
+        Responderemos en un plazo máximo de 30 días.
+      </p>
+      <p data-lang="en" style="margin-top: 20px;">
+        To exercise any of these rights, write to us at
+        <a href="mailto:soporte.quehayar@gmail.com">soporte.quehayar@gmail.com</a>.
+        We will respond within 30 days.
+      </p>
+
+      <p data-lang="es">
+        Si consideras que el tratamiento de tus datos vulnera la normativa, tienes derecho a presentar una reclamación ante la
+        <strong>Agencia Española de Protección de Datos (AEPD)</strong> en
+        <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">aepd.es</a>.
+      </p>
+      <p data-lang="en">
+        If you believe processing of your data breaches data protection law, you have the right to lodge a complaint with the
+        <strong>Spanish Data Protection Authority (AEPD)</strong> at
+        <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">aepd.es</a>.
+      </p>
+    </div>
+
+    <!-- 8. MENORES / MINORS -->
+    <div class="policy-section" id="menores">
+      <div class="section-num">8</div>
+      <h2 class="section-heading" data-lang="es">Menores de edad</h2>
+      <h2 class="section-heading" data-lang="en">Minors</h2>
+
+      <p data-lang="es">
+        La aplicación no está dirigida a menores de 14 años. No recogemos conscientemente datos personales de
+        menores de 14 años. Si eres padre, madre o tutor y crees que tu hijo/a nos ha proporcionado datos sin
+        tu consentimiento, contáctanos en
+        <a href="mailto:soporte.quehayar@gmail.com">soporte.quehayar@gmail.com</a>
+        y procederemos a eliminarlos.
+      </p>
+      <p data-lang="en">
+        The app is not directed at children under 14. We do not knowingly collect personal data from children under 14.
+        If you are a parent or guardian and believe your child has provided us with data without your consent,
+        contact us at <a href="mailto:soporte.quehayar@gmail.com">soporte.quehayar@gmail.com</a>
+        and we will delete it promptly.
+      </p>
+    </div>
+
+    <!-- 9. CAMBIOS / CHANGES -->
+    <div class="policy-section" id="cambios">
+      <div class="section-num">9</div>
+      <h2 class="section-heading" data-lang="es">Cambios en esta política</h2>
+      <h2 class="section-heading" data-lang="en">Changes to this policy</h2>
+
+      <p data-lang="es">
+        Podemos actualizar esta política periódicamente para reflejar cambios en el servicio o en la legislación
+        aplicable. Cuando realicemos cambios relevantes, actualizaremos la fecha de «Última actualización» en
+        la cabecera de esta página y, si los cambios son sustanciales, te informaremos por correo electrónico
+        o mediante una notificación en la app.
+      </p>
+      <p data-lang="en">
+        We may update this policy periodically to reflect changes to the service or applicable law.
+        When we make material changes, we will update the "Last updated" date at the top of this page
+        and, if the changes are significant, notify you by email or via an in-app notification.
+      </p>
+
+      <p data-lang="es">
+        El uso continuado de la app tras la publicación de cambios implica la aceptación de la nueva versión
+        de la política.
+      </p>
+      <p data-lang="en">
+        Continued use of the app after changes are published constitutes acceptance of the updated policy.
+      </p>
+    </div>
+
+    <!-- 10. CONTACTO / CONTACT -->
+    <div class="policy-section" id="contacto">
+      <div class="section-num">10</div>
+      <h2 class="section-heading" data-lang="es">Contacto</h2>
+      <h2 class="section-heading" data-lang="en">Contact</h2>
+
+      <p data-lang="es">
+        Si tienes preguntas sobre esta política de privacidad, quieres ejercer tus derechos o necesitas
+        reportar un problema relacionado con la protección de datos, ponte en contacto con nosotros:
+      </p>
+      <p data-lang="en">
+        If you have questions about this privacy policy, want to exercise your rights or need to report
+        a data protection concern, please contact us:
+      </p>
+
+      <div class="highlight-box">
+        ✉️ &nbsp;<a href="mailto:soporte.quehayar@gmail.com"><strong>soporte.quehayar@gmail.com</strong></a><br/>
+        <span style="opacity: 0.75; font-size: 0.875rem;" data-lang="es">Respondemos en un plazo máximo de 30 días.</span>
+        <span style="opacity: 0.75; font-size: 0.875rem;" data-lang="en">We respond within a maximum of 30 days.</span>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-logo"><span>¿</span>QuéHay<span>?</span></div>
+      <div class="footer-links">
+        <a href="mailto:soporte.quehayar@gmail.com" data-lang="es">Contacto</a>
+        <a href="mailto:soporte.quehayar@gmail.com" data-lang="en">Contact</a>
+        <a href="privacy.html" data-lang="es">Privacidad</a>
+        <a href="privacy.html" data-lang="en">Privacy</a>
+      </div>
+    </div>
+    <hr class="footer-divider" />
+    <div class="footer-bottom">
+      <span data-lang="es">© 2026 QuéHay. Hecho con ♥ en España.</span>
+      <span data-lang="en">© 2026 QuéHay. Made with ♥ in Spain.</span>
+      <span>quehayagendalocal.com</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function setLang(lang) {
+    document.body.className = 'lang-' + lang;
+    document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.documentElement.lang = lang === 'es' ? 'es' : 'en';
+  }
+
+  (function () {
+    const nav = window.navigator.language || '';
+    if (!nav.startsWith('es')) setLang('en');
+  })();
+</script>
+</body>
+</html>

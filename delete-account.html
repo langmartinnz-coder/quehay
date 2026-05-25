@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eliminar cuenta — ¿QuéHay?</title>
+  <meta name="description" content="Solicita la eliminación de tu cuenta y datos personales de ¿QuéHay?." />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:      #C4622D;
+      --primary-dark: #A34F22;
+      --primary-light:#E8956C;
+      --bg:           #FAF7F2;
+      --surface:      #FFFFFF;
+      --text:         #2C1810;
+      --text-sec:     #7A6B5D;
+      --text-light:   #B5A99A;
+      --border:       #EDE8E0;
+      --tint:         #FEF0E8;
+      --radius-btn:   12px;
+      --radius-card:  16px;
+      --shadow:       0 4px 24px rgba(44,24,16,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─── LANGUAGE TOGGLE ─── */
+    [data-lang] { display: none; }
+    body.lang-es [data-lang="es"],
+    body.lang-en [data-lang="en"] { display: revert; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(250,247,242,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+    }
+    .nav-inner {
+      max-width: 680px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      font-size: 1.4rem; font-weight: 800; color: var(--text);
+      text-decoration: none; letter-spacing: -0.02em;
+    }
+    .logo span { color: var(--primary); }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-back {
+      font-size: 0.875rem; font-weight: 600; color: var(--text-sec);
+      text-decoration: none; display: flex; align-items: center; gap: 6px;
+      transition: color 0.15s;
+    }
+    .nav-back:hover { color: var(--primary); }
+    .lang-toggle {
+      display: flex; border: 1px solid var(--border);
+      border-radius: 8px; overflow: hidden;
+    }
+    .lang-btn {
+      padding: 6px 12px; font-size: 0.8rem; font-weight: 600;
+      border: none; background: transparent; cursor: pointer;
+      color: var(--text-sec); transition: background 0.15s, color 0.15s;
+    }
+    .lang-btn.active { background: var(--primary); color: #fff; }
+
+    /* ─── MAIN ─── */
+    main {
+      flex: 1;
+      max-width: 680px; margin: 0 auto; width: 100%;
+      padding: 56px 24px 80px;
+      display: flex; flex-direction: column; gap: 24px;
+    }
+
+    /* ─── PAGE HEADER ─── */
+    .page-header { margin-bottom: 8px; }
+    .page-label {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .page-title {
+      font-size: clamp(1.7rem, 4vw, 2.2rem); font-weight: 800;
+      letter-spacing: -0.025em; color: var(--text);
+      margin-bottom: 10px;
+    }
+    .page-sub {
+      font-size: 1rem; color: var(--text-sec); line-height: 1.65;
+    }
+
+    /* ─── CARDS ─── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 28px 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-title {
+      font-size: 1rem; font-weight: 700; color: var(--text);
+      margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+    }
+    .card-title-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--tint); display: flex; align-items: center;
+      justify-content: center; font-size: 1rem; flex-shrink: 0;
+    }
+
+    .card p {
+      font-size: 0.92rem; color: var(--text-sec);
+      line-height: 1.7; margin-bottom: 10px;
+    }
+    .card p:last-child { margin-bottom: 0; }
+
+    /* ─── DELETION LIST ─── */
+    .deletion-list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+      margin-top: 4px;
+    }
+    .deletion-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 0.92rem; color: var(--text-sec); line-height: 1.6;
+    }
+    .del-icon {
+      width: 24px; height: 24px; border-radius: 6px;
+      background: #FEE2E2; display: flex; align-items: center;
+      justify-content: center; font-size: 0.75rem; flex-shrink: 0;
+      margin-top: 1px; color: #B91C1C;
+    }
+    .deletion-list li strong { color: var(--text); }
+
+    /* ─── TIMELINE BADGE ─── */
+    .timeline-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--tint); border: 1px solid #F0C9A8;
+      border-radius: 10px; padding: 10px 16px;
+      margin-top: 16px;
+    }
+    .timeline-badge .badge-num {
+      font-size: 1.3rem; font-weight: 800; color: var(--primary);
+      line-height: 1;
+    }
+    .timeline-badge .badge-text {
+      font-size: 0.85rem; color: var(--text); line-height: 1.35;
+    }
+    .timeline-badge .badge-text strong { color: var(--primary); }
+
+    /* ─── FORM ─── */
+    .request-form { display: flex; flex-direction: column; gap: 16px; }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    label {
+      font-size: 0.85rem; font-weight: 600; color: var(--text);
+    }
+    .label-hint {
+      font-size: 0.78rem; font-weight: 400; color: var(--text-sec);
+      margin-left: 4px;
+    }
+    input[type="email"], textarea {
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-btn);
+      background: var(--bg);
+      font-size: 0.95rem; font-family: inherit; color: var(--text);
+      transition: border-color 0.15s, box-shadow 0.15s;
+      outline: none; width: 100%;
+    }
+    input[type="email"]:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(196,98,45,0.12);
+      background: var(--surface);
+    }
+    textarea { resize: vertical; min-height: 90px; }
+
+    .warning-note {
+      display: flex; gap: 10px; align-items: flex-start;
+      background: #FEF2F2; border: 1px solid #FECACA;
+      border-radius: 10px; padding: 12px 14px;
+    }
+    .warning-note .warn-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+    .warning-note p {
+      font-size: 0.85rem; color: #7F1D1D; line-height: 1.55; margin: 0;
+    }
+
+    .confirm-row {
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+    .confirm-row input[type="checkbox"] {
+      width: 18px; height: 18px; accent-color: var(--primary);
+      flex-shrink: 0; margin-top: 2px; cursor: pointer;
+    }
+    .confirm-row label {
+      font-size: 0.875rem; font-weight: 400; color: var(--text-sec);
+      cursor: pointer; line-height: 1.5;
+    }
+
+    .btn-delete {
+      padding: 14px; background: #DC2626; color: #fff;
+      border: none; border-radius: var(--radius-btn);
+      font-size: 1rem; font-weight: 700; cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-delete:hover { background: #B91C1C; transform: translateY(-1px); }
+    .btn-delete:disabled {
+      background: var(--border); color: var(--text-light);
+      cursor: not-allowed; transform: none;
+    }
+
+    .form-success {
+      display: none;
+      background: #F0FDF4; border: 1px solid #A8D5B5;
+      border-radius: var(--radius-btn); padding: 20px;
+      text-align: center;
+    }
+    .success-icon { font-size: 2rem; margin-bottom: 8px; }
+    .success-title {
+      font-size: 1rem; font-weight: 700; color: #166534;
+      margin-bottom: 6px;
+    }
+    .success-body { font-size: 0.875rem; color: #166534; line-height: 1.55; }
+
+    /* ─── ALTERNATIVE ─── */
+    .alt-contact {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-card); padding: 20px 24px;
+      box-shadow: var(--shadow);
+    }
+    .alt-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--tint); display: flex; align-items: center;
+      justify-content: center; font-size: 1.2rem; flex-shrink: 0;
+    }
+    .alt-text { font-size: 0.875rem; color: var(--text-sec); line-height: 1.5; }
+    .alt-text strong { color: var(--text); display: block; margin-bottom: 2px; }
+    .alt-text a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    .alt-text a:hover { text-decoration: underline; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--text); color: rgba(250,247,242,0.7);
+      padding: 40px 24px; margin-top: auto;
+    }
+    .footer-inner {
+      max-width: 680px; margin: 0 auto;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .footer-top {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-logo { font-size: 1.2rem; font-weight: 800; color: #FAF7F2; }
+    .footer-logo span { color: var(--primary-light); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a {
+      color: rgba(250,247,242,0.65); text-decoration: none;
+      font-size: 0.875rem; transition: color 0.15s;
+    }
+    .footer-links a:hover { color: #FAF7F2; }
+    .footer-divider { border: none; border-top: 1px solid rgba(250,247,242,0.1); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 8px; font-size: 0.8rem;
+    }
+
+    @media (max-width: 480px) {
+      main { padding: 36px 16px 60px; }
+      nav { padding: 0 16px; }
+      .card { padding: 22px 18px; }
+    }
+  </style>
+</head>
+
+<body class="lang-es">
+
+<!-- ─── NAV ─── -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo"><span>¿</span>QuéHay<span>?</span></a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        <span data-lang="es">Inicio</span>
+        <span data-lang="en">Home</span>
+      </a>
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-es" onclick="setLang('es')">ES</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── MAIN ─── -->
+<main>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="page-label" data-lang="es">Cuenta</div>
+    <div class="page-label" data-lang="en">Account</div>
+    <h1 class="page-title" data-lang="es">Eliminar tu cuenta</h1>
+    <h1 class="page-title" data-lang="en">Delete your account</h1>
+    <p class="page-sub" data-lang="es">
+      Puedes solicitar la eliminación completa de tu cuenta y todos tus datos personales en cualquier momento.
+      El proceso es permanente e irreversible.
+    </p>
+    <p class="page-sub" data-lang="en">
+      You can request the complete deletion of your account and all your personal data at any time.
+      The process is permanent and irreversible.
+    </p>
+  </div>
+
+  <!-- WHAT GETS DELETED -->
+  <div class="card">
+    <div class="card-title">
+      <div class="card-title-icon">🗑️</div>
+      <span data-lang="es">Qué se eliminará</span>
+      <span data-lang="en">What will be deleted</span>
+    </div>
+    <ul class="deletion-list">
+      <li>
+        <div class="del-icon">✕</div>
+        <span data-lang="es"><strong>Tu cuenta</strong> — dirección de correo electrónico y contraseña.</span>
+        <span data-lang="en"><strong>Your account</strong> — email address and password.</span>
+      </li>
+      <li>
+        <div class="del-icon">✕</div>
+        <span data-lang="es"><strong>Eventos publicados</strong> — todos los eventos que hayas creado como anfitrión.</span>
+        <span data-lang="en"><strong>Published events</strong> — all events you have created as a host.</span>
+      </li>
+      <li>
+        <div class="del-icon">✕</div>
+        <span data-lang="es"><strong>Imágenes subidas</strong> — fotos de pósteres y cualquier otra imagen asociada a tu cuenta.</span>
+        <span data-lang="en"><strong>Uploaded images</strong> — poster photos and any other images associated with your account.</span>
+      </li>
+      <li>
+        <div class="del-icon">✕</div>
+        <span data-lang="es"><strong>Datos de uso</strong> — preferencias y cualquier otro dato vinculado a tu perfil.</span>
+        <span data-lang="en"><strong>Usage data</strong> — preferences and any other data linked to your profile.</span>
+      </li>
+    </ul>
+
+    <div class="timeline-badge">
+      <div class="badge-num">30</div>
+      <div class="badge-text" data-lang="es"><strong>días como máximo</strong><br/>desde que recibamos tu solicitud</div>
+      <div class="badge-text" data-lang="en"><strong>days maximum</strong><br/>from when we receive your request</div>
+    </div>
+  </div>
+
+  <!-- REQUEST FORM -->
+  <div class="card">
+    <div class="card-title">
+      <div class="card-title-icon">📧</div>
+      <span data-lang="es">Solicitar eliminación</span>
+      <span data-lang="en">Request deletion</span>
+    </div>
+
+    <form class="request-form" id="delete-form" onsubmit="handleSubmit(event)">
+
+      <div class="form-group">
+        <label for="del-email">
+          <span data-lang="es">Correo electrónico de tu cuenta</span>
+          <span data-lang="en">Your account email address</span>
+          <span class="label-hint" data-lang="es">(obligatorio)</span>
+          <span class="label-hint" data-lang="en">(required)</span>
+        </label>
+        <input
+          type="email" id="del-email" name="email" required
+          autocomplete="email"
+          placeholder="tu@correo.com"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="del-reason">
+          <span data-lang="es">Motivo (opcional)</span>
+          <span data-lang="en">Reason (optional)</span>
+        </label>
+        <textarea
+          id="del-reason" name="reason"
+          placeholder=""
+        ></textarea>
+      </div>
+
+      <div class="warning-note">
+        <div class="warn-icon">⚠️</div>
+        <p data-lang="es">
+          Esta acción es <strong>permanente e irreversible</strong>. Una vez confirmada la eliminación,
+          no podremos recuperar tu cuenta, tus eventos ni ningún otro dato asociado.
+        </p>
+        <p data-lang="en">
+          This action is <strong>permanent and irreversible</strong>. Once deletion is confirmed,
+          we cannot recover your account, your events or any other associated data.
+        </p>
+      </div>
+
+      <div class="confirm-row">
+        <input type="checkbox" id="confirm-check" onchange="toggleBtn()" />
+        <label for="confirm-check">
+          <span data-lang="es">Entiendo que esta acción es permanente y que todos mis datos serán eliminados de forma definitiva.</span>
+          <span data-lang="en">I understand this action is permanent and that all my data will be permanently deleted.</span>
+        </label>
+      </div>
+
+      <button type="submit" class="btn-delete" id="submit-btn" disabled>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        <span data-lang="es">Enviar solicitud de eliminación</span>
+        <span data-lang="en">Send deletion request</span>
+      </button>
+
+      <div class="form-success" id="form-success">
+        <div class="success-icon">✓</div>
+        <div class="success-title" data-lang="es">Solicitud enviada</div>
+        <div class="success-title" data-lang="en">Request sent</div>
+        <div class="success-body" data-lang="es">
+          Hemos recibido tu solicitud. Eliminaremos tu cuenta y todos tus datos en un plazo máximo de 30 días
+          y te enviaremos una confirmación por correo electrónico.
+        </div>
+        <div class="success-body" data-lang="en">
+          We have received your request. We will delete your account and all your data within 30 days
+          and send you a confirmation by email.
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- ALTERNATIVE CONTACT -->
+  <div class="alt-contact">
+    <div class="alt-icon">✉️</div>
+    <div class="alt-text">
+      <strong data-lang="es">¿Prefieres escribirnos directamente?</strong>
+      <strong data-lang="en">Prefer to write to us directly?</strong>
+      <span data-lang="es">Envía un correo a <a href="mailto:soporte.quehayar@gmail.com">soporte.quehayar@gmail.com</a> con el asunto «Eliminar cuenta» y tu dirección de correo registrada.</span>
+      <span data-lang="en">Send an email to <a href="mailto:soporte.quehayar@gmail.com">soporte.quehayar@gmail.com</a> with the subject "Delete account" and your registered email address.</span>
+    </div>
+  </div>
+
+</main>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-logo"><span>¿</span>QuéHay<span>?</span></div>
+      <div class="footer-links">
+        <a href="privacy.html" data-lang="es">Privacidad</a>
+        <a href="privacy.html" data-lang="en">Privacy</a>
+        <a href="mailto:soporte.quehayar@gmail.com" data-lang="es">Contacto</a>
+        <a href="mailto:soporte.quehayar@gmail.com" data-lang="en">Contact</a>
+      </div>
+    </div>
+    <hr class="footer-divider" />
+    <div class="footer-bottom">
+      <span data-lang="es">© 2026 QuéHay. Hecho con ♥ en España.</span>
+      <span data-lang="en">© 2026 QuéHay. Made with ♥ in Spain.</span>
+      <span>quehayagendalocal.com</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function setLang(lang) {
+    document.body.className = 'lang-' + lang;
+    document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.documentElement.lang = lang === 'es' ? 'es' : 'en';
+  }
+
+  (function () {
+    const nav = window.navigator.language || '';
+    if (!nav.startsWith('es')) setLang('en');
+  })();
+
+  function toggleBtn() {
+    const checked = document.getElementById('confirm-check').checked;
+    document.getElementById('submit-btn').disabled = !checked;
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const email  = document.getElementById('del-email').value;
+    const reason = document.getElementById('del-reason').value;
+    const lang   = document.body.classList.contains('lang-en') ? 'en' : 'es';
+
+    const subject = lang === 'es' ? 'Solicitud de eliminación de cuenta' : 'Account deletion request';
+    const body = lang === 'es'
+      ? `Solicito la eliminación de mi cuenta y todos mis datos personales.\n\nCorreo registrado: ${email}${reason ? '\n\nMotivo: ' + reason : ''}`
+      : `I request the deletion of my account and all my personal data.\n\nRegistered email: ${email}${reason ? '\n\nReason: ' + reason : ''}`;
+
+    window.location.href =
+      `mailto:soporte.quehayar@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    document.getElementById('delete-form').style.display = 'none';
+    const success = document.getElementById('form-success');
+    success.style.display = 'block';
+  }
+</script>
+</body>
+</html>

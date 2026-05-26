@@ -189,14 +189,10 @@ export default function EnviarScreen() {
 
         {/* Image upload */}
         <View style={styles.uploadSection}>
-          {(image || imageBase64) ? (
+          {image ? (
             <View style={styles.previewWrap}>
               <Image
-                source={{
-                  uri: imageBase64
-                    ? `data:${imageMimeType};base64,${imageBase64}`
-                    : image!,
-                }}
+                source={{ uri: image }}
                 style={styles.previewImg}
                 resizeMode="cover"
               />
@@ -228,7 +224,7 @@ export default function EnviarScreen() {
         </View>
 
         {/* Extract button — hidden while extracting or after any outcome */}
-        {(image || imageBase64) && !extracted && !extractError && (
+        {image && !extracted && !extractError && (
           <TouchableOpacity
             style={[styles.extractBtn, isExtracting && { opacity: 0.7 }]}
             onPress={extractFromPoster}
@@ -514,8 +510,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primaryDark,
   },
   uploadBtnText: { color: Colors.white, fontWeight: '700', fontSize: 14 },
-  previewWrap: { borderRadius: 16, overflow: 'hidden' },
-  previewImg: { width: '100%', height: 200, borderRadius: 16 },
+  previewWrap: { borderRadius: 16, overflow: 'hidden', width: '100%', height: 220 },
+  previewImg: { width: '100%', height: 220 },
   changeImgBtn: { position: 'absolute', bottom: 10, right: 10, backgroundColor: 'rgba(0,0,0,0.6)', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8 },
   changeImgText: { color: Colors.white, fontSize: 12, fontWeight: '700' },
   extractBtn: {

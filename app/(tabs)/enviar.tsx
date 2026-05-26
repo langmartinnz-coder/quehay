@@ -57,6 +57,7 @@ export default function EnviarScreen() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [extractError, setExtractError] = useState<string | null>(null);
 
   function resetAll() {
     setImage(null);
@@ -64,6 +65,7 @@ export default function EnviarScreen() {
     setForm(EMPTY_FORM);
     setExtracted(false);
     setSubmitError(null);
+    setExtractError(null);
   }
 
   async function pickImage(useCamera: boolean) {
@@ -78,6 +80,7 @@ export default function EnviarScreen() {
       setImageBase64(asset.base64 ?? null);
       setImageMimeType(asset.mimeType ?? 'image/jpeg');
       setExtracted(false);
+      setExtractError(null);
       setForm(EMPTY_FORM);
     }
   }
@@ -85,6 +88,7 @@ export default function EnviarScreen() {
   async function extractFromPoster() {
     if (!imageBase64) return;
     setIsExtracting(true);
+    setExtractError(null);
     try {
       const data = await extractPosterData(imageBase64, imageMimeType);
       setForm((prev) => ({
@@ -102,7 +106,7 @@ export default function EnviarScreen() {
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       console.error('[enviar] extractPosterData failed:', msg, err);
-      Alert.alert(t.alertError, msg || t.alertErrorMsg);
+      setExtractError(msg || t.alertErrorMsg);
     } finally {
       setIsExtracting(false);
     }
@@ -202,8 +206,8 @@ export default function EnviarScreen() {
           )}
         </View>
 
-        {/* Extract button */}
-        {image && !extracted && (
+        {/* Extract button — hidden while extracting or after any outcome */}
+        {image && !extracted && !extractError && (
           <TouchableOpacity
             style={[styles.extractBtn, isExtracting && { opacity: 0.7 }]}
             onPress={extractFromPoster}
@@ -215,13 +219,23 @@ export default function EnviarScreen() {
                 <Text style={styles.extractBtnText}>{t.analyzing}</Text>
               </>
             ) : (
-              <>
-                <Text style={styles.extractBtnText}>{t.analyzeBtn}</Text>
-              </>
+              <Text style={styles.extractBtnText}>{t.analyzeBtn}</Text>
             )}
           </TouchableOpacity>
         )}
 
+        {/* Extraction error banner */}
+        {extractError && (
+          <View style={styles.errorBanner}>
+            <Text style={styles.errorBannerTitle}>⚠️ {t.alertError}</Text>
+            <Text style={styles.errorBannerMsg}>{extractError}</Text>
+            <TouchableOpacity style={styles.retryBtnPrimary} onPress={resetAll}>
+              <Text style={styles.retryBtnPrimaryText}>{t.retryPoster}</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {/* Extraction success note */}
         {extracted && (
           <View style={styles.extractedNote}>
             <Text style={[styles.extractedNoteText, { flex: 1 }]}>{t.extractedNote}</Text>
@@ -377,10 +391,11 @@ export default function EnviarScreen() {
           </TouchableOpacity>
 
           {submitError && (
-            <View style={styles.submitErrorBanner}>
-              <Text style={styles.submitErrorText}>{submitError}</Text>
-              <TouchableOpacity onPress={resetAll} style={styles.retryBtn}>
-                <Text style={styles.retryBtnText}>{t.retryPoster}</Text>
+            <View style={styles.errorBanner}>
+              <Text style={styles.errorBannerTitle}>⚠️ {t.alertError}</Text>
+              <Text style={styles.errorBannerMsg}>{submitError}</Text>
+              <TouchableOpacity style={styles.retryBtnPrimary} onPress={resetAll}>
+                <Text style={styles.retryBtnPrimaryText}>{t.retryPoster}</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -498,8 +513,11 @@ const styles = StyleSheet.create({
   extractedNoteText: { fontSize: 13, color: Colors.success, fontWeight: '600' },
   retryBtn: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8, borderWidth: 1, borderColor: Colors.border },
   retryBtnText: { fontSize: 12, fontWeight: '600', color: Colors.textSecondary },
-  submitErrorBanner: { backgroundColor: '#FFF0F0', borderRadius: 10, padding: 12, marginBottom: 12, gap: 8, borderWidth: 1, borderColor: '#FFCCCC' },
-  submitErrorText: { fontSize: 13, color: '#C0392B', lineHeight: 18 },
+  errorBanner: { marginHorizontal: 16, backgroundColor: '#FFF0F0', borderRadius: 12, padding: 16, marginBottom: 12, gap: 10, borderWidth: 1, borderColor: '#FFCCCC' },
+  errorBannerTitle: { fontSize: 14, fontWeight: '700', color: '#C0392B' },
+  errorBannerMsg: { fontSize: 13, color: '#C0392B', lineHeight: 18 },
+  retryBtnPrimary: { backgroundColor: Colors.primary, borderRadius: 10, paddingVertical: 12, alignItems: 'center' as const },
+  retryBtnPrimaryText: { fontSize: 14, fontWeight: '700', color: Colors.white },
   form: { paddingHorizontal: 16 },
   fieldLabel: { fontSize: 13, fontWeight: '600', color: Colors.text, marginBottom: 6, marginTop: 4 },
   row: { flexDirection: 'row', gap: 10 },

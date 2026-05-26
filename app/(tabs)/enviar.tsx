@@ -81,6 +81,7 @@ export default function EnviarScreen() {
 
     if (!result.canceled && result.assets[0]) {
       const asset = result.assets[0];
+      console.log('[enviar] image URI:', asset.uri);
       setImage(asset.uri);
       setImageBase64(asset.base64 ?? null);
       setImageMimeType(asset.mimeType ?? 'image/jpeg');
@@ -221,20 +222,23 @@ export default function EnviarScreen() {
           <Text style={styles.subtitle}>{t.submitSubtitle}</Text>
         </View>
 
-        {/* Image upload */}
-        <View style={styles.uploadSection}>
-          {image ? (
-            <View style={styles.previewWrap}>
-              <Image
-                source={{ uri: image }}
-                style={styles.previewImg}
-                resizeMode="cover"
-              />
-              <TouchableOpacity style={styles.changeImgBtn} onPress={resetAll}>
-                <Text style={styles.changeImgText}>{t.changeImage}</Text>
-              </TouchableOpacity>
-            </View>
-          ) : (
+        {/* Image preview — rendered directly when URI is set */}
+        {image && (
+          <Image
+            source={{ uri: image }}
+            style={{ width: '100%', height: 220 }}
+            resizeMode="cover"
+          />
+        )}
+        {image && (
+          <TouchableOpacity style={styles.changeImgBtn} onPress={resetAll}>
+            <Text style={styles.changeImgText}>{t.changeImage}</Text>
+          </TouchableOpacity>
+        )}
+
+        {/* Upload box — shown when no image selected */}
+        {!image && (
+          <View style={styles.uploadSection}>
             <View style={styles.uploadBox}>
               <Text style={styles.uploadEmoji}>🖼️</Text>
               <Text style={styles.uploadTitle}>{t.uploadTitle}</Text>
@@ -254,8 +258,8 @@ export default function EnviarScreen() {
                 </TouchableOpacity>
               </View>
             </View>
-          )}
-        </View>
+          </View>
+        )}
 
         {/* Extract button — hidden while extracting or after any outcome */}
         {image && !extracted && !extractError && (

@@ -56,6 +56,15 @@ export default function EnviarScreen() {
   const [extracted, setExtracted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  function resetAll() {
+    setImage(null);
+    setImageBase64(null);
+    setForm(EMPTY_FORM);
+    setExtracted(false);
+    setSubmitError(null);
+  }
 
   async function pickImage(useCamera: boolean) {
     const opts = { quality: 0.8 as const, base64: true };
@@ -90,8 +99,10 @@ export default function EnviarScreen() {
         ...(data.price && { price: data.price }),
       }));
       setExtracted(true);
-    } catch {
-      Alert.alert(t.alertError, t.alertErrorMsg);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error('[enviar] extractPosterData failed:', msg, err);
+      Alert.alert(t.alertError, msg || t.alertErrorMsg);
     } finally {
       setIsExtracting(false);
     }
@@ -103,6 +114,7 @@ export default function EnviarScreen() {
       return;
     }
     setSubmitting(true);
+    setSubmitError(null);
     try {
       await submitEvent({
         name: form.name,
@@ -116,8 +128,10 @@ export default function EnviarScreen() {
         price: form.price || undefined,
       }, user?.id);
       setSubmitted(true);
-    } catch {
-      Alert.alert(t.alertError, t.alertErrorMsg);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error('[enviar] submitEvent failed:', msg, err);
+      setSubmitError(msg || t.alertErrorMsg);
     } finally {
       setSubmitting(false);
     }
@@ -161,7 +175,7 @@ export default function EnviarScreen() {
           {image ? (
             <View style={styles.previewWrap}>
               <Image source={{ uri: image }} style={styles.previewImg} resizeMode="cover" />
-              <TouchableOpacity style={styles.changeImgBtn} onPress={() => setImage(null)}>
+              <TouchableOpacity style={styles.changeImgBtn} onPress={resetAll}>
                 <Text style={styles.changeImgText}>{t.changeImage}</Text>
               </TouchableOpacity>
             </View>
@@ -210,7 +224,10 @@ export default function EnviarScreen() {
 
         {extracted && (
           <View style={styles.extractedNote}>
-            <Text style={styles.extractedNoteText}>{t.extractedNote}</Text>
+            <Text style={[styles.extractedNoteText, { flex: 1 }]}>{t.extractedNote}</Text>
+            <TouchableOpacity onPress={resetAll} style={styles.retryBtn}>
+              <Text style={styles.retryBtnText}>{t.retryPoster}</Text>
+            </TouchableOpacity>
           </View>
         )}
 
@@ -359,6 +376,15 @@ export default function EnviarScreen() {
               : <Text style={styles.submitBtnText}>{t.submitBtn}</Text>}
           </TouchableOpacity>
 
+          {submitError && (
+            <View style={styles.submitErrorBanner}>
+              <Text style={styles.submitErrorText}>{submitError}</Text>
+              <TouchableOpacity onPress={resetAll} style={styles.retryBtn}>
+                <Text style={styles.retryBtnText}>{t.retryPoster}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
           <Text style={styles.disclaimer}>{t.submitDisclaimer}</Text>
         </View>
       </ScrollView>
@@ -468,8 +494,12 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   extractBtnText: { color: Colors.white, fontWeight: '700', fontSize: 15 },
-  extractedNote: { marginHorizontal: 16, backgroundColor: '#F0FFF4', borderRadius: 10, padding: 12, marginBottom: 8 },
-  extractedNoteText: { fontSize: 13, color: Colors.success, fontWeight: '600', textAlign: 'center' },
+  extractedNote: { marginHorizontal: 16, backgroundColor: '#F0FFF4', borderRadius: 10, padding: 12, marginBottom: 8, flexDirection: 'row', alignItems: 'center', gap: 8 },
+  extractedNoteText: { fontSize: 13, color: Colors.success, fontWeight: '600' },
+  retryBtn: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8, borderWidth: 1, borderColor: Colors.border },
+  retryBtnText: { fontSize: 12, fontWeight: '600', color: Colors.textSecondary },
+  submitErrorBanner: { backgroundColor: '#FFF0F0', borderRadius: 10, padding: 12, marginBottom: 12, gap: 8, borderWidth: 1, borderColor: '#FFCCCC' },
+  submitErrorText: { fontSize: 13, color: '#C0392B', lineHeight: 18 },
   form: { paddingHorizontal: 16 },
   fieldLabel: { fontSize: 13, fontWeight: '600', color: Colors.text, marginBottom: 6, marginTop: 4 },
   row: { flexDirection: 'row', gap: 10 },

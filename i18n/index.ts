@@ -109,6 +109,7 @@ const es = {
   successTitle: '¡Evento enviado!',
   successSubtitle: 'Tu evento ha sido enviado para revisión. Aparecerá en la app en 24-48 horas.',
   submitAnother: 'Enviar otro evento',
+  retryPoster: 'Otro póster',
 
   // Host — Configure screen
   configHeroTitle: 'Tu alojamiento',
@@ -297,6 +298,7 @@ const en: typeof es = {
   successTitle: 'Event submitted!',
   successSubtitle: 'Your event has been submitted for review. It will appear in the app within 24-48 hours.',
   submitAnother: 'Submit another event',
+  retryPoster: 'Try another poster',
 
   configHeroTitle: 'Your accommodation',
   configHeroSubtitle: 'Configure your property details to receive personalised demand alerts',

@@ -94,6 +94,8 @@ export async function submitEvent(
     region: string;
     category: string;
     description: string;
+    isFree: boolean;
+    price?: string;
   },
   userId?: string,
 ): Promise<void> {
@@ -114,7 +116,8 @@ export async function submitEvent(
     source: 'usuario',
     source_detail: 'Enviado por la comunidad QuéHay',
     tags: [],
-    is_free: true,
+    is_free: form.isFree,
+    price: form.isFree ? null : (form.price || null),
     submitted_by: userId ?? null,
   });
   if (error) throw error;

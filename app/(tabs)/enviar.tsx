@@ -17,6 +17,7 @@ import { CATEGORIES, REGIONS } from '../../constants/categories';
 import { EventCategory } from '../../types';
 import { useApp } from '../../store/AppContext';
 import { submitEvent } from '../../lib/api';
+import { extractPosterData } from '../../lib/extractPoster';
 import { t } from '../../i18n';
 
 interface FormState {
@@ -28,6 +29,8 @@ interface FormState {
   category: EventCategory | '';
   description: string;
   source: string;
+  isFree: boolean;
+  price: string;
 }
 
 const EMPTY_FORM: FormState = {
@@ -39,27 +42,15 @@ const EMPTY_FORM: FormState = {
   category: '',
   description: '',
   source: '',
+  isFree: true,
+  price: '',
 };
-
-function simulateExtraction(): Promise<Partial<FormState>> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        name: 'Fiestas de la Virgen del Carmen',
-        date: '2026-07-16',
-        time: '20:00',
-        town: 'Mora de Rubielos',
-        region: 'teruel',
-        category: 'festival',
-        description: 'Celebración de las fiestas patronales en honor a la Virgen del Carmen con procesión marítima, conciertos y fuegos artificiales.',
-      });
-    }, 2000);
-  });
-}
 
 export default function EnviarScreen() {
   const { user } = useApp();
   const [image, setImage] = useState<string | null>(null);
+  const [imageBase64, setImageBase64] = useState<string | null>(null);
+  const [imageMimeType, setImageMimeType] = useState<string>('image/jpeg');
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [isExtracting, setIsExtracting] = useState(false);
   const [extracted, setExtracted] = useState(false);
@@ -67,23 +58,43 @@ export default function EnviarScreen() {
   const [submitting, setSubmitting] = useState(false);
 
   async function pickImage(useCamera: boolean) {
+    const opts = { quality: 0.8 as const, base64: true };
     const result = useCamera
-      ? await ImagePicker.launchCameraAsync({ quality: 0.8 })
-      : await ImagePicker.launchImageLibraryAsync({ quality: 0.8 });
+      ? await ImagePicker.launchCameraAsync(opts)
+      : await ImagePicker.launchImageLibraryAsync(opts);
 
     if (!result.canceled && result.assets[0]) {
-      setImage(result.assets[0].uri);
+      const asset = result.assets[0];
+      setImage(asset.uri);
+      setImageBase64(asset.base64 ?? null);
+      setImageMimeType(asset.mimeType ?? 'image/jpeg');
       setExtracted(false);
       setForm(EMPTY_FORM);
     }
   }
 
   async function extractFromPoster() {
+    if (!imageBase64) return;
     setIsExtracting(true);
-    const data = await simulateExtraction();
-    setForm((prev) => ({ ...prev, ...data }));
-    setIsExtracting(false);
-    setExtracted(true);
+    try {
+      const data = await extractPosterData(imageBase64, imageMimeType);
+      setForm((prev) => ({
+        ...prev,
+        ...(data.name && { name: data.name }),
+        ...(data.date && { date: data.date }),
+        ...(data.time && { time: data.time }),
+        ...(data.town && { town: data.town }),
+        ...(data.description && { description: data.description }),
+        ...(data.category && { category: data.category }),
+        ...(data.isFree !== undefined && { isFree: data.isFree }),
+        ...(data.price && { price: data.price }),
+      }));
+      setExtracted(true);
+    } catch {
+      Alert.alert(t.alertError, t.alertErrorMsg);
+    } finally {
+      setIsExtracting(false);
+    }
   }
 
   async function handleSubmit() {
@@ -101,6 +112,8 @@ export default function EnviarScreen() {
         region: form.region,
         category: form.category,
         description: form.description,
+        isFree: form.isFree,
+        price: form.price || undefined,
       }, user?.id);
       setSubmitted(true);
     } catch {
@@ -122,6 +135,7 @@ export default function EnviarScreen() {
             onPress={() => {
               setSubmitted(false);
               setImage(null);
+              setImageBase64(null);
               setForm(EMPTY_FORM);
               setExtracted(false);
             }}
@@ -296,6 +310,38 @@ export default function EnviarScreen() {
             multiline
             highlighted={extracted && !!form.description}
           />
+
+          {/* Free / paid toggle */}
+          <Text style={styles.fieldLabel}>{t.fieldIsFree}</Text>
+          <View style={[styles.pickerRow, { marginBottom: 14 }]}>
+            <TouchableOpacity
+              style={[styles.pickerChip, form.isFree && styles.pickerChipActive]}
+              onPress={() => setForm((p) => ({ ...p, isFree: true, price: '' }))}
+            >
+              <Text style={styles.pickerChipEmoji}>🎟️</Text>
+              <Text style={[styles.pickerChipText, form.isFree && styles.pickerChipTextActive]}>
+                {t.fieldIsFreeYes}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.pickerChip, !form.isFree && styles.pickerChipActive]}
+              onPress={() => setForm((p) => ({ ...p, isFree: false }))}
+            >
+              <Text style={styles.pickerChipEmoji}>💶</Text>
+              <Text style={[styles.pickerChipText, !form.isFree && styles.pickerChipTextActive]}>
+                {t.fieldIsFreeNo}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {!form.isFree && (
+            <FormField
+              label={t.fieldPrice}
+              value={form.price}
+              onChangeText={(v) => setForm((p) => ({ ...p, price: v }))}
+              placeholder="10€"
+              highlighted={extracted && !!form.price}
+            />
+          )}
 
           {/* Source info */}
           <View style={styles.sourceInfo}>

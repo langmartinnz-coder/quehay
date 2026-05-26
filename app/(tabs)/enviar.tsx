@@ -69,7 +69,11 @@ export default function EnviarScreen() {
   }
 
   async function pickImage(useCamera: boolean) {
-    const opts = { quality: 0.8 as const, base64: true };
+    const opts = {
+      quality: 0.8 as const,
+      base64: true,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    };
     const result = useCamera
       ? await ImagePicker.launchCameraAsync(opts)
       : await ImagePicker.launchImageLibraryAsync(opts);
@@ -113,8 +117,17 @@ export default function EnviarScreen() {
   }
 
   async function handleSubmit() {
-    if (!form.name || !form.date || !form.town || !form.region || !form.category) {
-      Alert.alert(t.alertMissingData, t.alertMissingDataMsg);
+    const missing: string[] = [];
+    if (!form.name.trim()) missing.push('nombre');
+    if (!form.date.trim()) missing.push('fecha');
+    if (!form.town.trim()) missing.push('municipio');
+    if (!form.region) missing.push('región');
+    if (!form.category) missing.push('categoría');
+
+    if (missing.length > 0) {
+      console.warn('[enviar] Submit blocked — empty fields:', missing);
+      console.warn('[enviar] Full form state:', JSON.stringify(form));
+      Alert.alert(t.alertMissingData, `${t.alertMissingDataMsg}\n\nFaltan: ${missing.join(', ')}`);
       return;
     }
     setSubmitting(true);
@@ -176,9 +189,17 @@ export default function EnviarScreen() {
 
         {/* Image upload */}
         <View style={styles.uploadSection}>
-          {image ? (
+          {(image || imageBase64) ? (
             <View style={styles.previewWrap}>
-              <Image source={{ uri: image }} style={styles.previewImg} resizeMode="cover" />
+              <Image
+                source={{
+                  uri: imageBase64
+                    ? `data:${imageMimeType};base64,${imageBase64}`
+                    : image!,
+                }}
+                style={styles.previewImg}
+                resizeMode="cover"
+              />
               <TouchableOpacity style={styles.changeImgBtn} onPress={resetAll}>
                 <Text style={styles.changeImgText}>{t.changeImage}</Text>
               </TouchableOpacity>
@@ -207,7 +228,7 @@ export default function EnviarScreen() {
         </View>
 
         {/* Extract button — hidden while extracting or after any outcome */}
-        {image && !extracted && !extractError && (
+        {(image || imageBase64) && !extracted && !extractError && (
           <TouchableOpacity
             style={[styles.extractBtn, isExtracting && { opacity: 0.7 }]}
             onPress={extractFromPoster}

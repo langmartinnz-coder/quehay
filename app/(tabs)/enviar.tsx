@@ -18,6 +18,7 @@ import { EventCategory } from '../../types';
 import { useApp } from '../../store/AppContext';
 import { submitEvent } from '../../lib/api';
 import { extractPosterData } from '../../lib/extractPoster';
+import { supabase } from '../../lib/supabase';
 import { t } from '../../i18n';
 
 interface FormState {
@@ -116,6 +117,37 @@ export default function EnviarScreen() {
     }
   }
 
+  async function uploadPosterImage(): Promise<string | null> {
+    if (!imageBase64) return null;
+    try {
+      const ext = imageMimeType.includes('png') ? 'png' : 'jpg';
+      const path = `posters/usr_${Date.now()}.${ext}`;
+
+      const raw = atob(imageBase64);
+      const bytes = new Uint8Array(raw.length);
+      for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+
+      const { error } = await supabase.storage
+        .from('event-posters')
+        .upload(path, bytes, { contentType: imageMimeType, upsert: false });
+
+      if (error) {
+        console.warn('[enviar] Storage upload failed:', error.message);
+        return null;
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('event-posters')
+        .getPublicUrl(path);
+
+      console.log('[enviar] Poster uploaded:', publicUrl);
+      return publicUrl;
+    } catch (err) {
+      console.warn('[enviar] Storage upload error:', err);
+      return null;
+    }
+  }
+
   async function handleSubmit() {
     const missing: string[] = [];
     if (!form.name.trim()) missing.push('nombre');
@@ -133,6 +165,7 @@ export default function EnviarScreen() {
     setSubmitting(true);
     setSubmitError(null);
     try {
+      const imageUrl = await uploadPosterImage();
       await submitEvent({
         name: form.name,
         dateStart: form.date,
@@ -143,6 +176,7 @@ export default function EnviarScreen() {
         description: form.description,
         isFree: form.isFree,
         price: form.price || undefined,
+        imageUrl: imageUrl ?? undefined,
       }, user?.id);
       setSubmitted(true);
     } catch (err) {

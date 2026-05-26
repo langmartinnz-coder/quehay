@@ -96,6 +96,7 @@ export async function submitEvent(
     description: string;
     isFree: boolean;
     price?: string;
+    imageUrl?: string;
   },
   userId?: string,
 ): Promise<void> {
@@ -112,7 +113,7 @@ export async function submitEvent(
     category: form.category || 'comunidad',
     size: 'pequeño',
     description: form.description || '',
-    image_url: 'https://picsum.photos/seed/usuario/800/450',
+    image_url: form.imageUrl ?? 'https://picsum.photos/seed/usuario/800/450',
     source: 'usuario',
     source_detail: 'Enviado por la comunidad QuéHay',
     tags: [],

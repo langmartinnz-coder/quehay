@@ -119,34 +119,28 @@ export default function EnviarScreen() {
   }
 
   async function uploadPosterImage(): Promise<string | null> {
-    if (!imageBase64) return null;
-    try {
-      const ext = imageMimeType.includes('png') ? 'png' : 'jpg';
-      const path = `posters/usr_${Date.now()}.${ext}`;
+    if (!image) return null;
+    const ext = imageMimeType.includes('png') ? 'png' : 'jpg';
+    const path = `posters/usr_${Date.now()}.${ext}`;
 
-      const raw = atob(imageBase64);
-      const bytes = new Uint8Array(raw.length);
-      for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+    const response = await fetch(image);
+    const blob = await response.blob();
 
-      const { error } = await supabase.storage
-        .from('event-posters')
-        .upload(path, bytes, { contentType: imageMimeType, upsert: false });
+    const { error } = await supabase.storage
+      .from('event-posters')
+      .upload(path, blob, { contentType: imageMimeType, upsert: false });
 
-      if (error) {
-        console.warn('[enviar] Storage upload failed:', error.message);
-        return null;
-      }
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('event-posters')
-        .getPublicUrl(path);
-
-      console.log('[enviar] Poster uploaded:', publicUrl);
-      return publicUrl;
-    } catch (err) {
-      console.warn('[enviar] Storage upload error:', err);
-      return null;
+    if (error) {
+      console.error('[enviar] Storage upload failed:', error.message);
+      throw new Error(`No se pudo subir la imagen: ${error.message}`);
     }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('event-posters')
+      .getPublicUrl(path);
+
+    console.log('[enviar] Poster uploaded:', publicUrl);
+    return publicUrl;
   }
 
   async function handleSubmit() {

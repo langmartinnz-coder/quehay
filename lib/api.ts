@@ -50,6 +50,7 @@ export async function fetchAllEvents(): Promise<Event[]> {
   const { data, error } = await supabase
     .from('events')
     .select('*')
+    .eq('is_verified', true)
     .order('date_start', { ascending: true });
   if (error) throw error;
   return (data as DbEvent[]).map(rowToEvent);
@@ -119,6 +120,7 @@ export async function submitEvent(
     tags: [],
     is_free: form.isFree,
     price: form.isFree ? null : (form.price || null),
+    is_verified: false,
     submitted_by: userId ?? null,
   });
   if (error) throw error;

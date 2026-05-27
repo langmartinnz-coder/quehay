@@ -21,28 +21,7 @@ export default function RootLayout() {
               headerTintColor: '#fff',
             }}
           />
-          <Stack.Screen
-            name="host/index"
-            options={{
-              headerShown: true,
-              headerTitle: t.navHostPanel,
-              headerBackTitle: t.back,
-              headerStyle: { backgroundColor: '#C4622D' },
-              headerTintColor: '#fff',
-              headerTitleStyle: { fontWeight: '700' },
-            }}
-          />
-          <Stack.Screen
-            name="host/configurar"
-            options={{
-              headerShown: true,
-              headerTitle: t.navConfigureProperty,
-              headerBackTitle: t.back,
-              headerStyle: { backgroundColor: '#C4622D' },
-              headerTintColor: '#fff',
-              headerTitleStyle: { fontWeight: '700' },
-            }}
-          />
+
         </Stack>
       </AppProvider>
     </SafeAreaProvider>

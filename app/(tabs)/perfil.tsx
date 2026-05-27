@@ -12,12 +12,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useApp } from '../../store/AppContext';
 import { Colors } from '../../constants/colors';
-import ModeSwitch from '../../components/ModeSwitch';
 import EventCard from '../../components/EventCard';
 import { t } from '../../i18n';
 
 export default function PerfilScreen() {
-  const { mode, setMode, favorites, isFavorite, toggleFavorite, events, user, authLoading, signIn, signUp, signOut } = useApp();
+  const { favorites, isFavorite, toggleFavorite, events, user, authLoading, signIn, signUp, signOut } = useApp();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -121,34 +120,6 @@ export default function PerfilScreen() {
             </View>
           )}
         </View>
-
-        {/* Mode switch */}
-        <View style={styles.section}>
-          <Text style={styles.sectionLabel}>{t.modeLabel}</Text>
-          <View style={styles.modeSwitchWrap}>
-            <ModeSwitch mode={mode} onChange={setMode} />
-          </View>
-          <Text style={styles.modeDesc}>
-            {mode === 'viajero' ? t.modeTravelerDesc : t.modeHostDesc}
-          </Text>
-        </View>
-
-        {/* Host panel link */}
-        {mode === 'anfitrion' && (
-          <TouchableOpacity
-            style={styles.hostCard}
-            onPress={() => router.push('/host')}
-          >
-            <View style={styles.hostCardLeft}>
-              <Text style={styles.hostCardEmoji}>🏠</Text>
-              <View>
-                <Text style={styles.hostCardTitle}>{t.hostPanelCardTitle}</Text>
-                <Text style={styles.hostCardSub}>{t.hostPanelCardSub}</Text>
-              </View>
-            </View>
-            <Text style={styles.hostCardArrow}>›</Text>
-          </TouchableOpacity>
-        )}
 
         {/* Saved events */}
         <View style={styles.section}>
@@ -269,39 +240,6 @@ const styles = StyleSheet.create({
   authBtnPrimaryText: { color: Colors.white, fontWeight: '700', fontSize: 14 },
   authBtnSecondary: { backgroundColor: Colors.surfaceVariant, borderWidth: 1, borderColor: Colors.border },
   authBtnSecondaryText: { color: Colors.text, fontWeight: '700', fontSize: 14 },
-  modeSwitchWrap: { marginBottom: 10 },
-  modeDesc: {
-    fontSize: 13,
-    color: Colors.textSecondary,
-    lineHeight: 18,
-    backgroundColor: Colors.surface,
-    borderRadius: 12,
-    padding: 12,
-    borderWidth: 1,
-    borderColor: Colors.border,
-  },
-  hostCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#FEF0E8',
-    borderRadius: 16,
-    padding: 16,
-    marginHorizontal: 16,
-    marginBottom: 20,
-    borderLeftWidth: 4,
-    borderLeftColor: Colors.primary,
-    shadowColor: '#2C1810',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 2,
-  },
-  hostCardLeft: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  hostCardEmoji: { fontSize: 32 },
-  hostCardTitle: { fontSize: 16, fontWeight: '700', color: Colors.text },
-  hostCardSub: { fontSize: 12, color: Colors.textSecondary, marginTop: 2 },
-  hostCardArrow: { fontSize: 24, color: Colors.primary },
   emptyFav: {
     alignItems: 'center',
     paddingVertical: 30,

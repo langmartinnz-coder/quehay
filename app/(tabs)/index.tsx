@@ -19,7 +19,7 @@ import { Colors } from '../../constants/colors';
 import { t } from '../../i18n';
 
 export default function HomeScreen() {
-  const { mode, filters, setFilters, isFavorite, toggleFavorite, filteredEvents, eventsLoading } = useApp();
+  const { filters, setFilters, isFavorite, toggleFavorite, filteredEvents, eventsLoading } = useApp();
 
   const events = filteredEvents;
 
@@ -39,24 +39,12 @@ export default function HomeScreen() {
           </Text>
           <Text style={styles.subtitle}>{t.tagline}</Text>
         </View>
-        <View style={styles.headerRight}>
-          {mode === 'anfitrion' && (
-            <TouchableOpacity
-              style={styles.hostBadge}
-              onPress={() => router.push('/host')}
-            >
-              <Text style={styles.hostBadgeText}>{t.hostPanelBadge}</Text>
-            </TouchableOpacity>
-          )}
-          {mode === 'viajero' && (
-            <TouchableOpacity
-              style={styles.mapBtn}
-              onPress={() => router.push('/mapa')}
-            >
-              <Text style={styles.mapBtnText}>🗺️</Text>
-            </TouchableOpacity>
-          )}
-        </View>
+        <TouchableOpacity
+          style={styles.mapBtn}
+          onPress={() => router.push('/mapa')}
+        >
+          <Text style={styles.mapBtnText}>🗺️</Text>
+        </TouchableOpacity>
       </View>
 
       <FlatList
@@ -133,22 +121,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.textSecondary,
     marginTop: -2,
-  },
-  headerRight: {
-    flexDirection: 'row',
-    gap: 8,
-    alignItems: 'center',
-  },
-  hostBadge: {
-    backgroundColor: Colors.primary,
-    paddingHorizontal: 14,
-    paddingVertical: 7,
-    borderRadius: 12,
-  },
-  hostBadgeText: {
-    color: Colors.white,
-    fontSize: 12,
-    fontWeight: '700',
   },
   mapBtn: {
     backgroundColor: Colors.surfaceVariant,

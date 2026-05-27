@@ -17,7 +17,6 @@ export type EventSource =
   | 'milanuncios'
   | 'usuario';
 
-export type AppMode = 'viajero' | 'anfitrion';
 export type Region = 'teruel' | 'cataluña' | 'todas';
 export type DateFilter = 'hoy' | 'semana' | 'mes' | 'todas';
 
@@ -45,13 +44,6 @@ export interface Event {
   tags: string[];
   isFree: boolean;
   price?: string;
-}
-
-export interface HostProperty {
-  name: string;
-  town: string;
-  coordinates: EventCoords;
-  radiusKm: number;
 }
 
 export interface AppFilters {

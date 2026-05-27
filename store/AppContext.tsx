@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, useEffect, useMemo } from 'react';
 import { Session, User } from '@supabase/supabase-js';
-import { AppMode, AppFilters, HostProperty, Event } from '../types';
+import { AppFilters, Event } from '../types';
 import { supabase } from '../lib/supabase';
 import * as api from '../lib/api';
 
@@ -15,16 +15,12 @@ interface AppContextType {
   eventsLoading: boolean;
   filteredEvents: Event[];
   refreshEvents: () => Promise<void>;
-  mode: AppMode;
-  setMode: (mode: AppMode) => void;
   filters: AppFilters;
   setFilters: (partial: Partial<AppFilters>) => void;
   resetFilters: () => void;
   favorites: string[];
   toggleFavorite: (eventId: string) => void;
   isFavorite: (eventId: string) => boolean;
-  hostProperty: HostProperty | null;
-  setHostProperty: (property: HostProperty) => void;
 }
 
 const DEFAULT_FILTERS: AppFilters = {
@@ -34,13 +30,6 @@ const DEFAULT_FILTERS: AppFilters = {
   searchQuery: '',
 };
 
-const DEFAULT_HOST: HostProperty = {
-  name: 'Casa Rural El Olmo',
-  town: 'Mora de Rubielos',
-  coordinates: { latitude: 40.252, longitude: -0.7476 },
-  radiusKm: 50,
-};
-
 const AppContext = createContext<AppContextType>({} as AppContextType);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
@@ -48,10 +37,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [authLoading, setAuthLoading] = useState(true);
   const [events, setEvents] = useState<Event[]>([]);
   const [eventsLoading, setEventsLoading] = useState(true);
-  const [mode, setMode] = useState<AppMode>('viajero');
   const [filters, setFiltersState] = useState<AppFilters>(DEFAULT_FILTERS);
   const [favorites, setFavorites] = useState<string[]>([]);
-  const [hostProperty, setHostProperty] = useState<HostProperty | null>(DEFAULT_HOST);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -150,16 +137,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         eventsLoading,
         filteredEvents,
         refreshEvents,
-        mode,
-        setMode,
         filters,
         setFilters,
         resetFilters,
         favorites,
         toggleFavorite,
         isFavorite,
-        hostProperty,
-        setHostProperty,
       }}
     >
       {children}

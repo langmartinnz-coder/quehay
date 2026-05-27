@@ -19,7 +19,9 @@
       "Bash(python3 -m pip list)",
       "Bash(npm list *)",
       "Bash(rm scripts/generate-icons.js scripts/icon.svg)",
-      "Bash(npm uninstall *)"
+      "Bash(npm uninstall *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\langm\\\\Desktop\\\\ProjectSunrise\" -Recurse -Directory)",
+      "Bash(Select-Object FullName)"
     ]
   }
 }

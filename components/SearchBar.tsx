@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Colors } from '../constants/colors';
-import { t } from '../i18n';
+import { useLanguage } from '../store/LanguageContext';
 
 interface SearchBarProps {
   value: string;
@@ -14,6 +14,7 @@ export default function SearchBar({
   onChange,
   placeholder,
 }: SearchBarProps) {
+  const { t } = useLanguage();
   return (
     <View style={styles.container}>
       <Text style={styles.icon}>🔍</Text>

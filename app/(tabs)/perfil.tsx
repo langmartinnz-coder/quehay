@@ -13,9 +13,10 @@ import { router } from 'expo-router';
 import { useApp } from '../../store/AppContext';
 import { Colors } from '../../constants/colors';
 import EventCard from '../../components/EventCard';
-import { t } from '../../i18n';
+import { useLanguage } from '../../store/LanguageContext';
 
 export default function PerfilScreen() {
+  const { t, language, setLanguage } = useLanguage();
   const { favorites, isFavorite, toggleFavorite, events, user, authLoading, signIn, signUp, signOut } = useApp();
 
   const [email, setEmail] = useState('');
@@ -162,6 +163,32 @@ export default function PerfilScreen() {
           </View>
         </View>
 
+        {/* Language settings */}
+        <View style={styles.section}>
+          <Text style={styles.sectionLabel}>{t.settingsLabel}</Text>
+          <View style={styles.langCard}>
+            <Text style={styles.langCardLabel}>🌐 {t.languageLabel}</Text>
+            <View style={styles.langToggle}>
+              <TouchableOpacity
+                style={[styles.langBtn, language === 'es' && styles.langBtnActive]}
+                onPress={() => setLanguage('es')}
+              >
+                <Text style={[styles.langBtnText, language === 'es' && styles.langBtnTextActive]}>
+                  🇪🇸 ES
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.langBtn, language === 'en' && styles.langBtnActive]}
+                onPress={() => setLanguage('en')}
+              >
+                <Text style={[styles.langBtnText, language === 'en' && styles.langBtnTextActive]}>
+                  🇬🇧 EN
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+
         <Text style={styles.version}>{t.appVersion}</Text>
       </ScrollView>
     </SafeAreaView>
@@ -272,5 +299,49 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: Colors.textLight,
     paddingBottom: 20,
+  },
+  langCard: {
+    backgroundColor: Colors.surface,
+    borderRadius: 16,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: Colors.border,
+    shadowColor: '#2C1810',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 2,
+  },
+  langCardLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: Colors.text,
+  },
+  langToggle: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  langBtn: {
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 10,
+    borderWidth: 1.5,
+    borderColor: Colors.border,
+    backgroundColor: Colors.background,
+  },
+  langBtnActive: {
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
+  },
+  langBtnText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: Colors.textSecondary,
+  },
+  langBtnTextActive: {
+    color: Colors.white,
   },
 });

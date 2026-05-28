@@ -16,11 +16,12 @@ import { formatDateRange } from '../../data/mockData';
 import { Colors } from '../../constants/colors';
 import { CATEGORIES, SOURCE_LABELS, SIZE_CONFIG } from '../../constants/categories';
 import { useApp } from '../../store/AppContext';
-import { t } from '../../i18n';
+import { useLanguage } from '../../store/LanguageContext';
 
 const { width } = Dimensions.get('window');
 
 export default function EventoDetailScreen() {
+  const { t } = useLanguage();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { isFavorite, toggleFavorite, events, eventsLoading } = useApp();
   const event = events.find((e) => e.id === (id ?? ''));

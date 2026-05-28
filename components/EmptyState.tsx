@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Colors } from '../constants/colors';
-import { t } from '../i18n';
+import { useLanguage } from '../store/LanguageContext';
 
 interface EmptyStateProps {
   emoji?: string;
@@ -14,6 +14,7 @@ export default function EmptyState({
   title,
   subtitle,
 }: EmptyStateProps) {
+  const { t } = useLanguage();
   return (
     <View style={styles.container}>
       <Text style={styles.emoji}>{emoji}</Text>

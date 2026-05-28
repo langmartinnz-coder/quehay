@@ -11,7 +11,7 @@ import { Event } from '../types';
 import { Colors } from '../constants/colors';
 import { CATEGORIES, SOURCE_LABELS, SIZE_CONFIG } from '../constants/categories';
 import { formatDateRange } from '../data/mockData';
-import { t } from '../i18n';
+import { useLanguage } from '../store/LanguageContext';
 
 interface EventCardProps {
   event: Event;
@@ -28,6 +28,7 @@ export default function EventCard({
   onPress,
   showSize = false,
 }: EventCardProps) {
+  const { t } = useLanguage();
   const category = CATEGORIES.find((c) => c.id === event.category);
   const source = SOURCE_LABELS[event.source];
   const size = SIZE_CONFIG[event.size];

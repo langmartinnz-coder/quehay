@@ -1,5 +1,5 @@
 import { EventCategory, Region, DateFilter } from '../types';
-import { t } from '../i18n';
+import { getCurrentT } from '../i18n';
 
 export interface CategoryConfig {
   id: EventCategory | 'all';
@@ -9,42 +9,42 @@ export interface CategoryConfig {
 }
 
 export const CATEGORIES: CategoryConfig[] = [
-  { id: 'all', label: t.catAll, emoji: '✨', color: '#6B7280' },
-  { id: 'festival', label: t.catFestival, emoji: '🎉', color: '#C0392B' },
-  { id: 'fiesta', label: t.catFiesta, emoji: '🔥', color: '#E67E22' },
-  { id: 'mercado', label: t.catMercado, emoji: '🛒', color: '#16A085' },
-  { id: 'concierto', label: t.catConcierto, emoji: '🎵', color: '#8E44AD' },
-  { id: 'gastronomia', label: t.catGastronomia, emoji: '🍷', color: '#D35400' },
-  { id: 'deportes', label: t.catDeportes, emoji: '⚽', color: '#2980B9' },
-  { id: 'comunidad', label: t.catComunidad, emoji: '🤝', color: '#27AE60' },
+  { id: 'all', get label() { return getCurrentT().catAll; }, emoji: '✨', color: '#6B7280' },
+  { id: 'festival', get label() { return getCurrentT().catFestival; }, emoji: '🎉', color: '#C0392B' },
+  { id: 'fiesta', get label() { return getCurrentT().catFiesta; }, emoji: '🔥', color: '#E67E22' },
+  { id: 'mercado', get label() { return getCurrentT().catMercado; }, emoji: '🛒', color: '#16A085' },
+  { id: 'concierto', get label() { return getCurrentT().catConcierto; }, emoji: '🎵', color: '#8E44AD' },
+  { id: 'gastronomia', get label() { return getCurrentT().catGastronomia; }, emoji: '🍷', color: '#D35400' },
+  { id: 'deportes', get label() { return getCurrentT().catDeportes; }, emoji: '⚽', color: '#2980B9' },
+  { id: 'comunidad', get label() { return getCurrentT().catComunidad; }, emoji: '🤝', color: '#27AE60' },
 ];
 
 export const DATE_FILTERS: { id: DateFilter; label: string }[] = [
-  { id: 'todas', label: t.dfAll },
-  { id: 'hoy', label: t.dfToday },
-  { id: 'semana', label: t.dfWeek },
-  { id: 'mes', label: t.dfMonth },
+  { id: 'todas', get label() { return getCurrentT().dfAll; } },
+  { id: 'hoy', get label() { return getCurrentT().dfToday; } },
+  { id: 'semana', get label() { return getCurrentT().dfWeek; } },
+  { id: 'mes', get label() { return getCurrentT().dfMonth; } },
 ];
 
 export const REGIONS: { id: Region; label: string; flag: string }[] = [
-  { id: 'todas', label: t.rAll, flag: '🇪🇸' },
-  { id: 'teruel', label: t.rTeruel, flag: '🏔️' },
-  { id: 'cataluña', label: t.rCatalunya, flag: '🌊' },
+  { id: 'todas', get label() { return getCurrentT().rAll; }, flag: '🇪🇸' },
+  { id: 'teruel', get label() { return getCurrentT().rTeruel; }, flag: '🏔️' },
+  { id: 'cataluña', get label() { return getCurrentT().rCatalunya; }, flag: '🌊' },
 ];
 
 export const SOURCE_LABELS: Record<string, { label: string; emoji: string; color: string }> = {
-  ayuntamiento: { label: 'Ayuntamiento', emoji: '🏛️', color: '#2980B9' },
+  ayuntamiento: { get label() { return getCurrentT().srcTownHall; }, emoji: '🏛️', color: '#2980B9' },
   facebook: { label: 'Facebook', emoji: '📘', color: '#1877F2' },
   instagram: { label: 'Instagram', emoji: '📷', color: '#E1306C' },
   whatsapp: { label: 'WhatsApp', emoji: '💬', color: '#25D366' },
   milanuncios: { label: 'Milanuncios', emoji: '📋', color: '#FF6B00' },
-  usuario: { label: 'Comunidad', emoji: '👤', color: '#8E44AD' },
+  usuario: { get label() { return getCurrentT().srcCommunity; }, emoji: '👤', color: '#8E44AD' },
 };
 
 export const SIZE_CONFIG: Record<string, { label: string; color: string; dot: string }> = {
-  grande: { label: t.sizeBig, color: '#E74C3C', dot: '🔴' },
-  mediano: { label: t.sizeMedium, color: '#F39C12', dot: '🟡' },
-  pequeño: { label: t.sizeSmall, color: '#27AE60', dot: '🟢' },
+  grande: { get label() { return getCurrentT().sizeBig; }, color: '#E74C3C', dot: '🔴' },
+  mediano: { get label() { return getCurrentT().sizeMedium; }, color: '#F39C12', dot: '🟡' },
+  pequeño: { get label() { return getCurrentT().sizeSmall; }, color: '#27AE60', dot: '🟢' },
 };
 
 export const RADIUS_OPTIONS = [

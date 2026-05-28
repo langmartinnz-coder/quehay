@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { CATEGORIES } from '../constants/categories';
+import { useLanguage } from '../store/LanguageContext';
 import { Colors } from '../constants/colors';
 import { EventCategory } from '../types';
 
@@ -10,6 +11,7 @@ interface CategoryPillsProps {
 }
 
 export default function CategoryPills({ selected, onChange }: CategoryPillsProps) {
+  useLanguage(); // consume context so re-renders on language change
   return (
     <ScrollView
       horizontal

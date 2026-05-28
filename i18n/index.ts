@@ -1,7 +1,7 @@
 import { getLocales } from 'expo-localization';
 
-const lang = getLocales()[0]?.languageCode ?? 'es';
-export const locale: 'en' | 'es' = lang === 'en' ? 'en' : 'es';
+const deviceLang: 'en' | 'es' =
+  getLocales()[0]?.languageCode === 'en' ? 'en' : 'es';
 
 const es = {
   // Navigation / headers
@@ -64,6 +64,8 @@ const es = {
   infoSources: 'Eventos de WhatsApp, Facebook, Instagram, Milanuncios y Ayuntamientos',
   infoShare: 'Comparte eventos de tu pueblo en la pestaña ➕',
   appVersion: 'QuéHay v1.0 · Hecho con ❤️ para el turismo rural',
+  settingsLabel: 'Ajustes',
+  languageLabel: 'Idioma',
 
   // Submit screen
   submitTitle: 'Comparte un evento',
@@ -136,27 +138,32 @@ const es = {
   sizeBig: 'Gran evento',
   sizeMedium: 'Evento mediano',
   sizeSmall: 'Evento local',
+
+  // Source labels
+  srcTownHall: 'Ayuntamiento',
+  srcCommunity: 'Comunidad',
+
+  // Language picker
+  langPickerTitle: '¿En qué idioma quieres la app?',
+  langEs: 'Español',
+  langEn: 'English',
 };
 
 const en: typeof es = {
   back: 'Back',
-
   tabHome: 'Home',
   tabMap: 'Map',
   tabSubmit: 'Submit',
   tabProfile: 'Profile',
-
   tagline: 'Local events in Spain',
   eventSingular: 'event',
   eventPlural: 'events',
   clearFilters: 'Clear filters',
-
   mapRegionAll: '🇪🇸 All',
   mapRegionTeruel: '🏔️ Teruel',
   mapRegionCatalunya: '🌊 Catalunya',
   eventsCount: (n: number) => `${n} event${n !== 1 ? 's' : ''}`,
   viewDetails: 'View details →',
-
   eventNotFound: 'Event not found',
   backLink: '← Back',
   infoDate: 'Date',
@@ -173,7 +180,6 @@ const en: typeof es = {
   saveFavorite: '🤍 Save to favourites',
   savedFavorite: '❤️ Saved to favourites',
   shareVia: 'Via QuéHay – Local events',
-
   profileTitle: 'My profile',
   accountConnected: 'Account connected',
   syncBadge: '✓ Sync',
@@ -193,7 +199,8 @@ const en: typeof es = {
   infoSources: 'Events from WhatsApp, Facebook, Instagram, Milanuncios and Town Halls',
   infoShare: 'Share events from your town in the ➕ tab',
   appVersion: 'QuéHay v1.0 · Made with ❤️ for rural tourism',
-
+  settingsLabel: 'Settings',
+  languageLabel: 'Language',
   submitTitle: 'Share an event',
   submitSubtitle: 'Upload the poster and we extract the details automatically',
   uploadTitle: 'Upload the event poster',
@@ -230,14 +237,12 @@ const en: typeof es = {
   successSubtitle: 'Your event has been submitted for review. It will appear in the app within 24-48 hours.',
   submitAnother: 'Submit another event',
   retryPoster: 'Try another poster',
-
   searchPlaceholder: 'Search events, towns...',
   emptyStateTitle: 'No events',
   emptyStateSubtitle: 'Try changing the filters or search in another area.',
   freeBadge: 'FREE',
   regionTeruel: 'Teruel',
   regionCatalunya: 'Catalunya',
-
   catAll: 'All',
   catFestival: 'Festivals',
   catFiesta: 'Fiestas',
@@ -246,19 +251,39 @@ const en: typeof es = {
   catGastronomia: 'Food & Drink',
   catDeportes: 'Sports',
   catComunidad: 'Community',
-
   dfAll: 'All',
   dfToday: 'Today',
   dfWeek: 'This week',
   dfMonth: 'This month',
-
   rAll: 'All Spain',
   rTeruel: 'Teruel',
   rCatalunya: 'Catalunya',
-
   sizeBig: 'Major event',
   sizeMedium: 'Medium event',
   sizeSmall: 'Local event',
+  srcTownHall: 'Town Hall',
+  srcCommunity: 'Community',
+  langPickerTitle: 'What language do you want?',
+  langEs: 'Español',
+  langEn: 'English',
 };
 
-export const t = lang === 'en' ? en : es;
+export type Translations = typeof es;
+
+const translationMap: Record<'en' | 'es', Translations> = { es, en };
+
+let _currentT: Translations = translationMap[deviceLang];
+
+export function getCurrentT(): Translations {
+  return _currentT;
+}
+
+export function setCurrentT(lang: 'en' | 'es'): void {
+  _currentT = translationMap[lang];
+}
+
+export function getDefaultLang(): 'en' | 'es' {
+  return deviceLang;
+}
+
+export { es, en };

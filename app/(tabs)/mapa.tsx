@@ -14,7 +14,7 @@ import { Colors } from '../../constants/colors';
 import { CATEGORIES } from '../../constants/categories';
 import { Event } from '../../types';
 import { useApp } from '../../store/AppContext';
-import { t } from '../../i18n';
+import { useLanguage } from '../../store/LanguageContext';
 
 const { height } = Dimensions.get('window');
 
@@ -26,6 +26,7 @@ const SPAIN_REGION = {
 };
 
 export default function MapaScreen() {
+  const { t } = useLanguage();
   const { filters, events } = useApp();
   const mapRef = useRef<MapView>(null);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);

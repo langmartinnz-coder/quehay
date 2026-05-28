@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { DATE_FILTERS, REGIONS } from '../constants/categories';
+import { useLanguage } from '../store/LanguageContext';
 import { Colors } from '../constants/colors';
 import { AppFilters, DateFilter, Region } from '../types';
 
@@ -10,6 +11,7 @@ interface FilterBarProps {
 }
 
 export default function FilterBar({ filters, onFilterChange }: FilterBarProps) {
+  useLanguage(); // consume context so re-renders on language change
   return (
     <ScrollView
       horizontal

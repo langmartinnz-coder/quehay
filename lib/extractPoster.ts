@@ -21,7 +21,7 @@ export async function extractPosterData(
   });
 
   if (error) throw new Error(error.message);
-  if (!data) throw new Error('No se recibió respuesta del servidor');
+  if (!data) throw new Error('No response received from server');
 
   return data;
 }

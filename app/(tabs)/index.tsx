@@ -16,9 +16,10 @@ import CategoryPills from '../../components/CategoryPills';
 import FilterBar from '../../components/FilterBar';
 import EmptyState from '../../components/EmptyState';
 import { Colors } from '../../constants/colors';
-import { t } from '../../i18n';
+import { useLanguage } from '../../store/LanguageContext';
 
 export default function HomeScreen() {
+  const { t } = useLanguage();
   const { filters, setFilters, isFavorite, toggleFavorite, filteredEvents, eventsLoading } = useApp();
 
   const events = filteredEvents;

@@ -19,7 +19,7 @@ import { useApp } from '../../store/AppContext';
 import { submitEvent } from '../../lib/api';
 import { extractPosterData } from '../../lib/extractPoster';
 import { supabase } from '../../lib/supabase';
-import { t } from '../../i18n';
+import { useLanguage } from '../../store/LanguageContext';
 
 interface FormState {
   name: string;
@@ -48,6 +48,7 @@ const EMPTY_FORM: FormState = {
 };
 
 export default function EnviarScreen() {
+  const { t } = useLanguage();
   const { user } = useApp();
   const [image, setImage] = useState<string | null>(null);
   const [imageBase64, setImageBase64] = useState<string | null>(null);
@@ -119,20 +120,24 @@ export default function EnviarScreen() {
   }
 
   async function uploadPosterImage(): Promise<string | null> {
-    if (!image) return null;
+    if (!image || !imageBase64) return null;
     const ext = imageMimeType.includes('png') ? 'png' : 'jpg';
     const path = `posters/usr_${Date.now()}.${ext}`;
 
-    const response = await fetch(image);
-    const blob = await response.blob();
+    // Decode base64 to Uint8Array — avoids fetch(file://) which fails on Android
+    const decoded = atob(imageBase64);
+    const bytes = new Uint8Array(decoded.length);
+    for (let i = 0; i < decoded.length; i++) {
+      bytes[i] = decoded.charCodeAt(i);
+    }
 
     const { error } = await supabase.storage
       .from('event-posters')
-      .upload(path, blob, { contentType: imageMimeType, upsert: false });
+      .upload(path, bytes, { contentType: imageMimeType, upsert: false });
 
     if (error) {
       console.error('[enviar] Storage upload failed:', error.message);
-      throw new Error(`No se pudo subir la imagen: ${error.message}`);
+      throw new Error(`${t.alertErrorMsg}: ${error.message}`);
     }
 
     const { data: { publicUrl } } = supabase.storage
@@ -154,7 +159,7 @@ export default function EnviarScreen() {
     if (missing.length > 0) {
       console.warn('[enviar] Submit blocked — empty fields:', missing);
       console.warn('[enviar] Full form state:', JSON.stringify(form));
-      Alert.alert(t.alertMissingData, `${t.alertMissingDataMsg}\n\nFaltan: ${missing.join(', ')}`);
+      Alert.alert(t.alertMissingData, t.alertMissingDataMsg);
       return;
     }
     setSubmitting(true);

@@ -104,6 +104,10 @@ const es = {
   successSubtitle: 'Tu evento ha sido enviado para revisión. Aparecerá en la app en 24-48 horas.',
   submitAnother: 'Enviar otro evento',
   retryPoster: 'Otro póster',
+  duplicateTitle: 'Posible duplicado',
+  duplicateMsg: (name: string, date: string) => `Ya existe un evento similar: "${name}" (${date}). ¿Quieres enviarlo igualmente?`,
+  duplicateSubmitAnyway: 'Enviar igualmente',
+  duplicateCancel: 'Cancelar',
 
   // Components
   searchPlaceholder: 'Buscar eventos, pueblos...',
@@ -237,6 +241,10 @@ const en: typeof es = {
   successSubtitle: 'Your event has been submitted for review. It will appear in the app within 24-48 hours.',
   submitAnother: 'Submit another event',
   retryPoster: 'Try another poster',
+  duplicateTitle: 'Possible duplicate',
+  duplicateMsg: (name: string, date: string) => `A similar event already exists: "${name}" (${date}). Do you still want to submit?`,
+  duplicateSubmitAnyway: 'Submit anyway',
+  duplicateCancel: 'Cancel',
   searchPlaceholder: 'Search events, towns...',
   emptyStateTitle: 'No events',
   emptyStateSubtitle: 'Try changing the filters or search in another area.',

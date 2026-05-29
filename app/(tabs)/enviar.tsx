@@ -148,20 +148,21 @@ export default function EnviarScreen() {
     return publicUrl;
   }
 
-  async function handleSubmit() {
-    const missing: string[] = [];
-    if (!form.name.trim()) missing.push('nombre');
-    if (!form.date.trim()) missing.push('fecha');
-    if (!form.town.trim()) missing.push('municipio');
-    if (!form.region) missing.push('región');
-    if (!form.category) missing.push('categoría');
+  async function checkForDuplicates(name: string, date: string): Promise<{ name: string; date_start: string } | null> {
+    const parsedDate = new Date(date + 'T00:00:00');
+    const minDate = new Date(parsedDate.getTime() - 2 * 86400000).toISOString().slice(0, 10);
+    const maxDate = new Date(parsedDate.getTime() + 2 * 86400000).toISOString().slice(0, 10);
+    const { data } = await supabase
+      .from('events')
+      .select('name, date_start')
+      .ilike('name', `%${name.trim()}%`)
+      .gte('date_start', minDate)
+      .lte('date_start', maxDate)
+      .limit(1);
+    return (data as { name: string; date_start: string }[] | null)?.[0] ?? null;
+  }
 
-    if (missing.length > 0) {
-      console.warn('[enviar] Submit blocked — empty fields:', missing);
-      console.warn('[enviar] Full form state:', JSON.stringify(form));
-      Alert.alert(t.alertMissingData, t.alertMissingDataMsg);
-      return;
-    }
+  async function doSubmit() {
     setSubmitting(true);
     setSubmitError(null);
     try {
@@ -186,6 +187,41 @@ export default function EnviarScreen() {
     } finally {
       setSubmitting(false);
     }
+  }
+
+  async function handleSubmit() {
+    const missing: string[] = [];
+    if (!form.name.trim()) missing.push('nombre');
+    if (!form.date.trim()) missing.push('fecha');
+    if (!form.town.trim()) missing.push('municipio');
+    if (!form.region) missing.push('región');
+    if (!form.category) missing.push('categoría');
+
+    if (missing.length > 0) {
+      console.warn('[enviar] Submit blocked — empty fields:', missing);
+      console.warn('[enviar] Full form state:', JSON.stringify(form));
+      Alert.alert(t.alertMissingData, t.alertMissingDataMsg);
+      return;
+    }
+
+    try {
+      const duplicate = await checkForDuplicates(form.name, form.date);
+      if (duplicate) {
+        Alert.alert(
+          t.duplicateTitle,
+          t.duplicateMsg(duplicate.name, duplicate.date_start),
+          [
+            { text: t.duplicateCancel, style: 'cancel' },
+            { text: t.duplicateSubmitAnyway, onPress: doSubmit },
+          ],
+        );
+        return;
+      }
+    } catch {
+      // duplicate check failed — proceed with submission
+    }
+
+    doSubmit();
   }
 
   if (submitted) {

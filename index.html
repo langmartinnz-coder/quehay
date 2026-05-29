@@ -216,42 +216,6 @@
     .feat-title { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
     .feat-desc { font-size: 0.9rem; color: var(--text-sec); line-height: 1.6; }
 
-    /* ─── MODES ─── */
-    #modes { background: var(--bg); }
-    .modes-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-    .mode-card {
-      border-radius: var(--radius-card);
-      border: 1px solid var(--border);
-      padding: 36px; position: relative; overflow: hidden;
-    }
-    .mode-card.viajero { background: var(--surface); }
-    .mode-card.anfitrion { background: var(--tint); border-color: #F0C9A8; }
-    .mode-tag {
-      display: inline-block; padding: 4px 12px; border-radius: 20px;
-      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em;
-      text-transform: uppercase; margin-bottom: 16px;
-    }
-    .viajero .mode-tag { background: #EDE8E0; color: var(--text-sec); }
-    .anfitrion .mode-tag { background: var(--primary); color: #fff; }
-    .mode-title { font-size: 1.6rem; font-weight: 800; color: var(--text); margin-bottom: 12px; }
-    .mode-desc { font-size: 0.95rem; color: var(--text-sec); margin-bottom: 24px; line-height: 1.65; }
-    .mode-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .mode-features li {
-      display: flex; align-items: flex-start; gap: 10px;
-      font-size: 0.9rem; color: var(--text);
-    }
-    .mode-features li::before {
-      content: '✓';
-      min-width: 20px; height: 20px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.7rem; font-weight: 700; margin-top: 1px;
-    }
-    .viajero .mode-features li::before { background: #EDE8E0; color: var(--text); }
-    .anfitrion .mode-features li::before { background: var(--primary); color: #fff; }
-
     /* ─── HOW IT WORKS ─── */
     #how { background: var(--surface); }
     .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; }
@@ -509,11 +473,18 @@
         <div class="feat-desc" data-lang="en">Download the app and start exploring nearby events without needing to sign up.</div>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">📸</div>
-        <div class="feat-title" data-lang="es">Publica con foto o escaneando</div>
-        <div class="feat-title" data-lang="en">Post with photo or scan</div>
-        <div class="feat-desc" data-lang="es">Los anfitriones pueden fotografiar un póster en papel y QuéHay extrae automáticamente los datos del evento.</div>
-        <div class="feat-desc" data-lang="en">Hosts can photograph a paper poster and QuéHay automatically extracts the event details.</div>
+        <div class="feat-icon">🤖</div>
+        <div class="feat-title" data-lang="es">IA extrae los datos del póster</div>
+        <div class="feat-title" data-lang="en">AI reads the poster for you</div>
+        <div class="feat-desc" data-lang="es">Fotografía un cartel o imagen de WhatsApp y QuéHay extrae automáticamente nombre, fecha, lugar y más.</div>
+        <div class="feat-desc" data-lang="en">Photograph a flyer or WhatsApp image and QuéHay automatically pulls out the name, date, venue and more.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">❤️</div>
+        <div class="feat-title" data-lang="es">Guarda tus favoritos</div>
+        <div class="feat-title" data-lang="en">Save your favourites</div>
+        <div class="feat-desc" data-lang="es">Marca los eventos que te interesan con un toque. Se sincronizan en todos tus dispositivos si inicias sesión.</div>
+        <div class="feat-desc" data-lang="en">Bookmark events you're interested in with one tap. They sync across your devices when you sign in.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon">🌍</div>
@@ -521,56 +492,6 @@
         <div class="feat-title" data-lang="en">Spanish and English</div>
         <div class="feat-desc" data-lang="es">La app funciona en ambos idiomas — ideal para viajeros internacionales y residentes extranjeros en España.</div>
         <div class="feat-desc" data-lang="en">The app works in both languages — ideal for international travellers and foreign residents in Spain.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── MODES ─── -->
-<section id="modes">
-  <div class="section-inner">
-    <p class="section-label" data-lang="es">Dos modos</p>
-    <p class="section-label" data-lang="en">Two modes</p>
-    <h2 class="section-title" data-lang="es">Para explorar y para organizar</h2>
-    <h2 class="section-title" data-lang="en">For exploring and for organising</h2>
-    <p class="section-sub" data-lang="es">QuéHay tiene un modo para cada rol. Cambia entre ellos con un solo toque.</p>
-    <p class="section-sub" data-lang="en">QuéHay has a mode for every role. Switch between them with a single tap.</p>
-    <div class="modes-grid">
-      <div class="mode-card viajero">
-        <div class="mode-tag" data-lang="es">Modo Viajero</div>
-        <div class="mode-tag" data-lang="en">Traveller Mode</div>
-        <div class="mode-title" data-lang="es">Descubre</div>
-        <div class="mode-title" data-lang="en">Discover</div>
-        <div class="mode-desc" data-lang="es">Perfecto para turistas, visitantes y locales que quieren saber qué hay hoy, este fin de semana, o durante sus vacaciones.</div>
-        <div class="mode-desc" data-lang="en">Perfect for tourists, visitors and locals who want to know what's on today, this weekend, or during their holiday.</div>
-        <ul class="mode-features">
-          <li data-lang="es">Búsqueda y filtros avanzados</li>
-          <li data-lang="en">Search and advanced filters</li>
-          <li data-lang="es">Vista mapa con eventos cercanos</li>
-          <li data-lang="en">Map view with nearby events</li>
-          <li data-lang="es">Guarda tus eventos favoritos</li>
-          <li data-lang="en">Save your favourite events</li>
-          <li data-lang="es">Explora por categoría o región</li>
-          <li data-lang="en">Browse by category or region</li>
-        </ul>
-      </div>
-      <div class="mode-card anfitrion">
-        <div class="mode-tag" data-lang="es">Modo Anfitrión</div>
-        <div class="mode-tag" data-lang="en">Host Mode</div>
-        <div class="mode-title" data-lang="es">Anticípate</div>
-        <div class="mode-title" data-lang="en">Stay ahead</div>
-        <div class="mode-desc" data-lang="es">Para hoteles, casas rurales y apartamentos turísticos que quieren conocer los eventos cercanos para ajustar precios y gestionar disponibilidad con antelación.</div>
-        <div class="mode-desc" data-lang="en">For hotels, rural houses and tourist apartments that want to know about nearby events to adjust pricing and manage availability in advance.</div>
-        <ul class="mode-features">
-          <li data-lang="es">Ve los eventos que atraen turistas a tu zona</li>
-          <li data-lang="en">See events drawing visitors to your area</li>
-          <li data-lang="es">Ajusta precios en fechas de alta demanda</li>
-          <li data-lang="en">Adjust pricing around high-demand dates</li>
-          <li data-lang="es">Anticipa la ocupación con semanas de margen</li>
-          <li data-lang="en">Anticipate occupancy weeks in advance</li>
-          <li data-lang="es">Configura alertas para tu radio de acción</li>
-          <li data-lang="en">Set alerts for your area radius</li>
-        </ul>
       </div>
     </div>
   </div>
@@ -595,24 +516,24 @@
       </div>
       <div class="step">
         <div class="step-num">2</div>
-        <div class="step-title" data-lang="es">Elige tu zona</div>
-        <div class="step-title" data-lang="en">Pick your area</div>
-        <div class="step-desc" data-lang="es">Permite el acceso a tu ubicación o selecciona una región manualmente para ver los eventos más cercanos.</div>
-        <div class="step-desc" data-lang="en">Allow location access or pick a region manually to see the nearest events.</div>
+        <div class="step-title" data-lang="es">Elige tu idioma</div>
+        <div class="step-title" data-lang="en">Choose your language</div>
+        <div class="step-desc" data-lang="es">Selecciona español o inglés al primer inicio. Puedes cambiarlo cuando quieras desde el perfil.</div>
+        <div class="step-desc" data-lang="en">Pick Spanish or English on first launch. You can change it any time from your profile.</div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <div class="step-title" data-lang="es">Explora y disfruta</div>
-        <div class="step-title" data-lang="en">Explore and enjoy</div>
-        <div class="step-desc" data-lang="es">Filtra por categoría, fecha o radio. Guarda los que más te interesan y sal a disfrutarlos.</div>
-        <div class="step-desc" data-lang="en">Filter by category, date or radius. Save the ones that interest you and go enjoy them.</div>
+        <div class="step-title" data-lang="es">Explora y guarda</div>
+        <div class="step-title" data-lang="en">Browse and save</div>
+        <div class="step-desc" data-lang="es">Filtra por categoría, fecha o región. Toca el corazón en cualquier evento para guardarlo en favoritos.</div>
+        <div class="step-desc" data-lang="en">Filter by category, date or region. Tap the heart on any event to save it to your favourites.</div>
       </div>
       <div class="step">
         <div class="step-num">4</div>
-        <div class="step-title" data-lang="es">¿Organizas? Publica</div>
-        <div class="step-title" data-lang="en">Organising? Publish</div>
-        <div class="step-desc" data-lang="es">Activa el modo Anfitrión, crea una cuenta y accede a los eventos de tu zona en minutos.</div>
-        <div class="step-desc" data-lang="en">Switch to Host mode, create an account and access events in your area in minutes.</div>
+        <div class="step-title" data-lang="es">¿Tienes un evento? Compártelo</div>
+        <div class="step-title" data-lang="en">Have an event? Share it</div>
+        <div class="step-desc" data-lang="es">Fotografía el póster, deja que la IA extraiga los datos y envíalo en segundos. Aparece en la app en 24-48 horas.</div>
+        <div class="step-desc" data-lang="en">Photograph the poster, let AI extract the details, and submit in seconds. It appears in the app within 24-48 hours.</div>
       </div>
     </div>
   </div>

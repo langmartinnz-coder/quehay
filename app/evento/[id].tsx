@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -17,11 +17,14 @@ import { Colors } from '../../constants/colors';
 import { CATEGORIES, SOURCE_LABELS, SIZE_CONFIG } from '../../constants/categories';
 import { useApp } from '../../store/AppContext';
 import { useLanguage } from '../../store/LanguageContext';
+import { translateDescription } from '../../lib/translateDescription';
 
 const { width } = Dimensions.get('window');
 
 export default function EventoDetailScreen() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const [translatedText, setTranslatedText] = useState<string | null>(null);
+  const [isTranslating, setIsTranslating] = useState(false);
   const { id } = useLocalSearchParams<{ id: string }>();
   const { isFavorite, toggleFavorite, events, eventsLoading } = useApp();
   const event = events.find((e) => e.id === (id ?? ''));
@@ -53,6 +56,19 @@ export default function EventoDetailScreen() {
   const source = SOURCE_LABELS[event.source];
   const size = SIZE_CONFIG[event.size];
   const fav = isFavorite(event.id);
+
+  async function handleTranslate() {
+    if (!event?.description || isTranslating) return;
+    setIsTranslating(true);
+    try {
+      const result = await translateDescription(event.description);
+      setTranslatedText(result);
+    } catch (err) {
+      console.error('[evento] Translation failed:', err);
+    } finally {
+      setIsTranslating(false);
+    }
+  }
 
   async function handleShare() {
     if (!event) return;
@@ -116,7 +132,21 @@ export default function EventoDetailScreen() {
           {/* Description */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>{t.sectionAbout}</Text>
-            <Text style={styles.description}>{event.description}</Text>
+            <Text style={styles.description}>{translatedText ?? event.description}</Text>
+            {language === 'en' && !!event.description && !translatedText && (
+              <TouchableOpacity
+                style={styles.translateBtn}
+                onPress={handleTranslate}
+                disabled={isTranslating}
+              >
+                {isTranslating
+                  ? <ActivityIndicator size="small" color={Colors.primary} />
+                  : <Text style={styles.translateBtnText}>🌐 {t.translateBtn}</Text>}
+              </TouchableOpacity>
+            )}
+            {translatedText && (
+              <Text style={styles.translatedNote}>🤖 {t.translatedNote}</Text>
+            )}
           </View>
 
           {/* Tags */}
@@ -280,6 +310,22 @@ const styles = StyleSheet.create({
   section: { gap: 8 },
   sectionTitle: { fontSize: 16, fontWeight: '700', color: Colors.text },
   description: { fontSize: 14, color: Colors.textSecondary, lineHeight: 22 },
+  translateBtn: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.surfaceVariant,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    marginTop: 8,
+    minWidth: 44,
+    justifyContent: 'center',
+  },
+  translateBtnText: { fontSize: 13, fontWeight: '600', color: Colors.primary },
+  translatedNote: { fontSize: 11, color: Colors.textLight, marginTop: 6, fontStyle: 'italic' },
   tagsWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   tag: {
     backgroundColor: Colors.surfaceVariant,

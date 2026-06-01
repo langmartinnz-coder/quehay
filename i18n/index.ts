@@ -151,6 +151,11 @@ const es = {
   langPickerTitle: '¿En qué idioma quieres la app?',
   langEs: 'Español',
   langEn: 'English',
+
+  // Translation
+  translateBtn: 'Traducir descripción',
+  translating: 'Traduciendo...',
+  translatedNote: 'Traducido por IA · Puede no ser exacto',
 };
 
 const en: typeof es = {
@@ -274,6 +279,11 @@ const en: typeof es = {
   langPickerTitle: 'What language do you want?',
   langEs: 'Español',
   langEn: 'English',
+
+  // Translation
+  translateBtn: 'Translate description',
+  translating: 'Translating...',
+  translatedNote: 'Translated by AI · May not be exact',
 };
 
 export type Translations = typeof es;

@@ -25,13 +25,7 @@ function RootContent() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen
           name="evento/[id]"
-          options={{
-            headerShown: true,
-            headerBackTitle: t.back,
-            headerTitle: '',
-            headerTransparent: true,
-            headerTintColor: '#fff',
-          }}
+          options={{ headerShown: false }}
         />
       </Stack>
     </>

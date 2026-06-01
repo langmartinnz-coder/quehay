@@ -47,7 +47,9 @@ export default function MapaScreen() {
   };
 
   const visibleEvents = events.filter(
-    (e) => activeRegion === 'todas' || e.region === activeRegion,
+    (e) =>
+      (activeRegion === 'todas' || e.region === activeRegion) &&
+      (e.coordinates.latitude !== 0 || e.coordinates.longitude !== 0),
   );
 
   function goToRegion(region: 'todas' | 'teruel' | 'cataluña') {

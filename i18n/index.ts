@@ -108,6 +108,8 @@ const es = {
   duplicateMsg: (name: string, date: string) => `Ya existe un evento similar: "${name}" (${date}). ¿Quieres enviarlo igualmente?`,
   duplicateSubmitAnyway: 'Enviar igualmente',
   duplicateCancel: 'Cancelar',
+  pastDateTitle: 'Fecha no válida',
+  pastDateMsg: 'La fecha del evento debe ser hoy o en el futuro.',
 
   // Components
   searchPlaceholder: 'Buscar eventos, pueblos...',
@@ -250,6 +252,8 @@ const en: typeof es = {
   duplicateMsg: (name: string, date: string) => `A similar event already exists: "${name}" (${date}). Do you still want to submit?`,
   duplicateSubmitAnyway: 'Submit anyway',
   duplicateCancel: 'Cancel',
+  pastDateTitle: 'Invalid date',
+  pastDateMsg: 'The event date must be today or in the future.',
   searchPlaceholder: 'Search events, towns...',
   emptyStateTitle: 'No events',
   emptyStateSubtitle: 'Try changing the filters or search in another area.',

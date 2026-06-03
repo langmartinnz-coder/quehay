@@ -204,6 +204,14 @@ export default function EnviarScreen() {
       return;
     }
 
+    const eventDate = new Date(form.date + 'T00:00:00');
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (isNaN(eventDate.getTime()) || eventDate < today) {
+      Alert.alert(t.pastDateTitle, t.pastDateMsg);
+      return;
+    }
+
     try {
       const duplicate = await checkForDuplicates(form.name, form.date);
       if (duplicate) {

@@ -47,13 +47,24 @@ function rowToEvent(row: DbEvent): Event {
 }
 
 export async function fetchAllEvents(): Promise<Event[]> {
+  console.log('[api] fetchAllEvents: querying Supabase for is_verified=true events...');
   const { data, error } = await supabase
     .from('events')
     .select('*')
     .eq('is_verified', true)
     .order('date_start', { ascending: true });
-  if (error) throw error;
-  return (data as DbEvent[]).map(rowToEvent);
+  if (error) {
+    console.error('[api] fetchAllEvents Supabase error:', error.message, error.code);
+    throw error;
+  }
+  const rows = data as DbEvent[];
+  console.log(`[api] fetchAllEvents: ${rows.length} verified events from DB`);
+  const withCoords = rows.filter((r) => r.lat !== 0 || r.lng !== 0);
+  const noCoords = rows.length - withCoords.length;
+  if (noCoords > 0) {
+    console.warn(`[api] fetchAllEvents: ${noCoords} event(s) have lat=0,lng=0 — they will not appear on the map`);
+  }
+  return rows.map(rowToEvent);
 }
 
 export async function fetchEventById(id: string): Promise<Event | null> {

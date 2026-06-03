@@ -58,9 +58,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setEventsLoading(true);
     try {
       const data = await api.fetchAllEvents();
+      console.log(`[AppContext] refreshEvents: loaded ${data.length} events into context`);
       setEvents(data);
     } catch (e) {
-      console.warn('Failed to load events:', e);
+      console.error('[AppContext] refreshEvents failed — events will be empty:', e);
     } finally {
       setEventsLoading(false);
     }

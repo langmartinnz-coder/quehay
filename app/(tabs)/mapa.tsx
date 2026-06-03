@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import {
   View,
   Text,
@@ -46,11 +46,21 @@ export default function MapaScreen() {
     longitudeDelta: 2.8,
   };
 
-  const visibleEvents = events.filter(
-    (e) =>
-      (activeRegion === 'todas' || e.region === activeRegion) &&
-      (e.coordinates.latitude !== 0 || e.coordinates.longitude !== 0),
-  );
+  const visibleEvents = useMemo(() => {
+    const withCoords = events.filter(
+      (e) => e.coordinates.latitude !== 0 || e.coordinates.longitude !== 0,
+    );
+    const regionFiltered = withCoords.filter(
+      (e) => activeRegion === 'todas' || e.region === activeRegion,
+    );
+    console.log(
+      `[mapa] events in context=${events.length}  with valid coords=${withCoords.length}  visible (region=${activeRegion})=${regionFiltered.length}`,
+    );
+    if (events.length > 0 && withCoords.length === 0) {
+      console.warn('[mapa] All verified events have lat=0,lng=0 — set coordinates in the admin panel to show them on the map');
+    }
+    return regionFiltered;
+  }, [events, activeRegion]);
 
   function goToRegion(region: 'todas' | 'teruel' | 'cataluña') {
     setActiveRegion(region);

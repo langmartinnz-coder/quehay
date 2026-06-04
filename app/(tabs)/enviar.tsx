@@ -204,10 +204,9 @@ export default function EnviarScreen() {
       return;
     }
 
-    const eventDate = new Date(form.date + 'T00:00:00');
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    if (isNaN(eventDate.getTime()) || eventDate < today) {
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    if (form.date.trim() < todayStr) {
       Alert.alert(t.pastDateTitle, t.pastDateMsg);
       return;
     }

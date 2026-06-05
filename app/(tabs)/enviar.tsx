@@ -206,7 +206,10 @@ export default function EnviarScreen() {
 
     const now = new Date();
     const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-    if (form.date.trim() < todayStr) {
+    const submittedDate = form.date.trim();
+    const isPast = submittedDate < todayStr;
+    console.log('[enviar] date validation — today:', todayStr, '| submitted:', JSON.stringify(submittedDate), '| submitted < today:', isPast);
+    if (isPast) {
       Alert.alert(t.pastDateTitle, t.pastDateMsg);
       return;
     }

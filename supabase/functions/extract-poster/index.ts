@@ -49,6 +49,28 @@ const CORS_HEADERS = {
 
 const MODEL = 'claude-sonnet-4-5';
 
+function fixYear(dateStr: string): string {
+  const now = new Date();
+  const currentYear = now.getUTCFullYear();
+  const currentMonth = now.getUTCMonth() + 1; // 1-12
+  const currentDay = now.getUTCDate();
+
+  const [yearStr, monthStr, dayStr] = dateStr.split('-');
+  const extractedYear = parseInt(yearStr, 10);
+  const month = parseInt(monthStr, 10);
+  const day = parseInt(dayStr, 10);
+
+  if (extractedYear >= currentYear) return dateStr; // already current or future
+
+  // Month-day has already passed this year → bump to next year
+  const alreadyPassedThisYear =
+    month < currentMonth || (month === currentMonth && day < currentDay);
+
+  return alreadyPassedThisYear
+    ? `${currentYear + 1}-${monthStr}-${dayStr}`
+    : `${currentYear}-${monthStr}-${dayStr}`;
+}
+
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
     status,
@@ -174,10 +196,15 @@ Deno.serve(async (req: Request) => {
   if (typeof parsed.name === 'string' && parsed.name)
     result.name = parsed.name;
 
-  if (typeof parsed.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(parsed.date))
-    result.date = parsed.date;
-  else if (parsed.date !== null && parsed.date !== undefined)
+  if (typeof parsed.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(parsed.date)) {
+    const corrected = fixYear(parsed.date);
+    if (corrected !== parsed.date) {
+      log(`date year corrected: ${parsed.date} → ${corrected}`);
+    }
+    result.date = corrected;
+  } else if (parsed.date !== null && parsed.date !== undefined) {
     log(`date field rejected (value: ${JSON.stringify(parsed.date)})`);
+  }
 
   if (typeof parsed.time === 'string' && /^\d{1,2}:\d{2}$/.test(parsed.time))
     result.time = parsed.time;

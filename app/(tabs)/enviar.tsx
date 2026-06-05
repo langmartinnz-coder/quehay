@@ -20,6 +20,7 @@ import { submitEvent } from '../../lib/api';
 import { extractPosterData } from '../../lib/extractPoster';
 import { supabase } from '../../lib/supabase';
 import { useLanguage } from '../../store/LanguageContext';
+import { resolveCoordinates } from '../../lib/geocode';
 
 interface FormState {
   name: string;
@@ -166,7 +167,10 @@ export default function EnviarScreen() {
     setSubmitting(true);
     setSubmitError(null);
     try {
-      const imageUrl = await uploadPosterImage();
+      const [imageUrl, coords] = await Promise.all([
+        uploadPosterImage(),
+        resolveCoordinates(form.town),
+      ]);
       await submitEvent({
         name: form.name,
         dateStart: form.date,
@@ -178,6 +182,8 @@ export default function EnviarScreen() {
         isFree: form.isFree,
         price: form.price || undefined,
         imageUrl: imageUrl ?? undefined,
+        lat: coords.lat,
+        lng: coords.lng,
       }, user?.id);
       setSubmitted(true);
     } catch (err) {

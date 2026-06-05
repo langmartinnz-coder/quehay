@@ -109,6 +109,8 @@ export async function submitEvent(
     isFree: boolean;
     price?: string;
     imageUrl?: string;
+    lat?: number;
+    lng?: number;
   },
   userId?: string,
 ): Promise<void> {
@@ -120,8 +122,8 @@ export async function submitEvent(
     location: form.town,
     town: form.town,
     region: form.region,
-    lat: 0,
-    lng: 0,
+    lat: form.lat ?? 0,
+    lng: form.lng ?? 0,
     category: form.category || 'comunidad',
     size: 'pequeño',
     description: form.description || '',

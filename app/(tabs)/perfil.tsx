@@ -185,6 +185,14 @@ export default function PerfilScreen() {
                   🇬🇧 EN
                 </Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.langBtn, language === 'ca' && styles.langBtnActive]}
+                onPress={() => setLanguage('ca')}
+              >
+                <Text style={[styles.langBtnText, language === 'ca' && styles.langBtnTextActive]}>
+                  🏴󠁥󠁳󠁣󠁴󠁿 CA
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>

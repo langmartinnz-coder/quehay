@@ -7,7 +7,7 @@ import { useLanguage } from '../store/LanguageContext';
 export default function WelcomeScreen() {
   const { setLanguage, markLanguageChosen } = useLanguage();
 
-  async function choose(lang: 'en' | 'es') {
+  async function choose(lang: 'en' | 'es' | 'ca') {
     await setLanguage(lang);
     markLanguageChosen();
   }
@@ -22,7 +22,7 @@ export default function WelcomeScreen() {
         </View>
 
         <Text style={styles.subtitle}>
-          {'¿En qué idioma quieres la app?\nWhat language do you want?'}
+          {'¿En qué idioma quieres la app?\nWhat language do you want?\nEn quin idioma vols l\'app?'}
         </Text>
 
         <View style={styles.buttons}>
@@ -33,6 +33,10 @@ export default function WelcomeScreen() {
           <TouchableOpacity style={styles.btn} onPress={() => choose('en')}>
             <Text style={styles.btnFlag}>🇬🇧</Text>
             <Text style={styles.btnText}>English</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btn} onPress={() => choose('ca')}>
+            <Text style={styles.btnFlag}>🏴󠁥󠁳󠁣󠁴󠁿</Text>
+            <Text style={styles.btnText}>Català</Text>
           </TouchableOpacity>
         </View>
       </View>

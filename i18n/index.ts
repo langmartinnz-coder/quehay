@@ -1,7 +1,13 @@
 import { getLocales } from 'expo-localization';
 
-const deviceLang: 'en' | 'es' =
-  getLocales()[0]?.languageCode === 'en' ? 'en' : 'es';
+function getDeviceLang(): 'en' | 'es' | 'ca' {
+  const code = getLocales()[0]?.languageCode;
+  if (code === 'en') return 'en';
+  if (code === 'ca') return 'ca';
+  return 'es';
+}
+
+const deviceLang = getDeviceLang();
 
 const es = {
   // Navigation / headers
@@ -153,6 +159,7 @@ const es = {
   langPickerTitle: '¿En qué idioma quieres la app?',
   langEs: 'Español',
   langEn: 'English',
+  langCa: 'Catalán',
 
   // Translation
   translateBtn: 'Traducir descripción',
@@ -283,6 +290,7 @@ const en: typeof es = {
   langPickerTitle: 'What language do you want?',
   langEs: 'Español',
   langEn: 'English',
+  langCa: 'Catalan',
 
   // Translation
   translateBtn: 'Translate description',
@@ -290,9 +298,140 @@ const en: typeof es = {
   translatedNote: 'Translated by AI · May not be exact',
 };
 
+const ca: typeof es = {
+  back: 'Tornar',
+  tabHome: 'Inici',
+  tabMap: 'Mapa',
+  tabSubmit: 'Enviar',
+  tabProfile: 'Perfil',
+  tagline: "Agenda local d'Espanya",
+  eventSingular: 'esdeveniment',
+  eventPlural: 'esdeveniments',
+  clearFilters: 'Netejar filtres',
+  mapRegionAll: '🇪🇸 Totes',
+  mapRegionTeruel: '🏔️ Teruel',
+  mapRegionCatalunya: '🌊 Catalunya',
+  eventsCount: (n: number) => `${n} ${n === 1 ? 'esdeveniment' : 'esdeveniments'}`,
+  viewDetails: 'Veure detalls →',
+  eventNotFound: 'Esdeveniment no trobat',
+  backLink: '← Tornar',
+  infoDate: 'Data',
+  infoTime: 'Hora',
+  infoPlace: 'Lloc',
+  infoTown: 'Municipi',
+  infoPrice: 'Preu',
+  infoFree: 'Entrada gratuïta',
+  sectionAbout: "Sobre l'esdeveniment",
+  sectionSource: "Font de l'esdeveniment",
+  demandTitle: 'Alta demanda prevista',
+  demandTextBig: "Aquest esdeveniment pot incrementar l'ocupació hotelera a la zona. Considerat gran esdeveniment.",
+  demandTextMedium: "Aquest esdeveniment pot incrementar l'ocupació hotelera a la zona. Considerat esdeveniment mitjà.",
+  saveFavorite: '🤍 Guardar als preferits',
+  savedFavorite: '❤️ Guardat als preferits',
+  shareVia: 'Via QuéHay – Agenda local',
+  profileTitle: 'El meu perfil',
+  accountConnected: 'Compte connectat',
+  syncBadge: '✓ Sync',
+  signOut: 'Tancar sessió',
+  signInTitle: 'Inicia sessió',
+  signInSubtitle: 'Sincronitza els teus preferits a tots els dispositius',
+  emailPlaceholder: 'tu@email.com',
+  passwordPlaceholder: 'Contrasenya',
+  signInBtn: 'Entrar',
+  signUpBtn: 'Crear compte',
+  signUpConfirmEmail: 'Revisa el teu correu per confirmar el compte i després inicia sessió.',
+  savedEventsLabel: 'Esdeveniments guardats',
+  emptyFavorites: 'Guarda esdeveniments tocant el cor a les targetes',
+  infoLabel: 'Informació',
+  infoRegion: 'Cobrim Teruel i Catalunya',
+  infoUpdated: 'Actualitzat diàriament',
+  infoSources: "Esdeveniments de WhatsApp, Facebook, Instagram, Milanuncios i Ajuntaments",
+  infoShare: "Comparteix esdeveniments del teu poble a la pestanya ➕",
+  appVersion: 'QuéHay v1.0 · Fet amb ❤️ per al turisme rural',
+  settingsLabel: 'Ajustos',
+  languageLabel: 'Idioma',
+  submitTitle: 'Comparteix un esdeveniment',
+  submitSubtitle: 'Puja el pòster i extreurem les dades automàticament',
+  uploadTitle: "Puja el pòster de l'esdeveniment",
+  uploadSubtitle: 'Foto de cartell, imatge de WhatsApp o xarxes socials',
+  galleryBtn: '📂 Galeria',
+  cameraBtn: '📷 Càmera',
+  changeImage: 'Canviar imatge',
+  analyzeBtn: '🤖 Analitzar pòster automàticament',
+  analyzing: 'Analitzant pòster amb IA...',
+  extractedNote: "✨ Dades extretes del pòster. Revisa i corregeix si cal.",
+  fieldEventName: "Nom de l'esdeveniment *",
+  fieldEventNamePlaceholder: 'Ex: Festa Major de Vic',
+  fieldDateStart: 'Data inici *',
+  fieldTime: 'Hora',
+  fieldTown: 'Municipi *',
+  fieldTownPlaceholder: 'Ex: Vic',
+  fieldRegion: 'Regió *',
+  fieldCategory: 'Categoria *',
+  fieldDescription: 'Descripció',
+  fieldDescriptionPlaceholder: "Descriu breument l'esdeveniment...",
+  fieldIsFree: 'Preu',
+  fieldIsFreeYes: 'Gratuït',
+  fieldIsFreeNo: 'De pagament',
+  fieldPrice: 'Preu (ex: 10€, Des de 5€)',
+  sourceInfoTitle: "📱 Font de l'esdeveniment",
+  sourceInfoText: "El teu esdeveniment es publicarà com \"Compartit per la comunitat\". Si ets l'Ajuntament o organització oficial, contacta'ns per verificar el teu compte.",
+  submitBtn: 'Enviar esdeveniment →',
+  submitDisclaimer: "En enviar confirmes que tens permís per compartir aquest esdeveniment i que les dades són correctes.",
+  alertMissingData: 'Falten dades',
+  alertMissingDataMsg: 'Completa nom, data, municipi, regió i categoria.',
+  alertError: 'Error',
+  alertErrorMsg: "No s'ha pogut enviar l'esdeveniment. Torna-ho a intentar.",
+  successTitle: 'Esdeveniment enviat!',
+  successSubtitle: "El teu esdeveniment ha estat enviat per a revisió. Apareixerà a l'app en 24-48 hores.",
+  submitAnother: 'Enviar un altre esdeveniment',
+  retryPoster: 'Un altre pòster',
+  duplicateTitle: 'Possible duplicat',
+  duplicateMsg: (name: string, date: string) => `Ja existeix un esdeveniment similar: "${name}" (${date}). El vols enviar igualment?`,
+  duplicateSubmitAnyway: 'Enviar igualment',
+  duplicateCancel: 'Cancel·lar',
+  pastDateTitle: 'Data no vàlida',
+  pastDateMsg: "La data de l'esdeveniment ha de ser avui o en el futur.",
+  searchPlaceholder: "Cercar esdeveniments, pobles...",
+  emptyStateTitle: "No hi ha esdeveniments",
+  emptyStateSubtitle: "Prova a canviar els filtres o cerca en una altra zona.",
+  freeBadge: 'GRATUÏT',
+  regionTeruel: 'Teruel',
+  regionCatalunya: 'Catalunya',
+  catAll: 'Tots',
+  catFestival: 'Festivals',
+  catFiesta: 'Festes',
+  catMercado: 'Mercats',
+  catConcierto: 'Concerts',
+  catGastronomia: 'Gastronomia',
+  catDeportes: 'Esports',
+  catComunidad: 'Comunitat',
+  dfAll: 'Totes',
+  dfToday: 'Avui',
+  dfWeek: 'Aquesta setmana',
+  dfMonth: 'Aquest mes',
+  rAll: 'Tota Espanya',
+  rTeruel: 'Teruel',
+  rCatalunya: 'Catalunya',
+  sizeBig: 'Gran esdeveniment',
+  sizeMedium: 'Esdeveniment mitjà',
+  sizeSmall: 'Esdeveniment local',
+  srcTownHall: 'Ajuntament',
+  srcCommunity: 'Comunitat',
+  langPickerTitle: "En quin idioma vols l'app?",
+  langEs: 'Espanyol',
+  langEn: 'English',
+  langCa: 'Català',
+  translateBtn: 'Traduir descripció',
+  translating: 'Traduint...',
+  translatedNote: "Traduït per IA · Pot no ser exacte",
+};
+
 export type Translations = typeof es;
 
-const translationMap: Record<'en' | 'es', Translations> = { es, en };
+export type Language = 'en' | 'es' | 'ca';
+
+const translationMap: Record<Language, Translations> = { es, en, ca };
 
 let _currentT: Translations = translationMap[deviceLang];
 
@@ -300,12 +439,12 @@ export function getCurrentT(): Translations {
   return _currentT;
 }
 
-export function setCurrentT(lang: 'en' | 'es'): void {
+export function setCurrentT(lang: Language): void {
   _currentT = translationMap[lang];
 }
 
-export function getDefaultLang(): 'en' | 'es' {
+export function getDefaultLang(): Language {
   return deviceLang;
 }
 
-export { es, en };
+export { es, en, ca };

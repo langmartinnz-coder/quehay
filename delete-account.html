@@ -43,7 +43,8 @@
     /* ─── LANGUAGE TOGGLE ─── */
     [data-lang] { display: none; }
     body.lang-es [data-lang="es"],
-    body.lang-en [data-lang="en"] { display: revert; }
+    body.lang-en [data-lang="en"],
+    body.lang-ca [data-lang="ca"] { display: revert; }
 
     /* ─── NAV ─── */
     nav {
@@ -302,10 +303,12 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         <span data-lang="es">Inicio</span>
         <span data-lang="en">Home</span>
+        <span data-lang="ca">Inici</span>
       </a>
       <div class="lang-toggle">
         <button class="lang-btn active" id="btn-es" onclick="setLang('es')">ES</button>
         <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="btn-ca" onclick="setLang('ca')">CA</button>
       </div>
     </div>
   </div>
@@ -318,8 +321,10 @@
   <div class="page-header">
     <div class="page-label" data-lang="es">Cuenta</div>
     <div class="page-label" data-lang="en">Account</div>
+    <div class="page-label" data-lang="ca">Compte</div>
     <h1 class="page-title" data-lang="es">Eliminar tu cuenta</h1>
     <h1 class="page-title" data-lang="en">Delete your account</h1>
+    <h1 class="page-title" data-lang="ca">Elimina el teu compte</h1>
     <p class="page-sub" data-lang="es">
       Puedes solicitar la eliminación completa de tu cuenta y todos tus datos personales en cualquier momento.
       El proceso es permanente e irreversible.
@@ -327,6 +332,10 @@
     <p class="page-sub" data-lang="en">
       You can request the complete deletion of your account and all your personal data at any time.
       The process is permanent and irreversible.
+    </p>
+    <p class="page-sub" data-lang="ca">
+      Pots sol·licitar l'eliminació completa del teu compte i totes les teves dades personals en qualsevol moment.
+      El procés és permanent i irreversible.
     </p>
   </div>
 
@@ -336,27 +345,32 @@
       <div class="card-title-icon">🗑️</div>
       <span data-lang="es">Qué se eliminará</span>
       <span data-lang="en">What will be deleted</span>
+      <span data-lang="ca">Què s'eliminarà</span>
     </div>
     <ul class="deletion-list">
       <li>
         <div class="del-icon">✕</div>
         <span data-lang="es"><strong>Tu cuenta</strong> — dirección de correo electrónico y contraseña.</span>
         <span data-lang="en"><strong>Your account</strong> — email address and password.</span>
+        <span data-lang="ca"><strong>El teu compte</strong> — adreça de correu electrònic i contrasenya.</span>
       </li>
       <li>
         <div class="del-icon">✕</div>
         <span data-lang="es"><strong>Eventos publicados</strong> — todos los eventos que hayas creado como anfitrión.</span>
         <span data-lang="en"><strong>Published events</strong> — all events you have created as a host.</span>
+        <span data-lang="ca"><strong>Esdeveniments publicats</strong> — tots els esdeveniments que hagis creat com a amfitrió.</span>
       </li>
       <li>
         <div class="del-icon">✕</div>
         <span data-lang="es"><strong>Imágenes subidas</strong> — fotos de pósteres y cualquier otra imagen asociada a tu cuenta.</span>
         <span data-lang="en"><strong>Uploaded images</strong> — poster photos and any other images associated with your account.</span>
+        <span data-lang="ca"><strong>Imatges pujades</strong> — fotos de cartells i qualsevol altra imatge associada al teu compte.</span>
       </li>
       <li>
         <div class="del-icon">✕</div>
         <span data-lang="es"><strong>Datos de uso</strong> — preferencias y cualquier otro dato vinculado a tu perfil.</span>
         <span data-lang="en"><strong>Usage data</strong> — preferences and any other data linked to your profile.</span>
+        <span data-lang="ca"><strong>Dades d'ús</strong> — preferències i qualsevol altra dada vinculada al teu perfil.</span>
       </li>
     </ul>
 
@@ -364,6 +378,7 @@
       <div class="badge-num">30</div>
       <div class="badge-text" data-lang="es"><strong>días como máximo</strong><br/>desde que recibamos tu solicitud</div>
       <div class="badge-text" data-lang="en"><strong>days maximum</strong><br/>from when we receive your request</div>
+      <div class="badge-text" data-lang="ca"><strong>dies com a màxim</strong><br/>des que rebem la teva sol·licitud</div>
     </div>
   </div>
 
@@ -373,6 +388,7 @@
       <div class="card-title-icon">📧</div>
       <span data-lang="es">Solicitar eliminación</span>
       <span data-lang="en">Request deletion</span>
+      <span data-lang="ca">Sol·licitar eliminació</span>
     </div>
 
     <form class="request-form" id="delete-form" onsubmit="handleSubmit(event)">
@@ -381,8 +397,10 @@
         <label for="del-email">
           <span data-lang="es">Correo electrónico de tu cuenta</span>
           <span data-lang="en">Your account email address</span>
+          <span data-lang="ca">Adreça de correu electrònic del teu compte</span>
           <span class="label-hint" data-lang="es">(obligatorio)</span>
           <span class="label-hint" data-lang="en">(required)</span>
+          <span class="label-hint" data-lang="ca">(obligatori)</span>
         </label>
         <input
           type="email" id="del-email" name="email" required
@@ -395,6 +413,7 @@
         <label for="del-reason">
           <span data-lang="es">Motivo (opcional)</span>
           <span data-lang="en">Reason (optional)</span>
+          <span data-lang="ca">Motiu (opcional)</span>
         </label>
         <textarea
           id="del-reason" name="reason"
@@ -412,6 +431,10 @@
           This action is <strong>permanent and irreversible</strong>. Once deletion is confirmed,
           we cannot recover your account, your events or any other associated data.
         </p>
+        <p data-lang="ca">
+          Aquesta acció és <strong>permanent i irreversible</strong>. Un cop confirmada l'eliminació,
+          no podrem recuperar el teu compte, els teus esdeveniments ni cap altra dada associada.
+        </p>
       </div>
 
       <div class="confirm-row">
@@ -419,6 +442,7 @@
         <label for="confirm-check">
           <span data-lang="es">Entiendo que esta acción es permanente y que todos mis datos serán eliminados de forma definitiva.</span>
           <span data-lang="en">I understand this action is permanent and that all my data will be permanently deleted.</span>
+          <span data-lang="ca">Entenc que aquesta acció és permanent i que totes les meves dades seran eliminades de forma definitiva.</span>
         </label>
       </div>
 
@@ -426,12 +450,14 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
         <span data-lang="es">Enviar solicitud de eliminación</span>
         <span data-lang="en">Send deletion request</span>
+        <span data-lang="ca">Enviar sol·licitud d'eliminació</span>
       </button>
 
       <div class="form-success" id="form-success">
         <div class="success-icon">✓</div>
         <div class="success-title" data-lang="es">Solicitud enviada</div>
         <div class="success-title" data-lang="en">Request sent</div>
+        <div class="success-title" data-lang="ca">Sol·licitud enviada</div>
         <div class="success-body" data-lang="es">
           Hemos recibido tu solicitud. Eliminaremos tu cuenta y todos tus datos en un plazo máximo de 30 días
           y te enviaremos una confirmación por correo electrónico.
@@ -439,6 +465,10 @@
         <div class="success-body" data-lang="en">
           We have received your request. We will delete your account and all your data within 30 days
           and send you a confirmation by email.
+        </div>
+        <div class="success-body" data-lang="ca">
+          Hem rebut la teva sol·licitud. Eliminarem el teu compte i totes les teves dades en un termini màxim de 30 dies
+          i t'enviarem una confirmació per correu electrònic.
         </div>
       </div>
 
@@ -451,8 +481,10 @@
     <div class="alt-text">
       <strong data-lang="es">¿Prefieres escribirnos directamente?</strong>
       <strong data-lang="en">Prefer to write to us directly?</strong>
+      <strong data-lang="ca">Prefereixes escriure'ns directament?</strong>
       <span data-lang="es">Envía un correo a <a href="mailto:soporte.quehayar@gmail.com">soporte.quehayar@gmail.com</a> con el asunto «Eliminar cuenta» y tu dirección de correo registrada.</span>
       <span data-lang="en">Send an email to <a href="mailto:soporte.quehayar@gmail.com">soporte.quehayar@gmail.com</a> with the subject "Delete account" and your registered email address.</span>
+      <span data-lang="ca">Envia un correu a <a href="mailto:soporte.quehayar@gmail.com">soporte.quehayar@gmail.com</a> amb l'assumpte «Eliminar compte» i la teva adreça de correu registrada.</span>
     </div>
   </div>
 
@@ -466,14 +498,17 @@
       <div class="footer-links">
         <a href="privacy.html" data-lang="es">Privacidad</a>
         <a href="privacy.html" data-lang="en">Privacy</a>
+        <a href="privacy.html" data-lang="ca">Privadesa</a>
         <a href="mailto:soporte.quehayar@gmail.com" data-lang="es">Contacto</a>
         <a href="mailto:soporte.quehayar@gmail.com" data-lang="en">Contact</a>
+        <a href="mailto:soporte.quehayar@gmail.com" data-lang="ca">Contacte</a>
       </div>
     </div>
     <hr class="footer-divider" />
     <div class="footer-bottom">
       <span data-lang="es">© 2026 QuéHay. Hecho con ♥ en España.</span>
       <span data-lang="en">© 2026 QuéHay. Made with ♥ in Spain.</span>
+      <span data-lang="ca">© 2026 QuéHay. Fet amb ♥ a Espanya.</span>
       <span>quehayagendalocal.com</span>
     </div>
   </div>
@@ -484,12 +519,14 @@
     document.body.className = 'lang-' + lang;
     document.getElementById('btn-es').classList.toggle('active', lang === 'es');
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-    document.documentElement.lang = lang === 'es' ? 'es' : 'en';
+    document.getElementById('btn-ca').classList.toggle('active', lang === 'ca');
+    document.documentElement.lang = lang === 'ca' ? 'ca' : (lang === 'en' ? 'en' : 'es');
   }
 
   (function () {
     const nav = window.navigator.language || '';
-    if (!nav.startsWith('es')) setLang('en');
+    if (nav.startsWith('ca')) setLang('ca');
+    else if (!nav.startsWith('es')) setLang('en');
   })();
 
   function toggleBtn() {
@@ -501,12 +538,21 @@
     e.preventDefault();
     const email  = document.getElementById('del-email').value;
     const reason = document.getElementById('del-reason').value;
-    const lang   = document.body.classList.contains('lang-en') ? 'en' : 'es';
+    const lang   = document.body.classList.contains('lang-en') ? 'en'
+                 : document.body.classList.contains('lang-ca') ? 'ca'
+                 : 'es';
 
-    const subject = lang === 'es' ? 'Solicitud de eliminación de cuenta' : 'Account deletion request';
-    const body = lang === 'es'
-      ? `Solicito la eliminación de mi cuenta y todos mis datos personales.\n\nCorreo registrado: ${email}${reason ? '\n\nMotivo: ' + reason : ''}`
-      : `I request the deletion of my account and all my personal data.\n\nRegistered email: ${email}${reason ? '\n\nReason: ' + reason : ''}`;
+    let subject, body;
+    if (lang === 'en') {
+      subject = 'Account deletion request';
+      body = `I request the deletion of my account and all my personal data.\n\nRegistered email: ${email}${reason ? '\n\nReason: ' + reason : ''}`;
+    } else if (lang === 'ca') {
+      subject = "Sol·licitud d'eliminació de compte";
+      body = `Sol·licito l'eliminació del meu compte i totes les meves dades personals.\n\nCorreu registrat: ${email}${reason ? '\n\nMotiu: ' + reason : ''}`;
+    } else {
+      subject = 'Solicitud de eliminación de cuenta';
+      body = `Solicito la eliminación de mi cuenta y todos mis datos personales.\n\nCorreo registrado: ${email}${reason ? '\n\nMotivo: ' + reason : ''}`;
+    }
 
     window.location.href =
       `mailto:soporte.quehayar@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;

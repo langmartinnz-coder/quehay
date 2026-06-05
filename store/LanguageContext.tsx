@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { es, en, getDefaultLang, setCurrentT, Translations } from '../i18n';
+import { es, en, ca, getDefaultLang, setCurrentT, Translations } from '../i18n';
 
 const LANG_KEY = '@quehay_lang';
 const LANG_CHOSEN_KEY = '@quehay_lang_chosen';
 
-type Language = 'en' | 'es';
+type Language = 'en' | 'es' | 'ca';
 
 interface LanguageContextType {
   t: Translations;
@@ -16,7 +16,7 @@ interface LanguageContextType {
   langLoaded: boolean;
 }
 
-const translationMap: Record<Language, Translations> = { es, en };
+const translationMap: Record<Language, Translations> = { es, en, ca };
 
 const LanguageContext = createContext<LanguageContextType>({} as LanguageContextType);
 
@@ -32,7 +32,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         AsyncStorage.getItem(LANG_KEY),
         AsyncStorage.getItem(LANG_CHOSEN_KEY),
       ]);
-      const lang: Language = stored === 'en' || stored === 'es' ? stored : defaultLang;
+      const lang: Language = stored === 'en' || stored === 'es' || stored === 'ca' ? stored : defaultLang;
       setCurrentT(lang);
       setLang(lang);
       if (!chosen) {

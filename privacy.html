@@ -40,7 +40,8 @@
     /* ─── LANGUAGE TOGGLE ─── */
     [data-lang] { display: none; }
     body.lang-es [data-lang="es"],
-    body.lang-en [data-lang="en"] { display: revert; }
+    body.lang-en [data-lang="en"],
+    body.lang-ca [data-lang="ca"] { display: revert; }
 
     /* ─── NAV ─── */
     nav {
@@ -256,10 +257,12 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         <span data-lang="es">Inicio</span>
         <span data-lang="en">Home</span>
+        <span data-lang="ca">Inici</span>
       </a>
       <div class="lang-toggle">
         <button class="lang-btn active" id="btn-es" onclick="setLang('es')">ES</button>
         <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="btn-ca" onclick="setLang('ca')">CA</button>
       </div>
     </div>
   </div>
@@ -270,18 +273,22 @@
   <div class="page-header-inner">
     <div class="page-label" data-lang="es">Legal</div>
     <div class="page-label" data-lang="en">Legal</div>
+    <div class="page-label" data-lang="ca">Legal</div>
     <h1 class="page-title" data-lang="es">Política de Privacidad</h1>
     <h1 class="page-title" data-lang="en">Privacy Policy</h1>
+    <h1 class="page-title" data-lang="ca">Política de Privadesa</h1>
     <div class="page-meta">
       <span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         <span data-lang="es">Última actualización: 25 de mayo de 2026</span>
         <span data-lang="en">Last updated: 25 May 2026</span>
+        <span data-lang="ca">Darrera actualització: 25 de maig de 2026</span>
       </span>
       <span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         <span data-lang="es">Aplicable a la app móvil y a quehayagendalocal.com</span>
         <span data-lang="en">Applies to the mobile app and quehayagendalocal.com</span>
+        <span data-lang="ca">Aplicable a l'app mòbil i a quehayagendalocal.com</span>
       </span>
     </div>
   </div>
@@ -294,17 +301,58 @@
   <aside class="toc">
     <div class="toc-title" data-lang="es">Contenido</div>
     <div class="toc-title" data-lang="en">Contents</div>
+    <div class="toc-title" data-lang="ca">Contingut</div>
     <ul class="toc-list">
-      <li><a href="#responsable" data-lang="es">1. Responsable</a><a href="#responsable" data-lang="en">1. Controller</a></li>
-      <li><a href="#datos" data-lang="es">2. Datos que recogemos</a><a href="#datos" data-lang="en">2. Data we collect</a></li>
-      <li><a href="#uso" data-lang="es">3. Cómo los usamos</a><a href="#uso" data-lang="en">3. How we use it</a></li>
-      <li><a href="#base" data-lang="es">4. Base legal</a><a href="#base" data-lang="en">4. Legal basis</a></li>
-      <li><a href="#terceros" data-lang="es">5. Terceros y procesadores</a><a href="#terceros" data-lang="en">5. Third parties</a></li>
-      <li><a href="#retencion" data-lang="es">6. Retención de datos</a><a href="#retencion" data-lang="en">6. Data retention</a></li>
-      <li><a href="#derechos" data-lang="es">7. Tus derechos</a><a href="#derechos" data-lang="en">7. Your rights</a></li>
-      <li><a href="#menores" data-lang="es">8. Menores de edad</a><a href="#menores" data-lang="en">8. Minors</a></li>
-      <li><a href="#cambios" data-lang="es">9. Cambios</a><a href="#cambios" data-lang="en">9. Changes</a></li>
-      <li><a href="#contacto" data-lang="es">10. Contacto</a><a href="#contacto" data-lang="en">10. Contact</a></li>
+      <li>
+        <a href="#responsable" data-lang="es">1. Responsable</a>
+        <a href="#responsable" data-lang="en">1. Controller</a>
+        <a href="#responsable" data-lang="ca">1. Responsable</a>
+      </li>
+      <li>
+        <a href="#datos" data-lang="es">2. Datos que recogemos</a>
+        <a href="#datos" data-lang="en">2. Data we collect</a>
+        <a href="#datos" data-lang="ca">2. Dades que recollim</a>
+      </li>
+      <li>
+        <a href="#uso" data-lang="es">3. Cómo los usamos</a>
+        <a href="#uso" data-lang="en">3. How we use it</a>
+        <a href="#uso" data-lang="ca">3. Com les fem servir</a>
+      </li>
+      <li>
+        <a href="#base" data-lang="es">4. Base legal</a>
+        <a href="#base" data-lang="en">4. Legal basis</a>
+        <a href="#base" data-lang="ca">4. Base legal</a>
+      </li>
+      <li>
+        <a href="#terceros" data-lang="es">5. Terceros y procesadores</a>
+        <a href="#terceros" data-lang="en">5. Third parties</a>
+        <a href="#terceros" data-lang="ca">5. Tercers i processadors</a>
+      </li>
+      <li>
+        <a href="#retencion" data-lang="es">6. Retención de datos</a>
+        <a href="#retencion" data-lang="en">6. Data retention</a>
+        <a href="#retencion" data-lang="ca">6. Retenció de dades</a>
+      </li>
+      <li>
+        <a href="#derechos" data-lang="es">7. Tus derechos</a>
+        <a href="#derechos" data-lang="en">7. Your rights</a>
+        <a href="#derechos" data-lang="ca">7. Els teus drets</a>
+      </li>
+      <li>
+        <a href="#menores" data-lang="es">8. Menores de edad</a>
+        <a href="#menores" data-lang="en">8. Minors</a>
+        <a href="#menores" data-lang="ca">8. Menors d'edat</a>
+      </li>
+      <li>
+        <a href="#cambios" data-lang="es">9. Cambios</a>
+        <a href="#cambios" data-lang="en">9. Changes</a>
+        <a href="#cambios" data-lang="ca">9. Canvis</a>
+      </li>
+      <li>
+        <a href="#contacto" data-lang="es">10. Contacto</a>
+        <a href="#contacto" data-lang="en">10. Contact</a>
+        <a href="#contacto" data-lang="ca">10. Contacte</a>
+      </li>
     </ul>
   </aside>
 
@@ -316,6 +364,7 @@
       <div class="section-num">1</div>
       <h2 class="section-heading" data-lang="es">Responsable del tratamiento</h2>
       <h2 class="section-heading" data-lang="en">Data controller</h2>
+      <h2 class="section-heading" data-lang="ca">Responsable del tractament</h2>
 
       <p data-lang="es">
         El responsable del tratamiento de los datos personales recogidos a través de la aplicación
@@ -325,12 +374,16 @@
         The data controller for personal data collected through the <strong>¿QuéHay?</strong> app
         and the website <strong>quehayagendalocal.com</strong> is:
       </p>
+      <p data-lang="ca">
+        El responsable del tractament de les dades personals recollides a través de l'aplicació
+        <strong>¿QuéHay?</strong> i del lloc web <strong>quehayagendalocal.com</strong> és:
+      </p>
 
       <div class="highlight-box">
         <strong>QuéHay</strong><br/>
-        <span data-lang="es">Correo de contacto:</span><span data-lang="en">Contact email:</span>
+        <span data-lang="es">Correo de contacto:</span><span data-lang="en">Contact email:</span><span data-lang="ca">Correu de contacte:</span>
         <a href="mailto:soporte.quehayar@gmail.com">soporte.quehayar@gmail.com</a><br/>
-        <span data-lang="es">Sitio web:</span><span data-lang="en">Website:</span>
+        <span data-lang="es">Sitio web:</span><span data-lang="en">Website:</span><span data-lang="ca">Lloc web:</span>
         quehayagendalocal.com
       </div>
 
@@ -342,6 +395,10 @@
         This policy is governed by the General Data Protection Regulation (GDPR, EU 2016/679)
         and Spanish data protection law (LOPDGDD 3/2018).
       </p>
+      <p data-lang="ca">
+        Aquesta política s'aplica en el marc del Reglament General de Protecció de Dades (RGPD, UE 2016/679)
+        i la Llei Orgànica 3/2018 de Protecció de Dades Personals (LOPDGDD).
+      </p>
     </div>
 
     <!-- 2. DATOS QUE RECOGEMOS / DATA WE COLLECT -->
@@ -349,40 +406,52 @@
       <div class="section-num">2</div>
       <h2 class="section-heading" data-lang="es">Datos que recogemos</h2>
       <h2 class="section-heading" data-lang="en">Data we collect</h2>
+      <h2 class="section-heading" data-lang="ca">Dades que recollim</h2>
 
       <p data-lang="es">Recogemos únicamente los datos necesarios para que la app funcione correctamente:</p>
       <p data-lang="en">We collect only the data necessary for the app to function:</p>
+      <p data-lang="ca">Recollim únicament les dades necessàries perquè l'app funcioni correctament:</p>
 
       <p data-lang="es"><strong>Datos de cuenta (usuarios registrados)</strong></p>
       <p data-lang="en"><strong>Account data (registered users)</strong></p>
+      <p data-lang="ca"><strong>Dades de compte (usuaris registrats)</strong></p>
       <ul>
         <li data-lang="es"><strong>Dirección de correo electrónico</strong> — para crear y autenticar tu cuenta.</li>
         <li data-lang="en"><strong>Email address</strong> — to create and authenticate your account.</li>
+        <li data-lang="ca"><strong>Adreça de correu electrònic</strong> — per crear i autenticar el teu compte.</li>
         <li data-lang="es"><strong>Contraseña</strong> — almacenada de forma cifrada; nunca tenemos acceso a tu contraseña en texto plano.</li>
         <li data-lang="en"><strong>Password</strong> — stored encrypted; we never have access to your password in plain text.</li>
+        <li data-lang="ca"><strong>Contrasenya</strong> — emmagatzemada de forma xifrada; mai tenim accés a la teva contrasenya en text pla.</li>
       </ul>
 
       <p data-lang="es"><strong>Datos de ubicación</strong></p>
       <p data-lang="en"><strong>Location data</strong></p>
+      <p data-lang="ca"><strong>Dades d'ubicació</strong></p>
       <ul>
         <li data-lang="es"><strong>Ubicación aproximada o precisa del dispositivo</strong> — únicamente cuando concedes permiso y mientras usas la app, para mostrarte eventos cercanos. No registramos tu historial de ubicaciones.</li>
         <li data-lang="en"><strong>Approximate or precise device location</strong> — only when you grant permission and while using the app, to show you nearby events. We do not record your location history.</li>
+        <li data-lang="ca"><strong>Ubicació aproximada o precisa del dispositiu</strong> — únicament quan concedeixis permís i mentre fas servir l'app, per mostrar-te esdeveniments propers. No registrem el teu historial d'ubicacions.</li>
       </ul>
 
       <p data-lang="es"><strong>Contenido publicado (anfitriones)</strong></p>
       <p data-lang="en"><strong>Published content (hosts)</strong></p>
+      <p data-lang="ca"><strong>Contingut publicat (amfitrions)</strong></p>
       <ul>
         <li data-lang="es"><strong>Eventos que publicas</strong> — título, descripción, fecha, lugar, categoría e imágenes de los eventos que creas como anfitrión.</li>
         <li data-lang="en"><strong>Events you post</strong> — title, description, date, venue, category and images of events you create as a host.</li>
+        <li data-lang="ca"><strong>Esdeveniments que publiques</strong> — títol, descripció, data, lloc, categoria i imatges dels esdeveniments que crees com a amfitrió.</li>
         <li data-lang="es"><strong>Imágenes de pósteres</strong> — fotografías de carteles en papel que subes para extraer información del evento.</li>
         <li data-lang="en"><strong>Poster images</strong> — photographs of paper posters you upload for event data extraction.</li>
+        <li data-lang="ca"><strong>Imatges de cartells</strong> — fotografies de cartells en paper que puges per extreure informació de l'esdeveniment.</li>
       </ul>
 
       <p data-lang="es"><strong>Datos técnicos (automáticos)</strong></p>
       <p data-lang="en"><strong>Technical data (automatic)</strong></p>
+      <p data-lang="ca"><strong>Dades tècniques (automàtiques)</strong></p>
       <ul>
         <li data-lang="es">Registros de acceso básicos (dirección IP, tipo de dispositivo, versión del sistema operativo) generados automáticamente por la infraestructura. Se usan exclusivamente para diagnóstico de errores y seguridad.</li>
         <li data-lang="en">Basic access logs (IP address, device type, OS version) generated automatically by the infrastructure. Used solely for error diagnosis and security.</li>
+        <li data-lang="ca">Registres d'accés bàsics (adreça IP, tipus de dispositiu, versió del sistema operatiu) generats automàticament per la infraestructura. S'utilitzen exclusivament per al diagnòstic d'errors i la seguretat.</li>
       </ul>
 
       <div class="highlight-box" data-lang="es">
@@ -391,6 +460,9 @@
       <div class="highlight-box" data-lang="en">
         <strong>We do not collect</strong> payment data, phone numbers, identity documents or any other sensitive personal data.
       </div>
+      <div class="highlight-box" data-lang="ca">
+        <strong>No recollim</strong> dades de pagament, número de telèfon, documents d'identitat ni cap altra dada sensible.
+      </div>
     </div>
 
     <!-- 3. USO DE LOS DATOS / HOW WE USE IT -->
@@ -398,25 +470,33 @@
       <div class="section-num">3</div>
       <h2 class="section-heading" data-lang="es">Cómo usamos tus datos</h2>
       <h2 class="section-heading" data-lang="en">How we use your data</h2>
+      <h2 class="section-heading" data-lang="ca">Com fem servir les teves dades</h2>
 
       <p data-lang="es">Usamos los datos recogidos para los siguientes fines:</p>
       <p data-lang="en">We use the data collected for the following purposes:</p>
+      <p data-lang="ca">Fem servir les dades recollides per als fins següents:</p>
 
       <ul>
         <li data-lang="es"><strong>Mostrar eventos relevantes</strong> — tu ubicación nos permite filtrar y ordenar los eventos más cercanos a ti.</li>
         <li data-lang="en"><strong>Show relevant events</strong> — your location allows us to filter and rank events nearest to you.</li>
+        <li data-lang="ca"><strong>Mostrar esdeveniments rellevants</strong> — la teva ubicació ens permet filtrar i ordenar els esdeveniments més propers a tu.</li>
         <li data-lang="es"><strong>Gestión de cuentas</strong> — tu correo y contraseña permiten crear una cuenta, iniciar sesión y recuperar el acceso.</li>
         <li data-lang="en"><strong>Account management</strong> — your email and password allow account creation, login and access recovery.</li>
+        <li data-lang="ca"><strong>Gestió de comptes</strong> — el teu correu i contrasenya permeten crear un compte, iniciar sessió i recuperar l'accés.</li>
         <li data-lang="es"><strong>Publicación de eventos</strong> — el contenido que subes como anfitrión se almacena y muestra a otros usuarios de la app.</li>
         <li data-lang="en"><strong>Event publishing</strong> — content you upload as a host is stored and displayed to other app users.</li>
+        <li data-lang="ca"><strong>Publicació d'esdeveniments</strong> — el contingut que puges com a amfitrió s'emmagatzema i es mostra a altres usuaris de l'app.</li>
         <li data-lang="es"><strong>Mejora del servicio</strong> — los datos técnicos nos ayudan a detectar errores y mejorar el rendimiento de la app.</li>
         <li data-lang="en"><strong>Service improvement</strong> — technical data helps us detect errors and improve app performance.</li>
+        <li data-lang="ca"><strong>Millora del servei</strong> — les dades tècniques ens ajuden a detectar errors i millorar el rendiment de l'app.</li>
         <li data-lang="es"><strong>Comunicaciones esenciales</strong> — podemos enviarte correos relacionados con tu cuenta (p. ej. restablecimiento de contraseña). No enviamos boletines comerciales sin tu consentimiento explícito.</li>
         <li data-lang="en"><strong>Essential communications</strong> — we may send you account-related emails (e.g. password reset). We do not send marketing emails without your explicit consent.</li>
+        <li data-lang="ca"><strong>Comunicacions essencials</strong> — podem enviar-te correus relacionats amb el teu compte (p. ex. restabliment de contrasenya). No enviem butlletins comercials sense el teu consentiment explícit.</li>
       </ul>
 
       <p data-lang="es">No usamos tus datos para publicidad personalizada ni para crear perfiles de comportamiento.</p>
       <p data-lang="en">We do not use your data for personalised advertising or behavioural profiling.</p>
+      <p data-lang="ca">No fem servir les teves dades per a publicitat personalitzada ni per crear perfils de comportament.</p>
     </div>
 
     <!-- 4. BASE LEGAL / LEGAL BASIS -->
@@ -424,17 +504,22 @@
       <div class="section-num">4</div>
       <h2 class="section-heading" data-lang="es">Base legal del tratamiento</h2>
       <h2 class="section-heading" data-lang="en">Legal basis for processing</h2>
+      <h2 class="section-heading" data-lang="ca">Base legal del tractament</h2>
 
       <p data-lang="es">Conforme al RGPD, el tratamiento de tus datos se apoya en las siguientes bases legales:</p>
       <p data-lang="en">Under the GDPR, our processing of your data is based on the following legal grounds:</p>
+      <p data-lang="ca">D'acord amb el RGPD, el tractament de les teves dades es fonamenta en les bases legals següents:</p>
 
       <ul>
         <li data-lang="es"><strong>Ejecución de un contrato</strong> (art. 6.1.b RGPD) — para gestionar tu cuenta y prestarte el servicio de la app.</li>
         <li data-lang="en"><strong>Performance of a contract</strong> (Art. 6.1.b GDPR) — to manage your account and provide the app service.</li>
+        <li data-lang="ca"><strong>Execució d'un contracte</strong> (art. 6.1.b RGPD) — per gestionar el teu compte i prestar-te el servei de l'app.</li>
         <li data-lang="es"><strong>Consentimiento</strong> (art. 6.1.a RGPD) — para acceder a tu ubicación. Puedes retirar este consentimiento en cualquier momento desde los ajustes de tu dispositivo.</li>
         <li data-lang="en"><strong>Consent</strong> (Art. 6.1.a GDPR) — to access your location. You can withdraw this consent at any time through your device settings.</li>
+        <li data-lang="ca"><strong>Consentiment</strong> (art. 6.1.a RGPD) — per accedir a la teva ubicació. Pots retirar aquest consentiment en qualsevol moment des de la configuració del teu dispositiu.</li>
         <li data-lang="es"><strong>Interés legítimo</strong> (art. 6.1.f RGPD) — para el mantenimiento de la seguridad y el diagnóstico técnico del servicio.</li>
         <li data-lang="en"><strong>Legitimate interest</strong> (Art. 6.1.f GDPR) — for security maintenance and technical diagnosis of the service.</li>
+        <li data-lang="ca"><strong>Interès legítim</strong> (art. 6.1.f RGPD) — per al manteniment de la seguretat i el diagnòstic tècnic del servei.</li>
       </ul>
     </div>
 
@@ -443,6 +528,7 @@
       <div class="section-num">5</div>
       <h2 class="section-heading" data-lang="es">Terceros y encargados del tratamiento</h2>
       <h2 class="section-heading" data-lang="en">Third parties and data processors</h2>
+      <h2 class="section-heading" data-lang="ca">Tercers i encarregats del tractament</h2>
 
       <div class="highlight-box" data-lang="es">
         <strong>No vendemos, alquilamos ni cedemos tus datos personales a terceros</strong> con fines comerciales o publicitarios, bajo ninguna circunstancia.
@@ -450,37 +536,50 @@
       <div class="highlight-box" data-lang="en">
         <strong>We do not sell, rent or share your personal data with third parties</strong> for commercial or advertising purposes, under any circumstances.
       </div>
+      <div class="highlight-box" data-lang="ca">
+        <strong>No venem, lloguem ni cedim les teves dades personals a tercers</strong> amb fins comercials o publicitaris, sota cap circumstància.
+      </div>
 
       <p data-lang="es">Para prestar el servicio, utilizamos los siguientes proveedores de infraestructura como encargados del tratamiento:</p>
       <p data-lang="en">To provide the service, we use the following infrastructure providers as data processors:</p>
+      <p data-lang="ca">Per prestar el servei, utilitzem els proveïdors d'infraestructura següents com a encarregats del tractament:</p>
 
       <p data-lang="es"><strong>Supabase (base de datos y autenticación)</strong></p>
       <p data-lang="en"><strong>Supabase (database and authentication)</strong></p>
+      <p data-lang="ca"><strong>Supabase (base de dades i autenticació)</strong></p>
       <ul>
         <li data-lang="es">Supabase, Inc. actúa como encargado del tratamiento para el almacenamiento de datos de cuenta, eventos publicados e imágenes.</li>
         <li data-lang="en">Supabase, Inc. acts as data processor for the storage of account data, published events and images.</li>
+        <li data-lang="ca">Supabase, Inc. actua com a encarregat del tractament per a l'emmagatzematge de dades de compte, esdeveniments publicats i imatges.</li>
         <li data-lang="es">Los datos se almacenan en servidores en la Unión Europea. Supabase cumple con el RGPD y ofrece garantías adecuadas conforme al art. 46 RGPD.</li>
         <li data-lang="en">Data is stored on servers within the European Union. Supabase is GDPR-compliant and provides appropriate safeguards under Art. 46 GDPR.</li>
+        <li data-lang="ca">Les dades s'emmagatzemen en servidors a la Unió Europea. Supabase compleix el RGPD i ofereix garanties adequades d'acord amb l'art. 46 RGPD.</li>
         <li data-lang="es">Puedes consultar la política de privacidad de Supabase en <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer">supabase.com/privacy</a>.</li>
         <li data-lang="en">You can review Supabase's privacy policy at <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer">supabase.com/privacy</a>.</li>
+        <li data-lang="ca">Pots consultar la política de privadesa de Supabase a <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer">supabase.com/privacy</a>.</li>
       </ul>
 
       <p data-lang="es"><strong>Expo / EAS (distribución de la app)</strong></p>
       <p data-lang="en"><strong>Expo / EAS (app distribution)</strong></p>
+      <p data-lang="ca"><strong>Expo / EAS (distribució de l'app)</strong></p>
       <ul>
         <li data-lang="es">Expo Application Services gestiona las actualizaciones de la app. No tiene acceso a tus datos personales.</li>
         <li data-lang="en">Expo Application Services manages app updates. It does not have access to your personal data.</li>
+        <li data-lang="ca">Expo Application Services gestiona les actualitzacions de l'app. No té accés a les teves dades personals.</li>
       </ul>
 
       <p data-lang="es"><strong>Google Play Store</strong></p>
       <p data-lang="en"><strong>Google Play Store</strong></p>
+      <p data-lang="ca"><strong>Google Play Store</strong></p>
       <ul>
         <li data-lang="es">La descarga de la app a través de Google Play está sujeta a la política de privacidad de Google. QuéHay no recibe datos de identificación personal de Google relacionados con la descarga.</li>
         <li data-lang="en">Downloading the app through Google Play is subject to Google's privacy policy. QuéHay does not receive personally identifiable data from Google relating to the download.</li>
+        <li data-lang="ca">La descàrrega de l'app a través de Google Play està subjecta a la política de privadesa de Google. QuéHay no rep dades d'identificació personal de Google relacionades amb la descàrrega.</li>
       </ul>
 
       <p data-lang="es">Podremos divulgar datos cuando sea legalmente exigible (p. ej. en cumplimiento de una orden judicial), en cuyo caso te informaremos en la medida en que la ley lo permita.</p>
       <p data-lang="en">We may disclose data when legally required (e.g. in compliance with a court order), in which case we will notify you to the extent permitted by law.</p>
+      <p data-lang="ca">Podrem divulgar dades quan sigui legalment exigible (p. ex. en compliment d'una ordre judicial), en aquest cas t'informarem en la mesura que la llei ho permeti.</p>
     </div>
 
     <!-- 6. RETENCIÓN / DATA RETENTION -->
@@ -488,16 +587,21 @@
       <div class="section-num">6</div>
       <h2 class="section-heading" data-lang="es">Retención de datos</h2>
       <h2 class="section-heading" data-lang="en">Data retention</h2>
+      <h2 class="section-heading" data-lang="ca">Retenció de dades</h2>
 
       <ul>
         <li data-lang="es"><strong>Datos de cuenta</strong> — se conservan mientras tu cuenta esté activa. Si eliminas tu cuenta, tus datos personales se borran en un plazo de 30 días.</li>
         <li data-lang="en"><strong>Account data</strong> — retained while your account is active. If you delete your account, your personal data is erased within 30 days.</li>
+        <li data-lang="ca"><strong>Dades de compte</strong> — es conserven mentre el teu compte estigui actiu. Si elimines el teu compte, les teves dades personals s'esborren en un termini de 30 dies.</li>
         <li data-lang="es"><strong>Eventos publicados</strong> — se conservan mientras tu cuenta esté activa o hasta que los elimines manualmente. Tras la eliminación de la cuenta, los eventos se borran junto con los datos personales.</li>
         <li data-lang="en"><strong>Published events</strong> — retained while your account is active or until you delete them manually. Upon account deletion, events are erased along with personal data.</li>
+        <li data-lang="ca"><strong>Esdeveniments publicats</strong> — es conserven mentre el teu compte estigui actiu o fins que els eliminis manualment. Després de l'eliminació del compte, els esdeveniments s'esborren juntament amb les dades personals.</li>
         <li data-lang="es"><strong>Datos de ubicación</strong> — no se almacenan de forma persistente; se usan solo en tiempo real durante la sesión activa de la app.</li>
         <li data-lang="en"><strong>Location data</strong> — not stored persistently; used only in real time during the active app session.</li>
+        <li data-lang="ca"><strong>Dades d'ubicació</strong> — no s'emmagatzemen de forma persistent; s'utilitzen només en temps real durant la sessió activa de l'app.</li>
         <li data-lang="es"><strong>Registros técnicos</strong> — se conservan durante un máximo de 90 días con fines de seguridad y diagnóstico.</li>
         <li data-lang="en"><strong>Technical logs</strong> — retained for a maximum of 90 days for security and diagnostic purposes.</li>
+        <li data-lang="ca"><strong>Registres tècnics</strong> — es conserven durant un màxim de 90 dies amb finalitats de seguretat i diagnòstic.</li>
       </ul>
     </div>
 
@@ -506,46 +610,60 @@
       <div class="section-num">7</div>
       <h2 class="section-heading" data-lang="es">Tus derechos</h2>
       <h2 class="section-heading" data-lang="en">Your rights</h2>
+      <h2 class="section-heading" data-lang="ca">Els teus drets</h2>
 
       <p data-lang="es">Como usuario en la Unión Europea, el RGPD te reconoce los siguientes derechos sobre tus datos personales:</p>
       <p data-lang="en">As a user in the European Union, the GDPR grants you the following rights over your personal data:</p>
+      <p data-lang="ca">Com a usuari a la Unió Europea, el RGPD et reconeix els drets següents sobre les teves dades personals:</p>
 
       <div class="rights-grid">
         <div class="right-item">
           <div class="right-title" data-lang="es">Acceso</div>
           <div class="right-title" data-lang="en">Access</div>
+          <div class="right-title" data-lang="ca">Accés</div>
           <div class="right-desc" data-lang="es">Solicitar una copia de los datos que tenemos sobre ti.</div>
           <div class="right-desc" data-lang="en">Request a copy of the data we hold about you.</div>
+          <div class="right-desc" data-lang="ca">Sol·licitar una còpia de les dades que tenim sobre tu.</div>
         </div>
         <div class="right-item">
           <div class="right-title" data-lang="es">Rectificación</div>
           <div class="right-title" data-lang="en">Rectification</div>
+          <div class="right-title" data-lang="ca">Rectificació</div>
           <div class="right-desc" data-lang="es">Corregir datos inexactos o incompletos.</div>
           <div class="right-desc" data-lang="en">Correct inaccurate or incomplete data.</div>
+          <div class="right-desc" data-lang="ca">Corregir dades inexactes o incompletes.</div>
         </div>
         <div class="right-item">
           <div class="right-title" data-lang="es">Supresión</div>
           <div class="right-title" data-lang="en">Erasure</div>
+          <div class="right-title" data-lang="ca">Supressió</div>
           <div class="right-desc" data-lang="es">Pedir la eliminación de tus datos («derecho al olvido»).</div>
           <div class="right-desc" data-lang="en">Request deletion of your data ("right to be forgotten").</div>
+          <div class="right-desc" data-lang="ca">Demanar l'eliminació de les teves dades («dret a l'oblit»).</div>
         </div>
         <div class="right-item">
           <div class="right-title" data-lang="es">Portabilidad</div>
           <div class="right-title" data-lang="en">Portability</div>
+          <div class="right-title" data-lang="ca">Portabilitat</div>
           <div class="right-desc" data-lang="es">Recibir tus datos en un formato estructurado y legible por máquina.</div>
           <div class="right-desc" data-lang="en">Receive your data in a structured, machine-readable format.</div>
+          <div class="right-desc" data-lang="ca">Rebre les teves dades en un format estructurat i llegible per màquina.</div>
         </div>
         <div class="right-item">
           <div class="right-title" data-lang="es">Limitación</div>
           <div class="right-title" data-lang="en">Restriction</div>
+          <div class="right-title" data-lang="ca">Limitació</div>
           <div class="right-desc" data-lang="es">Solicitar que restrinjamos el tratamiento de tus datos en determinadas circunstancias.</div>
           <div class="right-desc" data-lang="en">Ask us to restrict processing of your data in certain circumstances.</div>
+          <div class="right-desc" data-lang="ca">Sol·licitar que restringim el tractament de les teves dades en determinades circumstàncies.</div>
         </div>
         <div class="right-item">
           <div class="right-title" data-lang="es">Oposición</div>
           <div class="right-title" data-lang="en">Objection</div>
+          <div class="right-title" data-lang="ca">Oposició</div>
           <div class="right-desc" data-lang="es">Oponerte al tratamiento basado en interés legítimo.</div>
           <div class="right-desc" data-lang="en">Object to processing based on legitimate interest.</div>
+          <div class="right-desc" data-lang="ca">Oposar-te al tractament basat en interès legítim.</div>
         </div>
       </div>
 
@@ -559,6 +677,11 @@
         <a href="mailto:soporte.quehayar@gmail.com">soporte.quehayar@gmail.com</a>.
         We will respond within 30 days.
       </p>
+      <p data-lang="ca" style="margin-top: 20px;">
+        Per exercir qualsevol d'aquests drets, escriu-nos a
+        <a href="mailto:soporte.quehayar@gmail.com">soporte.quehayar@gmail.com</a>.
+        Respondrem en un termini màxim de 30 dies.
+      </p>
 
       <p data-lang="es">
         Si consideras que el tratamiento de tus datos vulnera la normativa, tienes derecho a presentar una reclamación ante la
@@ -570,6 +693,11 @@
         <strong>Spanish Data Protection Authority (AEPD)</strong> at
         <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">aepd.es</a>.
       </p>
+      <p data-lang="ca">
+        Si consideres que el tractament de les teves dades vulnera la normativa, tens dret a presentar una reclamació davant l'
+        <strong>Agència Espanyola de Protecció de Dades (AEPD)</strong> a
+        <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">aepd.es</a>.
+      </p>
     </div>
 
     <!-- 8. MENORES / MINORS -->
@@ -577,6 +705,7 @@
       <div class="section-num">8</div>
       <h2 class="section-heading" data-lang="es">Menores de edad</h2>
       <h2 class="section-heading" data-lang="en">Minors</h2>
+      <h2 class="section-heading" data-lang="ca">Menors d'edat</h2>
 
       <p data-lang="es">
         La aplicación no está dirigida a menores de 14 años. No recogemos conscientemente datos personales de
@@ -591,6 +720,13 @@
         contact us at <a href="mailto:soporte.quehayar@gmail.com">soporte.quehayar@gmail.com</a>
         and we will delete it promptly.
       </p>
+      <p data-lang="ca">
+        L'aplicació no està dirigida a menors de 14 anys. No recollim conscientemente dades personals de
+        menors de 14 anys. Si ets pare, mare o tutor i creus que el teu fill/a ens ha proporcionat dades sense
+        el teu consentiment, contacta'ns a
+        <a href="mailto:soporte.quehayar@gmail.com">soporte.quehayar@gmail.com</a>
+        i procedim a eliminar-les.
+      </p>
     </div>
 
     <!-- 9. CAMBIOS / CHANGES -->
@@ -598,6 +734,7 @@
       <div class="section-num">9</div>
       <h2 class="section-heading" data-lang="es">Cambios en esta política</h2>
       <h2 class="section-heading" data-lang="en">Changes to this policy</h2>
+      <h2 class="section-heading" data-lang="ca">Canvis en aquesta política</h2>
 
       <p data-lang="es">
         Podemos actualizar esta política periódicamente para reflejar cambios en el servicio o en la legislación
@@ -610,6 +747,12 @@
         When we make material changes, we will update the "Last updated" date at the top of this page
         and, if the changes are significant, notify you by email or via an in-app notification.
       </p>
+      <p data-lang="ca">
+        Podem actualitzar aquesta política periòdicament per reflectir canvis en el servei o en la legislació
+        aplicable. Quan realitzem canvis rellevants, actualitzarem la data de «Darrera actualització» a
+        la capçalera d'aquesta pàgina i, si els canvis són substancials, t'informarem per correu electrònic
+        o mitjançant una notificació a l'app.
+      </p>
 
       <p data-lang="es">
         El uso continuado de la app tras la publicación de cambios implica la aceptación de la nueva versión
@@ -618,6 +761,10 @@
       <p data-lang="en">
         Continued use of the app after changes are published constitutes acceptance of the updated policy.
       </p>
+      <p data-lang="ca">
+        L'ús continuat de l'app després de la publicació de canvis implica l'acceptació de la nova versió
+        de la política.
+      </p>
     </div>
 
     <!-- 10. CONTACTO / CONTACT -->
@@ -625,6 +772,7 @@
       <div class="section-num">10</div>
       <h2 class="section-heading" data-lang="es">Contacto</h2>
       <h2 class="section-heading" data-lang="en">Contact</h2>
+      <h2 class="section-heading" data-lang="ca">Contacte</h2>
 
       <p data-lang="es">
         Si tienes preguntas sobre esta política de privacidad, quieres ejercer tus derechos o necesitas
@@ -634,11 +782,16 @@
         If you have questions about this privacy policy, want to exercise your rights or need to report
         a data protection concern, please contact us:
       </p>
+      <p data-lang="ca">
+        Si tens preguntes sobre aquesta política de privadesa, vols exercir els teus drets o necessites
+        informar d'un problema relacionat amb la protecció de dades, posa't en contacte amb nosaltres:
+      </p>
 
       <div class="highlight-box">
         ✉️ &nbsp;<a href="mailto:soporte.quehayar@gmail.com"><strong>soporte.quehayar@gmail.com</strong></a><br/>
         <span style="opacity: 0.75; font-size: 0.875rem;" data-lang="es">Respondemos en un plazo máximo de 30 días.</span>
         <span style="opacity: 0.75; font-size: 0.875rem;" data-lang="en">We respond within a maximum of 30 days.</span>
+        <span style="opacity: 0.75; font-size: 0.875rem;" data-lang="ca">Responem en un termini màxim de 30 dies.</span>
       </div>
     </div>
 
@@ -653,16 +806,20 @@
       <div class="footer-links">
         <a href="mailto:soporte.quehayar@gmail.com" data-lang="es">Contacto</a>
         <a href="mailto:soporte.quehayar@gmail.com" data-lang="en">Contact</a>
+        <a href="mailto:soporte.quehayar@gmail.com" data-lang="ca">Contacte</a>
         <a href="privacy.html" data-lang="es">Privacidad</a>
         <a href="privacy.html" data-lang="en">Privacy</a>
+        <a href="privacy.html" data-lang="ca">Privadesa</a>
         <a href="delete-account.html" data-lang="es">Eliminar cuenta</a>
         <a href="delete-account.html" data-lang="en">Delete account</a>
+        <a href="delete-account.html" data-lang="ca">Eliminar compte</a>
       </div>
     </div>
     <hr class="footer-divider" />
     <div class="footer-bottom">
       <span data-lang="es">© 2026 QuéHay. Hecho con ♥ en España.</span>
       <span data-lang="en">© 2026 QuéHay. Made with ♥ in Spain.</span>
+      <span data-lang="ca">© 2026 QuéHay. Fet amb ♥ a Espanya.</span>
       <span>quehayagendalocal.com</span>
     </div>
   </div>
@@ -673,12 +830,14 @@
     document.body.className = 'lang-' + lang;
     document.getElementById('btn-es').classList.toggle('active', lang === 'es');
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-    document.documentElement.lang = lang === 'es' ? 'es' : 'en';
+    document.getElementById('btn-ca').classList.toggle('active', lang === 'ca');
+    document.documentElement.lang = lang === 'ca' ? 'ca' : (lang === 'en' ? 'en' : 'es');
   }
 
   (function () {
     const nav = window.navigator.language || '';
-    if (!nav.startsWith('es')) setLang('en');
+    if (nav.startsWith('ca')) setLang('ca');
+    else if (!nav.startsWith('es')) setLang('en');
   })();
 </script>
 </body>

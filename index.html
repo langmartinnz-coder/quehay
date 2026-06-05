@@ -43,7 +43,8 @@
     /* ─── LANGUAGE TOGGLE ─── */
     [data-lang] { display: none; }
     body.lang-es [data-lang="es"],
-    body.lang-en [data-lang="en"] { display: revert; }
+    body.lang-en [data-lang="en"],
+    body.lang-ca [data-lang="ca"] { display: revert; }
 
     /* ─── NAV ─── */
     nav {
@@ -359,10 +360,12 @@
       <div class="lang-toggle">
         <button class="lang-btn active" id="btn-es" onclick="setLang('es')">ES</button>
         <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="btn-ca" onclick="setLang('ca')">CA</button>
       </div>
       <a href="#download" class="nav-cta">
         <span data-lang="es">Descargar</span>
         <span data-lang="en">Download</span>
+        <span data-lang="ca">Descarrega</span>
       </a>
     </div>
   </div>
@@ -376,20 +379,25 @@
         <div class="dot"></div>
         <span data-lang="es">Disponible en Google Play</span>
         <span data-lang="en">Available on Google Play</span>
+        <span data-lang="ca">Disponible a Google Play</span>
       </div>
       <h1 data-lang="es">Descubre lo que pasa <em>cerca de ti</em></h1>
       <h1 data-lang="en">Discover what's <em>happening nearby</em></h1>
+      <h1 data-lang="ca">Descobreix el que passa <em>a prop teu</em></h1>
       <p data-lang="es">Ferias, mercados, conciertos, teatro y mucho más — eventos locales auténticos en España.</p>
       <p data-lang="en">Fairs, markets, concerts, theatre and much more — authentic local events across Spain.</p>
+      <p data-lang="ca">Fires, mercats, concerts, teatre i molt més — esdeveniments locals autèntics a Espanya.</p>
       <div class="hero-actions">
         <a href="#download" class="btn-primary">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17l-5-5 1.4-1.4L11 14.2V3h2v11.2l2.6-3.6L17 12z"/><path d="M5 19h14v2H5z"/></svg>
           <span data-lang="es">Descarga la app</span>
           <span data-lang="en">Download the app</span>
+          <span data-lang="ca">Descarrega l'app</span>
         </a>
         <a href="#how" class="btn-secondary">
           <span data-lang="es">Cómo funciona</span>
           <span data-lang="en">How it works</span>
+          <span data-lang="ca">Com funciona</span>
         </a>
       </div>
     </div>
@@ -402,31 +410,41 @@
         <div class="phone-body">
           <div class="phone-search" data-lang="es">🔍 &nbsp;Buscar eventos...</div>
           <div class="phone-search" data-lang="en">🔍 &nbsp;Search events...</div>
+          <div class="phone-search" data-lang="ca">🔍 &nbsp;Cerca esdeveniments...</div>
           <div class="phone-pills">
             <div class="pill active" data-lang="es">Todos</div>
             <div class="pill active" data-lang="en">All</div>
+            <div class="pill active" data-lang="ca">Tots</div>
             <div class="pill inactive" data-lang="es">Música</div>
             <div class="pill inactive" data-lang="en">Music</div>
+            <div class="pill inactive" data-lang="ca">Música</div>
             <div class="pill inactive" data-lang="es">Mercados</div>
             <div class="pill inactive" data-lang="en">Markets</div>
+            <div class="pill inactive" data-lang="ca">Mercats</div>
           </div>
           <div class="phone-card">
             <div class="phone-card-img" style="background: #FEF0E8;">🎪</div>
             <div class="phone-card-title" data-lang="es">Feria Medieval de Teruel</div>
             <div class="phone-card-title" data-lang="en">Medieval Fair of Teruel</div>
+            <div class="phone-card-title" data-lang="ca">Fira Medieval de Terol</div>
             <div class="phone-card-sub" data-lang="es">📍 Teruel · 3–5 Oct</div>
             <div class="phone-card-sub" data-lang="en">📍 Teruel · 3–5 Oct</div>
+            <div class="phone-card-sub" data-lang="ca">📍 Terol · 3–5 Oct</div>
             <div class="phone-card-tag" data-lang="es">Destacado</div>
             <div class="phone-card-tag" data-lang="en">Featured</div>
+            <div class="phone-card-tag" data-lang="ca">Destacat</div>
           </div>
           <div class="phone-card">
             <div class="phone-card-img" style="background: #F0F7EE;">🌿</div>
             <div class="phone-card-title" data-lang="es">Mercado Ecológico</div>
             <div class="phone-card-title" data-lang="en">Organic Market</div>
+            <div class="phone-card-title" data-lang="ca">Mercat Ecològic</div>
             <div class="phone-card-sub" data-lang="es">📍 Barcelona · Dom 10:00</div>
             <div class="phone-card-sub" data-lang="en">📍 Barcelona · Sun 10:00</div>
+            <div class="phone-card-sub" data-lang="ca">📍 Barcelona · Dg. 10:00</div>
             <div class="phone-card-tag" data-lang="es">Semanal</div>
             <div class="phone-card-tag" data-lang="en">Weekly</div>
+            <div class="phone-card-tag" data-lang="ca">Setmanal</div>
           </div>
         </div>
       </div>
@@ -439,59 +457,76 @@
   <div class="section-inner">
     <p class="section-label" data-lang="es">Características</p>
     <p class="section-label" data-lang="en">Features</p>
+    <p class="section-label" data-lang="ca">Característiques</p>
     <h2 class="section-title" data-lang="es">¿Por qué QuéHay?</h2>
     <h2 class="section-title" data-lang="en">Why QuéHay?</h2>
+    <h2 class="section-title" data-lang="ca">Per què QuéHay?</h2>
     <p class="section-sub" data-lang="es">Diseñado para quienes quieren vivir su ciudad y explorar España de verdad.</p>
     <p class="section-sub" data-lang="en">Built for people who want to truly experience their city and explore Spain.</p>
+    <p class="section-sub" data-lang="ca">Dissenyat per a qui vol viure la seva ciutat i explorar Espanya de debò.</p>
     <div class="features-grid">
       <div class="feat-card">
         <div class="feat-icon">✅</div>
         <div class="feat-title" data-lang="es">Solo eventos reales</div>
         <div class="feat-title" data-lang="en">Real events only</div>
+        <div class="feat-title" data-lang="ca">Només esdeveniments reals</div>
         <div class="feat-desc" data-lang="es">Cada evento es publicado directamente por su organizador. Lo que ves refleja lo que realmente pasa cerca de ti.</div>
         <div class="feat-desc" data-lang="en">Every event is posted directly by its organiser. What you see reflects what's actually happening nearby.</div>
+        <div class="feat-desc" data-lang="ca">Cada esdeveniment és publicat directament pel seu organitzador. El que veus reflecteix el que passa realment a prop teu.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon">📍</div>
         <div class="feat-title" data-lang="es">Hiperlocal de verdad</div>
         <div class="feat-title" data-lang="en">Genuinely hyperlocal</div>
+        <div class="feat-title" data-lang="ca">Hiperlocal de debò</div>
         <div class="feat-desc" data-lang="es">Filtra por ubicación, fecha, categoría o radio. Descubre qué hay en tu barrio o en el próximo pueblo.</div>
         <div class="feat-desc" data-lang="en">Filter by location, date, category or radius. Discover what's on in your neighbourhood or the next town over.</div>
+        <div class="feat-desc" data-lang="ca">Filtra per ubicació, data, categoria o radi. Descobreix què hi ha al teu barri o al poble del costat.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon">🗺️</div>
         <div class="feat-title" data-lang="es">Vista mapa integrada</div>
         <div class="feat-title" data-lang="en">Built-in map view</div>
+        <div class="feat-title" data-lang="ca">Vista mapa integrada</div>
         <div class="feat-desc" data-lang="es">Explora eventos en un mapa interactivo. Perfecto para planificar una ruta o descubrir por sorpresa.</div>
         <div class="feat-desc" data-lang="en">Explore events on an interactive map. Perfect for planning a route or stumbling upon something new.</div>
+        <div class="feat-desc" data-lang="ca">Explora esdeveniments en un mapa interactiu. Perfecte per planificar una ruta o descobrir per sorpresa.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon">📲</div>
         <div class="feat-title" data-lang="es">Explora eventos al instante</div>
         <div class="feat-title" data-lang="en">Explore events instantly</div>
+        <div class="feat-title" data-lang="ca">Explora esdeveniments a l'instant</div>
         <div class="feat-desc" data-lang="es">Descarga la app y empieza a explorar eventos cercanos sin necesidad de registrarte.</div>
         <div class="feat-desc" data-lang="en">Download the app and start exploring nearby events without needing to sign up.</div>
+        <div class="feat-desc" data-lang="ca">Descarrega l'app i comença a explorar esdeveniments propers sense necessitat de registrar-te.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon">🤖</div>
         <div class="feat-title" data-lang="es">IA extrae los datos del póster</div>
         <div class="feat-title" data-lang="en">AI reads the poster for you</div>
+        <div class="feat-title" data-lang="ca">La IA llegeix el cartell per tu</div>
         <div class="feat-desc" data-lang="es">Fotografía un cartel o imagen de WhatsApp y QuéHay extrae automáticamente nombre, fecha, lugar y más.</div>
         <div class="feat-desc" data-lang="en">Photograph a flyer or WhatsApp image and QuéHay automatically pulls out the name, date, venue and more.</div>
+        <div class="feat-desc" data-lang="ca">Fotografía un cartell o una imatge de WhatsApp i QuéHay extreu automàticament el nom, la data, el lloc i molt més.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon">❤️</div>
         <div class="feat-title" data-lang="es">Guarda tus favoritos</div>
         <div class="feat-title" data-lang="en">Save your favourites</div>
+        <div class="feat-title" data-lang="ca">Desa els teus preferits</div>
         <div class="feat-desc" data-lang="es">Marca los eventos que te interesan con un toque. Se sincronizan en todos tus dispositivos si inicias sesión.</div>
         <div class="feat-desc" data-lang="en">Bookmark events you're interested in with one tap. They sync across your devices when you sign in.</div>
+        <div class="feat-desc" data-lang="ca">Marca els esdeveniments que t'interessen amb un toc. Es sincronitzen a tots els teus dispositius si inicies sessió.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon">🌍</div>
-        <div class="feat-title" data-lang="es">Español e inglés</div>
-        <div class="feat-title" data-lang="en">Spanish and English</div>
-        <div class="feat-desc" data-lang="es">La app funciona en ambos idiomas — ideal para viajeros internacionales y residentes extranjeros en España.</div>
-        <div class="feat-desc" data-lang="en">The app works in both languages — ideal for international travellers and foreign residents in Spain.</div>
+        <div class="feat-title" data-lang="es">Español, inglés y catalán</div>
+        <div class="feat-title" data-lang="en">Spanish, English and Catalan</div>
+        <div class="feat-title" data-lang="ca">Espanyol, anglès i català</div>
+        <div class="feat-desc" data-lang="es">La app funciona en los tres idiomas — ideal para viajeros internacionales y residentes en España.</div>
+        <div class="feat-desc" data-lang="en">The app works in all three languages — ideal for international travellers and residents in Spain.</div>
+        <div class="feat-desc" data-lang="ca">L'app funciona en els tres idiomes — ideal per a turistes internacionals i residents a Espanya.</div>
       </div>
     </div>
   </div>
@@ -502,38 +537,49 @@
   <div class="section-inner">
     <p class="section-label" data-lang="es">Cómo funciona</p>
     <p class="section-label" data-lang="en">How it works</p>
+    <p class="section-label" data-lang="ca">Com funciona</p>
     <h2 class="section-title" data-lang="es">En tres pasos</h2>
     <h2 class="section-title" data-lang="en">Three simple steps</h2>
+    <h2 class="section-title" data-lang="ca">En tres passos</h2>
     <p class="section-sub" data-lang="es">Empezar con QuéHay es inmediato — no hace falta registro para explorar.</p>
     <p class="section-sub" data-lang="en">Getting started with QuéHay is instant — no sign-up required to browse.</p>
+    <p class="section-sub" data-lang="ca">Començar amb QuéHay és immediat — no cal registrar-se per explorar.</p>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-title" data-lang="es">Descarga la app</div>
         <div class="step-title" data-lang="en">Download the app</div>
+        <div class="step-title" data-lang="ca">Descarrega l'app</div>
         <div class="step-desc" data-lang="es">Disponible en Google Play para Android. Se instala en segundos.</div>
         <div class="step-desc" data-lang="en">Available on Google Play for Android. Installs in seconds.</div>
+        <div class="step-desc" data-lang="ca">Disponible a Google Play per a Android. S'instal·la en segons.</div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
         <div class="step-title" data-lang="es">Elige tu idioma</div>
         <div class="step-title" data-lang="en">Choose your language</div>
-        <div class="step-desc" data-lang="es">Selecciona español o inglés al primer inicio. Puedes cambiarlo cuando quieras desde el perfil.</div>
-        <div class="step-desc" data-lang="en">Pick Spanish or English on first launch. You can change it any time from your profile.</div>
+        <div class="step-title" data-lang="ca">Tria el teu idioma</div>
+        <div class="step-desc" data-lang="es">Selecciona español, inglés o catalán al primer inicio. Puedes cambiarlo cuando quieras desde el perfil.</div>
+        <div class="step-desc" data-lang="en">Pick Spanish, English or Catalan on first launch. You can change it any time from your profile.</div>
+        <div class="step-desc" data-lang="ca">Selecciona espanyol, anglès o català al primer inici. Pots canviar-ho quan vulguis des del perfil.</div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
         <div class="step-title" data-lang="es">Explora y guarda</div>
         <div class="step-title" data-lang="en">Browse and save</div>
+        <div class="step-title" data-lang="ca">Explora i desa</div>
         <div class="step-desc" data-lang="es">Filtra por categoría, fecha o región. Toca el corazón en cualquier evento para guardarlo en favoritos.</div>
         <div class="step-desc" data-lang="en">Filter by category, date or region. Tap the heart on any event to save it to your favourites.</div>
+        <div class="step-desc" data-lang="ca">Filtra per categoria, data o regió. Toca el cor en qualsevol esdeveniment per desar-lo als preferits.</div>
       </div>
       <div class="step">
         <div class="step-num">4</div>
         <div class="step-title" data-lang="es">¿Tienes un evento? Compártelo</div>
         <div class="step-title" data-lang="en">Have an event? Share it</div>
+        <div class="step-title" data-lang="ca">Tens un esdeveniment? Comparteix-lo</div>
         <div class="step-desc" data-lang="es">Fotografía el póster, deja que la IA extraiga los datos y envíalo en segundos. Aparece en la app en 24-48 horas.</div>
         <div class="step-desc" data-lang="en">Photograph the poster, let AI extract the details, and submit in seconds. It appears in the app within 24-48 hours.</div>
+        <div class="step-desc" data-lang="ca">Fotografía el cartell, deixa que la IA extregui les dades i envia-ho en segons. Apareix a l'app en 24-48 hores.</div>
       </div>
     </div>
   </div>
@@ -544,10 +590,13 @@
   <div class="section-inner">
     <p class="section-label" data-lang="es">Descarga</p>
     <p class="section-label" data-lang="en">Download</p>
+    <p class="section-label" data-lang="ca">Descàrrega</p>
     <h2 class="section-title" data-lang="es">Empieza a descubrir hoy</h2>
     <h2 class="section-title" data-lang="en">Start discovering today</h2>
+    <h2 class="section-title" data-lang="ca">Comença a descobrir avui</h2>
     <p class="section-sub" data-lang="es">QuéHay está disponible para Android. Descarga la app desde Google Play.</p>
     <p class="section-sub" data-lang="en">QuéHay is available for Android. Download the app from Google Play.</p>
+    <p class="section-sub" data-lang="ca">QuéHay està disponible per a Android. Descarrega l'app des de Google Play.</p>
     <a
       href="https://play.google.com/store/apps/details?id=com.marsu123.quehay"
       class="gplay-badge"
@@ -557,11 +606,13 @@
       <div class="gplay-text">
         <span class="gplay-pre" data-lang="es">Disponible en</span>
         <span class="gplay-pre" data-lang="en">Get it on</span>
+        <span class="gplay-pre" data-lang="ca">Disponible a</span>
         <span class="gplay-name">Google Play</span>
       </div>
     </a>
     <p class="download-note" data-lang="es">iOS próximamente. &nbsp;·&nbsp; La app está actualmente en fase de pruebas.</p>
     <p class="download-note" data-lang="en">iOS coming soon. &nbsp;·&nbsp; The app is currently in testing.</p>
+    <p class="download-note" data-lang="ca">iOS pròximament. &nbsp;·&nbsp; L'app està actualment en fase de proves.</p>
   </div>
 </section>
 
@@ -572,15 +623,19 @@
       <div>
         <p class="section-label" data-lang="es">Contacto</p>
         <p class="section-label" data-lang="en">Contact</p>
+        <p class="section-label" data-lang="ca">Contacte</p>
         <h2 class="section-title" data-lang="es">¿Tienes alguna pregunta?</h2>
         <h2 class="section-title" data-lang="en">Have a question?</h2>
+        <h2 class="section-title" data-lang="ca">Tens alguna pregunta?</h2>
         <p class="section-sub" data-lang="es">Escríbenos si tienes dudas, sugerencias, o quieres publicar eventos en QuéHay.</p>
         <p class="section-sub" data-lang="en">Write to us if you have questions, suggestions, or want to publish events on QuéHay.</p>
+        <p class="section-sub" data-lang="ca">Escriu-nos si tens dubtes, suggeriments, o vols publicar esdeveniments a QuéHay.</p>
         <div class="contact-info-item">
           <div class="contact-icon">✉️</div>
           <div>
             <div class="contact-info-label" data-lang="es">Correo electrónico</div>
             <div class="contact-info-label" data-lang="en">Email</div>
+            <div class="contact-info-label" data-lang="ca">Correu electrònic</div>
             <div class="contact-info-val"><a href="mailto:soporte.quehayar@gmail.com">soporte.quehayar@gmail.com</a></div>
           </div>
         </div>
@@ -589,6 +644,7 @@
           <div>
             <div class="contact-info-label" data-lang="es">Sitio web</div>
             <div class="contact-info-label" data-lang="en">Website</div>
+            <div class="contact-info-label" data-lang="ca">Lloc web</div>
             <div class="contact-info-val"><a href="https://quehayagendalocal.com">quehayagendalocal.com</a></div>
           </div>
         </div>
@@ -598,6 +654,7 @@
             <div class="contact-info-label">España</div>
             <div class="contact-info-val" data-lang="es">Teruel · Catalunya · y más</div>
             <div class="contact-info-val" data-lang="en">Teruel · Catalunya · and beyond</div>
+            <div class="contact-info-val" data-lang="ca">Teruel · Catalunya · i més</div>
           </div>
         </div>
       </div>
@@ -608,12 +665,14 @@
             <div class="form-group">
               <label for="name" data-lang="es">Nombre</label>
               <label for="name" data-lang="en">Name</label>
+              <label for="name" data-lang="ca">Nom</label>
               <input type="text" id="name" name="name" required
                 placeholder="" autocomplete="name" />
             </div>
             <div class="form-group">
               <label for="email" data-lang="es">Correo electrónico</label>
               <label for="email" data-lang="en">Email address</label>
+              <label for="email" data-lang="ca">Adreça de correu electrònic</label>
               <input type="email" id="email" name="email" required
                 placeholder="" autocomplete="email" />
             </div>
@@ -621,31 +680,40 @@
           <div class="form-group">
             <label for="subject" data-lang="es">Asunto</label>
             <label for="subject" data-lang="en">Subject</label>
+            <label for="subject" data-lang="ca">Assumpte</label>
             <select id="subject" name="subject">
               <option value="" data-lang="es">Selecciona un tema...</option>
               <option value="" data-lang="en">Select a topic...</option>
+              <option value="" data-lang="ca">Selecciona un tema...</option>
               <option value="pregunta" data-lang="es">Pregunta general</option>
               <option value="question" data-lang="en">General question</option>
+              <option value="pregunta" data-lang="ca">Pregunta general</option>
               <option value="publicar" data-lang="es">Quiero publicar eventos</option>
               <option value="publish" data-lang="en">I want to publish events</option>
+              <option value="publicar" data-lang="ca">Vull publicar esdeveniments</option>
               <option value="error" data-lang="es">Reportar un problema</option>
               <option value="bug" data-lang="en">Report a problem</option>
+              <option value="error" data-lang="ca">Informar d'un problema</option>
               <option value="sugerencia" data-lang="es">Sugerencia</option>
               <option value="suggestion" data-lang="en">Suggestion</option>
+              <option value="suggeriment" data-lang="ca">Suggeriment</option>
             </select>
           </div>
           <div class="form-group">
             <label for="message" data-lang="es">Mensaje</label>
             <label for="message" data-lang="en">Message</label>
+            <label for="message" data-lang="ca">Missatge</label>
             <textarea id="message" name="message" required></textarea>
           </div>
           <button type="submit" class="form-submit">
             <span data-lang="es">Enviar mensaje</span>
             <span data-lang="en">Send message</span>
+            <span data-lang="ca">Enviar missatge</span>
           </button>
           <div class="form-success" id="form-success">
             <span data-lang="es">✓ Mensaje enviado. Te responderemos pronto.</span>
             <span data-lang="en">✓ Message sent. We'll get back to you soon.</span>
+            <span data-lang="ca">✓ Missatge enviat. Et respondrem aviat.</span>
           </div>
         </form>
       </div>
@@ -661,16 +729,20 @@
       <div class="footer-links">
         <a href="mailto:soporte.quehayar@gmail.com" data-lang="es">Contacto</a>
         <a href="mailto:soporte.quehayar@gmail.com" data-lang="en">Contact</a>
+        <a href="mailto:soporte.quehayar@gmail.com" data-lang="ca">Contacte</a>
         <a href="privacy.html" data-lang="es">Privacidad</a>
         <a href="privacy.html" data-lang="en">Privacy</a>
+        <a href="privacy.html" data-lang="ca">Privadesa</a>
         <a href="delete-account.html" data-lang="es">Eliminar cuenta</a>
         <a href="delete-account.html" data-lang="en">Delete account</a>
+        <a href="delete-account.html" data-lang="ca">Eliminar compte</a>
       </div>
     </div>
     <hr class="footer-divider" />
     <div class="footer-bottom">
       <span data-lang="es">© 2026 QuéHay. Hecho con ♥ en España.</span>
       <span data-lang="en">© 2026 QuéHay. Made with ♥ in Spain.</span>
+      <span data-lang="ca">© 2026 QuéHay. Fet amb ♥ a Espanya.</span>
       <span>quehayagendalocal.com</span>
     </div>
   </div>
@@ -681,13 +753,15 @@
     document.body.className = 'lang-' + lang;
     document.getElementById('btn-es').classList.toggle('active', lang === 'es');
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-    document.documentElement.lang = lang === 'es' ? 'es' : 'en';
+    document.getElementById('btn-ca').classList.toggle('active', lang === 'ca');
+    document.documentElement.lang = lang === 'ca' ? 'ca' : (lang === 'en' ? 'en' : 'es');
   }
 
   // Auto-detect browser language on first load
   (function () {
     const nav = window.navigator.language || '';
-    if (!nav.startsWith('es')) setLang('en');
+    if (nav.startsWith('ca')) setLang('ca');
+    else if (!nav.startsWith('es')) setLang('en');
   })();
 
   function handleSubmit(e) {

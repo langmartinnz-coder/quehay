@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useCallback, useEffect, useMemo } from 'react';
 import { Session, User } from '@supabase/supabase-js';
+import * as WebBrowser from 'expo-web-browser';
+import * as Linking from 'expo-linking';
 import { AppFilters, Event } from '../types';
 import { supabase } from '../lib/supabase';
 import * as api from '../lib/api';
@@ -10,6 +12,8 @@ interface AppContextType {
   authLoading: boolean;
   signUp: (email: string, password: string) => Promise<{ error: string | null }>;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
+  signInWithGoogle: () => Promise<{ error: string | null }>;
+  signInWithFacebook: () => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
   events: Event[];
   eventsLoading: boolean;
@@ -121,6 +125,27 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     return { error: error?.message ?? null };
   }, []);
 
+  const signInWithOAuthProvider = useCallback(async (provider: 'google' | 'facebook') => {
+    const redirectTo = Linking.createURL('auth-callback');
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: { redirectTo, skipBrowserRedirect: true },
+    });
+    if (error) return { error: error.message };
+    if (!data.url) return { error: 'No OAuth URL returned' };
+
+    const result = await WebBrowser.openAuthSessionAsync(data.url, redirectTo);
+    if (result.type === 'success') {
+      const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(result.url);
+      if (exchangeError) return { error: exchangeError.message };
+      return { error: null };
+    }
+    return { error: null };
+  }, []);
+
+  const signInWithGoogle = useCallback(() => signInWithOAuthProvider('google'), [signInWithOAuthProvider]);
+  const signInWithFacebook = useCallback(() => signInWithOAuthProvider('facebook'), [signInWithOAuthProvider]);
+
   const signOut = useCallback(async () => {
     await supabase.auth.signOut();
   }, []);
@@ -133,6 +158,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         authLoading,
         signUp,
         signIn,
+        signInWithGoogle,
+        signInWithFacebook,
         signOut,
         events,
         eventsLoading,

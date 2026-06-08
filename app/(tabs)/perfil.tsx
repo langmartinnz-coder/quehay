@@ -17,11 +17,12 @@ import { useLanguage } from '../../store/LanguageContext';
 
 export default function PerfilScreen() {
   const { t, language, setLanguage } = useLanguage();
-  const { favorites, isFavorite, toggleFavorite, events, user, authLoading, signIn, signUp, signOut } = useApp();
+  const { favorites, isFavorite, toggleFavorite, events, user, authLoading, signIn, signUp, signOut, signInWithGoogle, signInWithFacebook } = useApp();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [authSubmitting, setAuthSubmitting] = useState(false);
+  const [oauthLoading, setOauthLoading] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
 
   const savedEvents = favorites
@@ -48,6 +49,15 @@ export default function PerfilScreen() {
     } else {
       setAuthError(t.signUpConfirmEmail);
     }
+  }
+
+  async function handleOAuth(provider: 'google' | 'facebook') {
+    setOauthLoading(true);
+    setAuthError(null);
+    const fn = provider === 'google' ? signInWithGoogle : signInWithFacebook;
+    const { error } = await fn();
+    setOauthLoading(false);
+    if (error) setAuthError(error);
   }
 
   return (
@@ -82,6 +92,43 @@ export default function PerfilScreen() {
             <View style={styles.authCard}>
               <Text style={styles.authCardTitle}>{t.signInTitle}</Text>
               <Text style={styles.authCardSub}>{t.signInSubtitle}</Text>
+
+              {/* ── Google ── */}
+              <TouchableOpacity
+                style={[styles.oauthBtn, styles.oauthBtnGoogle, oauthLoading && { opacity: 0.6 }]}
+                onPress={() => handleOAuth('google')}
+                disabled={oauthLoading || authSubmitting}
+              >
+                <View style={styles.googleIcon}>
+                  <View style={styles.googleQ1} />
+                  <View style={styles.googleQ2} />
+                  <View style={styles.googleQ3} />
+                  <View style={styles.googleQ4} />
+                </View>
+                <Text style={styles.oauthBtnGoogleText}>{t.continueWithGoogle}</Text>
+              </TouchableOpacity>
+
+              {/* ── Facebook ── */}
+              <TouchableOpacity
+                style={[styles.oauthBtn, styles.oauthBtnFacebook, oauthLoading && { opacity: 0.6 }]}
+                onPress={() => handleOAuth('facebook')}
+                disabled={oauthLoading || authSubmitting}
+              >
+                <View style={styles.fbIconWrap}>
+                  <Text style={styles.fbIconText}>f</Text>
+                </View>
+                <Text style={styles.oauthBtnFacebookText}>{t.continueWithFacebook}</Text>
+              </TouchableOpacity>
+
+              {/* ── Divider ── */}
+              <View style={styles.orRow}>
+                <View style={styles.orLine} />
+                <Text style={styles.orText}>{t.orDivider}</Text>
+                <View style={styles.orLine} />
+              </View>
+
+              {/* ── Email / password ── */}
+              <Text style={styles.emailSectionLabel}>{t.signInWithEmail}</Text>
               <TextInput
                 style={styles.authInput}
                 value={email}
@@ -104,7 +151,7 @@ export default function PerfilScreen() {
                 <TouchableOpacity
                   style={[styles.authBtn, styles.authBtnPrimary, authSubmitting && { opacity: 0.6 }]}
                   onPress={handleSignIn}
-                  disabled={authSubmitting}
+                  disabled={authSubmitting || oauthLoading}
                 >
                   {authSubmitting
                     ? <ActivityIndicator color={Colors.white} size="small" />
@@ -113,7 +160,7 @@ export default function PerfilScreen() {
                 <TouchableOpacity
                   style={[styles.authBtn, styles.authBtnSecondary, authSubmitting && { opacity: 0.6 }]}
                   onPress={handleSignUp}
-                  disabled={authSubmitting}
+                  disabled={authSubmitting || oauthLoading}
                 >
                   <Text style={styles.authBtnSecondaryText}>{t.signUpBtn}</Text>
                 </TouchableOpacity>
@@ -275,6 +322,44 @@ const styles = StyleSheet.create({
   authBtnPrimaryText: { color: Colors.white, fontWeight: '700', fontSize: 14 },
   authBtnSecondary: { backgroundColor: Colors.surfaceVariant, borderWidth: 1, borderColor: Colors.border },
   authBtnSecondaryText: { color: Colors.text, fontWeight: '700', fontSize: 14 },
+
+  // OAuth buttons
+  oauthBtn: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+    paddingVertical: 13, borderRadius: 12, gap: 10,
+  },
+  oauthBtnGoogle: {
+    backgroundColor: Colors.surface,
+    borderWidth: 1.5, borderColor: Colors.border,
+  },
+  oauthBtnGoogleText: { fontSize: 15, fontWeight: '600', color: Colors.text },
+  oauthBtnFacebook: { backgroundColor: '#1877F2' },
+  oauthBtnFacebookText: { fontSize: 15, fontWeight: '600', color: '#fff' },
+
+  // Google 4-colour quadrant icon
+  googleIcon: {
+    width: 20, height: 20, borderRadius: 10,
+    overflow: 'hidden', flexDirection: 'row', flexWrap: 'wrap',
+  },
+  googleQ1: { width: 10, height: 10, backgroundColor: '#4285F4' },
+  googleQ2: { width: 10, height: 10, backgroundColor: '#EA4335' },
+  googleQ3: { width: 10, height: 10, backgroundColor: '#34A853' },
+  googleQ4: { width: 10, height: 10, backgroundColor: '#FBBC05' },
+
+  // Facebook icon
+  fbIconWrap: {
+    width: 20, height: 20, borderRadius: 10,
+    backgroundColor: 'rgba(255,255,255,0.25)',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  fbIconText: { fontSize: 13, fontWeight: '800', color: '#fff', lineHeight: 18 },
+
+  // Divider
+  orRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginVertical: 2 },
+  orLine: { flex: 1, height: 1, backgroundColor: Colors.border },
+  orText: { fontSize: 12, fontWeight: '600', color: Colors.textLight },
+
+  emailSectionLabel: { fontSize: 13, fontWeight: '600', color: Colors.textSecondary },
   emptyFav: {
     alignItems: 'center',
     paddingVertical: 30,

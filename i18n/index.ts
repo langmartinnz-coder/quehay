@@ -161,6 +161,12 @@ const es = {
   langEn: 'English',
   langCa: 'Catalán',
 
+  // Social auth
+  continueWithGoogle: 'Continuar con Google',
+  continueWithFacebook: 'Continuar con Facebook',
+  orDivider: 'o',
+  signInWithEmail: 'Entrar con email',
+
   // Translation
   translateBtn: 'Traducir descripción',
   translating: 'Traduciendo...',
@@ -292,6 +298,12 @@ const en: typeof es = {
   langEn: 'English',
   langCa: 'Catalan',
 
+  // Social auth
+  continueWithGoogle: 'Continue with Google',
+  continueWithFacebook: 'Continue with Facebook',
+  orDivider: 'or',
+  signInWithEmail: 'Sign in with email',
+
   // Translation
   translateBtn: 'Translate description',
   translating: 'Translating...',
@@ -422,6 +434,12 @@ const ca: typeof es = {
   langEs: 'Espanyol',
   langEn: 'English',
   langCa: 'Català',
+  // Social auth
+  continueWithGoogle: 'Continuar amb Google',
+  continueWithFacebook: 'Continuar amb Facebook',
+  orDivider: 'o',
+  signInWithEmail: 'Entrar amb email',
+
   translateBtn: 'Traduir descripció',
   translating: 'Traduint...',
   translatedNote: "Traduït per IA · Pot no ser exacte",

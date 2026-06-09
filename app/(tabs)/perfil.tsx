@@ -17,7 +17,7 @@ import { useLanguage } from '../../store/LanguageContext';
 
 export default function PerfilScreen() {
   const { t, language, setLanguage } = useLanguage();
-  const { favorites, isFavorite, toggleFavorite, events, user, authLoading, signIn, signUp, signOut, signInWithGoogle, signInWithFacebook } = useApp();
+  const { favorites, isFavorite, toggleFavorite, events, user, authLoading, signIn, signUp, signOut, signInWithGoogle } = useApp();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -51,11 +51,10 @@ export default function PerfilScreen() {
     }
   }
 
-  async function handleOAuth(provider: 'google' | 'facebook') {
+  async function handleOAuth() {
     setOauthLoading(true);
     setAuthError(null);
-    const fn = provider === 'google' ? signInWithGoogle : signInWithFacebook;
-    const { error } = await fn();
+    const { error } = await signInWithGoogle();
     setOauthLoading(false);
     if (error) setAuthError(error);
   }
@@ -96,7 +95,7 @@ export default function PerfilScreen() {
               {/* ── Google ── */}
               <TouchableOpacity
                 style={[styles.oauthBtn, styles.oauthBtnGoogle, oauthLoading && { opacity: 0.6 }]}
-                onPress={() => handleOAuth('google')}
+                onPress={handleOAuth}
                 disabled={oauthLoading || authSubmitting}
               >
                 <View style={styles.googleIcon}>
@@ -106,18 +105,6 @@ export default function PerfilScreen() {
                   <View style={styles.googleQ4} />
                 </View>
                 <Text style={styles.oauthBtnGoogleText}>{t.continueWithGoogle}</Text>
-              </TouchableOpacity>
-
-              {/* ── Facebook ── */}
-              <TouchableOpacity
-                style={[styles.oauthBtn, styles.oauthBtnFacebook, oauthLoading && { opacity: 0.6 }]}
-                onPress={() => handleOAuth('facebook')}
-                disabled={oauthLoading || authSubmitting}
-              >
-                <View style={styles.fbIconWrap}>
-                  <Text style={styles.fbIconText}>f</Text>
-                </View>
-                <Text style={styles.oauthBtnFacebookText}>{t.continueWithFacebook}</Text>
               </TouchableOpacity>
 
               {/* ── Divider ── */}
@@ -333,9 +320,6 @@ const styles = StyleSheet.create({
     borderWidth: 1.5, borderColor: Colors.border,
   },
   oauthBtnGoogleText: { fontSize: 15, fontWeight: '600', color: Colors.text },
-  oauthBtnFacebook: { backgroundColor: '#1877F2' },
-  oauthBtnFacebookText: { fontSize: 15, fontWeight: '600', color: '#fff' },
-
   // Google 4-colour quadrant icon
   googleIcon: {
     width: 20, height: 20, borderRadius: 10,
@@ -345,14 +329,6 @@ const styles = StyleSheet.create({
   googleQ2: { width: 10, height: 10, backgroundColor: '#EA4335' },
   googleQ3: { width: 10, height: 10, backgroundColor: '#34A853' },
   googleQ4: { width: 10, height: 10, backgroundColor: '#FBBC05' },
-
-  // Facebook icon
-  fbIconWrap: {
-    width: 20, height: 20, borderRadius: 10,
-    backgroundColor: 'rgba(255,255,255,0.25)',
-    alignItems: 'center', justifyContent: 'center',
-  },
-  fbIconText: { fontSize: 13, fontWeight: '800', color: '#fff', lineHeight: 18 },
 
   // Divider
   orRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginVertical: 2 },

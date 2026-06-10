@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -17,17 +17,36 @@ import { Colors } from '../../constants/colors';
 import { CATEGORIES, SOURCE_LABELS, SIZE_CONFIG } from '../../constants/categories';
 import { useApp } from '../../store/AppContext';
 import { useLanguage } from '../../store/LanguageContext';
-import { translateDescription } from '../../lib/translateDescription';
+import { translateEvent, TranslatedEventFields, getCachedTranslation } from '../../lib/translateEvent';
 
 const { width } = Dimensions.get('window');
 
 export default function EventoDetailScreen() {
   const { t, language } = useLanguage();
-  const [translatedText, setTranslatedText] = useState<string | null>(null);
-  const [isTranslating, setIsTranslating] = useState(false);
   const { id } = useLocalSearchParams<{ id: string }>();
   const { isFavorite, toggleFavorite, events, eventsLoading } = useApp();
   const event = events.find((e) => e.id === (id ?? ''));
+
+  const [translation, setTranslation] = useState<TranslatedEventFields | null>(
+    () => getCachedTranslation(id ?? ''),
+  );
+  const [isTranslating, setIsTranslating] = useState(false);
+
+  useEffect(() => {
+    if (language !== 'en' || !event) return;
+    const cached = getCachedTranslation(event.id);
+    if (cached) {
+      setTranslation(cached);
+      return;
+    }
+    let cancelled = false;
+    setIsTranslating(true);
+    translateEvent(event)
+      .then((r) => { if (!cancelled) setTranslation(r); })
+      .catch((e) => console.error('[evento] Auto-translation failed:', e))
+      .finally(() => { if (!cancelled) setIsTranslating(false); });
+    return () => { cancelled = true; };
+  }, [event?.id, language]);
 
   if (eventsLoading && !event) {
     return (
@@ -57,24 +76,15 @@ export default function EventoDetailScreen() {
   const size = SIZE_CONFIG[event.size];
   const fav = isFavorite(event.id);
 
-  async function handleTranslate() {
-    if (!event?.description || isTranslating) return;
-    setIsTranslating(true);
-    try {
-      const result = await translateDescription(event.description);
-      setTranslatedText(result);
-    } catch (err) {
-      console.error('[evento] Translation failed:', err);
-    } finally {
-      setIsTranslating(false);
-    }
-  }
+  const displayName     = (language === 'en' && translation?.name)        || event.name;
+  const displayLocation = (language === 'en' && translation?.location)    || event.location;
+  const displayDesc     = (language === 'en' && translation?.description) || event.description;
 
   async function handleShare() {
     if (!event) return;
     await Share.share({
-      title: event.name,
-      message: `${event.name}\n📍 ${event.town}\n🗓 ${formatDateRange(event.dateStart, event.dateEnd)}\n\n${t.shareVia}`,
+      title: displayName,
+      message: `${displayName}\n📍 ${event.town}\n🗓 ${formatDateRange(event.dateStart, event.dateEnd)}\n\n${t.shareVia}`,
     });
   }
 
@@ -113,13 +123,26 @@ export default function EventoDetailScreen() {
 
         {/* Content */}
         <View style={styles.content}>
-          <Text style={styles.name}>{event.name}</Text>
+          <Text style={styles.name}>{displayName}</Text>
+
+          {/* Translation status */}
+          {language === 'en' && isTranslating && (
+            <View style={styles.translatingRow}>
+              <ActivityIndicator size="small" color={Colors.textLight} />
+              <Text style={styles.translatingText}>{t.translating}</Text>
+            </View>
+          )}
+          {language === 'en' && !!translation && !isTranslating && (
+            <View style={styles.translatedBadge}>
+              <Text style={styles.translatedBadgeText}>{t.translatedBadge}</Text>
+            </View>
+          )}
 
           {/* Key info cards */}
           <View style={styles.infoGrid}>
             <InfoCard emoji="🗓" label={t.infoDate} value={formatDateRange(event.dateStart, event.dateEnd)} />
             <InfoCard emoji="🕐" label={t.infoTime} value={event.time} />
-            <InfoCard emoji="📍" label={t.infoPlace} value={event.location} />
+            <InfoCard emoji="📍" label={t.infoPlace} value={displayLocation} />
             <InfoCard emoji="🏘️" label={t.infoTown} value={`${event.town}, ${event.region === 'teruel' ? t.regionTeruel : t.regionCatalunya}`} />
             {!event.isFree && event.price && (
               <InfoCard emoji="🎟" label={t.infoPrice} value={event.price} highlight />
@@ -132,21 +155,7 @@ export default function EventoDetailScreen() {
           {/* Description */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>{t.sectionAbout}</Text>
-            <Text style={styles.description}>{translatedText ?? event.description}</Text>
-            {language === 'en' && !!event.description && !translatedText && (
-              <TouchableOpacity
-                style={styles.translateBtn}
-                onPress={handleTranslate}
-                disabled={isTranslating}
-              >
-                {isTranslating
-                  ? <ActivityIndicator size="small" color={Colors.primary} />
-                  : <Text style={styles.translateBtnText}>🌐 {t.translateBtn}</Text>}
-              </TouchableOpacity>
-            )}
-            {translatedText && (
-              <Text style={styles.translatedNote}>🤖 {t.translatedNote}</Text>
-            )}
+            <Text style={styles.description}>{displayDesc}</Text>
           </View>
 
           {/* Tags */}
@@ -306,26 +315,36 @@ const styles = StyleSheet.create({
   sizeLabel: { fontSize: 11, fontWeight: '700' },
   content: { padding: 20, gap: 16 },
   name: { fontSize: 24, fontWeight: '800', color: Colors.text, lineHeight: 30 },
+  translatingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: -8,
+  },
+  translatingText: {
+    fontSize: 12,
+    color: Colors.textLight,
+    fontStyle: 'italic',
+  },
+  translatedBadge: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#EEF2FF',
+    borderRadius: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderWidth: 1,
+    borderColor: '#C7D2F8',
+    marginTop: -8,
+  },
+  translatedBadgeText: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#4F6FD4',
+  },
   infoGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   section: { gap: 8 },
   sectionTitle: { fontSize: 16, fontWeight: '700', color: Colors.text },
   description: { fontSize: 14, color: Colors.textSecondary, lineHeight: 22 },
-  translateBtn: {
-    alignSelf: 'flex-start',
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.surfaceVariant,
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-    borderWidth: 1,
-    borderColor: Colors.border,
-    marginTop: 8,
-    minWidth: 44,
-    justifyContent: 'center',
-  },
-  translateBtnText: { fontSize: 13, fontWeight: '600', color: Colors.primary },
-  translatedNote: { fontSize: 11, color: Colors.textLight, marginTop: 6, fontStyle: 'italic' },
   tagsWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   tag: {
     backgroundColor: Colors.surfaceVariant,

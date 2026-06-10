@@ -171,6 +171,7 @@ const es = {
   translateBtn: 'Traducir descripción',
   translating: 'Traduciendo...',
   translatedNote: 'Traducido por IA · Puede no ser exacto',
+  translatedBadge: '🌐 Traducido',
 };
 
 const en: typeof es = {
@@ -308,6 +309,7 @@ const en: typeof es = {
   translateBtn: 'Translate description',
   translating: 'Translating...',
   translatedNote: 'Translated by AI · May not be exact',
+  translatedBadge: '🌐 Translated',
 };
 
 const ca: typeof es = {
@@ -443,6 +445,7 @@ const ca: typeof es = {
   translateBtn: 'Traduir descripció',
   translating: 'Traduint...',
   translatedNote: "Traduït per IA · Pot no ser exacte",
+  translatedBadge: '🌐 Traduït',
 };
 
 export type Translations = typeof es;

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Event } from '../types';
 import { Colors } from '../constants/colors';
-import { CATEGORIES, SOURCE_LABELS, SIZE_CONFIG } from '../constants/categories';
+import { CATEGORIES, SOURCE_LABELS, SIZE_CONFIG, getRegionLabel } from '../constants/categories';
 import { formatDateRange } from '../data/mockData';
 import { useLanguage } from '../store/LanguageContext';
 
@@ -84,7 +84,7 @@ export default function EventCard({
           <Text style={styles.metaIcon}>📍</Text>
           <Text style={styles.metaText} numberOfLines={1}>
             {event.town}
-            {event.region === 'teruel' ? `, ${t.regionTeruel}` : `, ${t.regionCatalunya}`}
+            {`, ${getRegionLabel(event.region)}`}
           </Text>
         </View>
 

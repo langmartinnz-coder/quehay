@@ -11,7 +11,7 @@ create table if not exists public.events (
   time          text not null default 'Por confirmar',
   location      text not null,
   town          text not null,
-  region        text not null check (region in ('teruel', 'cataluña')),
+  region        text not null,
   lat           float8 not null,
   lng           float8 not null,
   category      text not null,
@@ -88,79 +88,83 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
 
+-- ─── MIGRATION (run this if the table already exists) ───────────────────
+-- ALTER TABLE public.events DROP CONSTRAINT IF EXISTS events_region_check;
+-- UPDATE public.events SET region = 'aragon' WHERE region = 'teruel';
+
 -- ─────────────────────────── SEED DATA ─────────────────────────────────
 insert into public.events
   (id, name, date_start, date_end, time, location, town, region, lat, lng,
    category, size, description, image_url, source, source_detail, tags, is_free, price)
 values
   ('ev001','Fiestas del Ángel de Teruel','2026-07-10','2026-07-18','Todo el día',
-   'Centro histórico de Teruel','Teruel','teruel',40.3456,-1.1065,'festival','grande',
+   'Centro histórico de Teruel','Teruel','aragon',40.3456,-1.1065,'festival','grande',
    'Las fiestas más importantes de la capital turolense, en honor al Ángel custodio de la ciudad. Incluye procesiones, vaquillas, fuegos artificiales, conciertos y la tradicional bajada del Ángel desde el viaducto.',
    'https://picsum.photos/seed/angel-teruel/800/450','ayuntamiento','Ayuntamiento de Teruel',
    ARRAY['vaquillas','procesión','fuegos artificiales','bajada del ángel'],true,null),
 
   ('ev002','Mercado Medieval de Albarracín','2026-08-01','2026-08-04','11:00 - 22:00',
-   'Casco histórico de Albarracín','Albarracín','teruel',40.4076,-1.448,'mercado','mediano',
+   'Casco histórico de Albarracín','Albarracín','aragon',40.4076,-1.448,'mercado','mediano',
    'Un viaje al medievo en el pueblo medieval mejor conservado de España. Artesanos, juglares, caballeros y mercaderes llenan las calles de la villa amurallada sobre el río Guadalaviar.',
    'https://picsum.photos/seed/medieval-albarracin/800/450','facebook','Compartido desde Facebook · Turismo Albarracín',
    ARRAY['artesanía','medieval','juglares','caballeros'],true,null),
 
   ('ev003','Festival de Jazz Mora de Rubielos','2026-06-06','2026-06-08','19:00 - 23:00',
-   'Castillo-Colegiata de Mora de Rubielos','Mora de Rubielos','teruel',40.252,-0.7476,'concierto','mediano',
+   'Castillo-Colegiata de Mora de Rubielos','Mora de Rubielos','aragon',40.252,-0.7476,'concierto','mediano',
    'Festival de jazz en el marco incomparable del castillo medieval. Artistas nacionales e internacionales se presentan bajo las estrellas del Maestrazgo turolense.',
    'https://picsum.photos/seed/jazz-mora-rubielos/800/450','instagram','Compartido desde Instagram · @festivaljazmora',
    ARRAY['jazz','música','castillo','verano'],false,'Desde 12€'),
 
   ('ev004','Feria Agroalimentaria de Teruel','2026-05-23','2026-05-25','10:00 - 20:00',
-   'Recinto Ferial de Teruel','Teruel','teruel',40.3456,-1.1065,'gastronomia','mediano',
+   'Recinto Ferial de Teruel','Teruel','aragon',40.3456,-1.1065,'gastronomia','mediano',
    'Feria de productos locales de la provincia: jamón DOP Teruel, trufa negra, aceite de oliva del Bajo Aragón, quesos artesanales y vinos del Jiloca.',
    'https://picsum.photos/seed/agroalimentaria-teruel/800/450','ayuntamiento','Diputación Provincial de Teruel',
    ARRAY['jamón DOP','trufa','aceite','quesos','gastronomía local'],true,null),
 
   ('ev005','Fiestas de San Pascual - Valderrobres','2026-05-20','2026-05-22','Todo el día',
-   'Plaza Mayor de Valderrobres','Valderrobres','teruel',40.886,0.1574,'fiesta','pequeño',
+   'Plaza Mayor de Valderrobres','Valderrobres','aragon',40.886,0.1574,'fiesta','pequeño',
    'Fiestas patronales del municipio de Valderrobres con danzas tradicionales, gigantes y cabezudos, conciertos en la plaza y la tradicional volta del sant.',
    'https://picsum.photos/seed/san-pascual-valderrobres/800/450','whatsapp','Compartido desde WhatsApp · Grupo Peña La Troya',
    ARRAY['gigantes','danza','patronales','Matarraña'],true,null),
 
   ('ev006','Mercado Artesanal de Rubielos de Mora','2026-06-15',null,'09:00 - 14:00',
-   'Plaza del Portal, Rubielos de Mora','Rubielos de Mora','teruel',40.2027,-0.6867,'mercado','pequeño',
+   'Plaza del Portal, Rubielos de Mora','Rubielos de Mora','aragon',40.2027,-0.6867,'mercado','pequeño',
    'Mercado mensual de artesanía y productos locales en el precioso portal medieval. Cerámica, tejidos, mermeladas artesanas y productos de la tierra.',
    'https://picsum.photos/seed/mercado-rubielos-mora/800/450','ayuntamiento','Ayuntamiento de Rubielos de Mora',
    ARRAY['artesanía','mercado mensual','cerámica','local'],true,null),
 
   ('ev007','Festival de Guitarra Clásica de Beceite','2026-07-20',null,'20:00',
-   'Casa de la Cultura, Beceite','Beceite','teruel',40.8077,0.1768,'concierto','pequeño',
+   'Casa de la Cultura, Beceite','Beceite','aragon',40.8077,0.1768,'concierto','pequeño',
    'Concierto de guitarra clásica española en el corazón del Matarraña. Ambiente íntimo en un municipio declarado uno de los más bonitos de España.',
    'https://picsum.photos/seed/guitarra-beceite/800/450','facebook','Compartido desde Facebook · Asociación Cultural Beceite',
    ARRAY['guitarra clásica','música','Matarraña','pueblo bonito'],false,'8€'),
 
   ('ev008','Triatlón Popular Ciudad de Teruel','2026-09-14',null,'08:00',
-   'Zona Deportiva Municipal, Teruel','Teruel','teruel',40.3456,-1.1065,'deportes','pequeño',
+   'Zona Deportiva Municipal, Teruel','Teruel','aragon',40.3456,-1.1065,'deportes','pequeño',
    'Triatlón popular para deportistas de todos los niveles. Modalidades sprint (750m nado / 20km bici / 5km carrera) y olímpica. Inscripciones hasta el 10 de septiembre.',
    'https://picsum.photos/seed/triatlon-teruel/800/450','usuario','Enviado por Club Triatlón Teruel',
    ARRAY['triatlón','deporte','inscripciones abiertas'],false,'25€ (sprint) / 35€ (olímpico)'),
 
   ('ev009','Romería Virgen del Tremedal','2026-09-07',null,'09:00',
-   'Ermita del Tremedal, Orihuela del Tremedal','Orihuela del Tremedal','teruel',40.5547,-1.647,'festival','mediano',
+   'Ermita del Tremedal, Orihuela del Tremedal','Orihuela del Tremedal','aragon',40.5547,-1.647,'festival','mediano',
    'Una de las romerías más concurridas de la provincia. Miles de peregrinos suben al santuario de la Virgen del Tremedal en una jornada de fe y tradición popular.',
    'https://picsum.photos/seed/tremedal-romeria/800/450','ayuntamiento','Ayuntamiento de Orihuela del Tremedal',
    ARRAY['romería','virgen','tradición','senderismo'],true,null),
 
   ('ev010','Fiestas Patronales de Alcañiz','2026-09-05','2026-09-08','Todo el día',
-   'Centro de Alcañiz','Alcañiz','teruel',41.0481,-0.1296,'fiesta','mediano',
+   'Centro de Alcañiz','Alcañiz','aragon',41.0481,-0.1296,'fiesta','mediano',
    'Las fiestas del Pilar en Alcañiz, la segunda ciudad de Teruel. Toros, peñas, conciertos y el espectacular pregón desde el castillo Calatravo.',
    'https://picsum.photos/seed/fiestas-alcaniz/800/450','whatsapp','Compartido desde WhatsApp · Ayuntamiento de Alcañiz',
    ARRAY['toros','peñas','castillo','patronales'],true,null),
 
   ('ev011','Gran Carrera de Montaña Gúdar-Javalambre','2026-06-29',null,'07:30',
-   'Salida desde Gúdar, llegada a Javalambre','Gúdar','teruel',40.25,-0.7167,'deportes','mediano',
+   'Salida desde Gúdar, llegada a Javalambre','Gúdar','aragon',40.25,-0.7167,'deportes','mediano',
    'Ultra trail de 42 km por las sierras de Gúdar y Javalambre con 2.800m de desnivel positivo. Categorías: ultra (42km), maratón (28km) y familiar (10km).',
    'https://picsum.photos/seed/carrera-gudar/800/450','usuario','Enviado por Asociación Trail Gúdar-Javalambre',
    ARRAY['ultra trail','42km','sierra','montaña'],false,'Desde 35€'),
 
   ('ev012','Nits de Cine a la Fresca · Mora de Rubielos','2026-07-04','2026-08-28','22:00',
-   'Patio del Castillo, Mora de Rubielos','Mora de Rubielos','teruel',40.252,-0.7476,'comunidad','pequeño',
+   'Patio del Castillo, Mora de Rubielos','Mora de Rubielos','aragon',40.252,-0.7476,'comunidad','pequeño',
    'Cine de verano al aire libre en el patio del castillo. Todos los viernes de julio y agosto, películas en versión original con subtítulos en español.',
    'https://picsum.photos/seed/cine-verano-mora/800/450','ayuntamiento','Ayuntamiento de Mora de Rubielos',
    ARRAY['cine de verano','versión original','viernes','semanal'],false,'3€'),

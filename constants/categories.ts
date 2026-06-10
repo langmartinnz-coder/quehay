@@ -27,10 +27,24 @@ export const DATE_FILTERS: { id: DateFilter; label: string }[] = [
 ];
 
 export const REGIONS: { id: Region; label: string; flag: string }[] = [
-  { id: 'todas', get label() { return getCurrentT().rAll; }, flag: '🇪🇸' },
-  { id: 'teruel', get label() { return getCurrentT().rTeruel; }, flag: '🏔️' },
-  { id: 'cataluña', get label() { return getCurrentT().rCatalunya; }, flag: '🌊' },
+  { id: 'todas',         get label() { return getCurrentT().rAll; },          flag: '🇪🇸' },
+  { id: 'aragon',        get label() { return getCurrentT().rAragon; },        flag: '🏔️' },
+  { id: 'cataluña',      get label() { return getCurrentT().rCatalunya; },     flag: '🌊' },
+  { id: 'madrid',        get label() { return getCurrentT().rMadrid; },        flag: '🏙️' },
+  { id: 'andalucia',     get label() { return getCurrentT().rAndalucia; },     flag: '☀️' },
+  { id: 'valencia',      get label() { return getCurrentT().rValencia; },      flag: '🍊' },
+  { id: 'pais-vasco',    get label() { return getCurrentT().rPaisVasco; },     flag: '🌿' },
+  { id: 'galicia',       get label() { return getCurrentT().rGalicia; },       flag: '🌧️' },
+  { id: 'castilla-leon', get label() { return getCurrentT().rCastillaLeon; },  flag: '🏰' },
+  { id: 'murcia',        get label() { return getCurrentT().rMurcia; },        flag: '🌅' },
+  { id: 'extremadura',   get label() { return getCurrentT().rExtremadura; },   flag: '🦅' },
+  { id: 'canarias',      get label() { return getCurrentT().rCanarias; },      flag: '🌋' },
+  { id: 'baleares',      get label() { return getCurrentT().rBaleares; },      flag: '⛵' },
 ];
+
+export function getRegionLabel(regionId: string): string {
+  return REGIONS.find((r) => r.id === regionId)?.label ?? regionId;
+}
 
 export const SOURCE_LABELS: Record<string, { label: string; emoji: string; color: string }> = {
   ayuntamiento: { get label() { return getCurrentT().srcTownHall; }, emoji: '🏛️', color: '#2980B9' },

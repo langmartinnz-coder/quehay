@@ -17,7 +17,20 @@ export type EventSource =
   | 'milanuncios'
   | 'usuario';
 
-export type Region = 'teruel' | 'cataluña' | 'todas';
+export type Region =
+  | 'todas'
+  | 'aragon'
+  | 'cataluña'
+  | 'madrid'
+  | 'andalucia'
+  | 'valencia'
+  | 'pais-vasco'
+  | 'galicia'
+  | 'castilla-leon'
+  | 'murcia'
+  | 'extremadura'
+  | 'canarias'
+  | 'baleares';
 export type DateFilter = 'hoy' | 'semana' | 'mes' | 'todas';
 
 export interface EventCoords {

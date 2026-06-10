@@ -15,7 +15,7 @@ España está llena de ferias medievales, mercados ecológicos, conciertos en pl
 Muy pronto en Google Play. Apúntate en la lista de espera 👇
 🌐 quehayagendalocal.com
 
-#QuéHay #EventosLocales #AgendaLocal #EspañaRural #FiestasEspaña #EventosEspaña #Teruel #Catalunya #Proximamente
+#QuéHay #EventosLocales #AgendaLocal #EspañaRural #FiestasEspaña #EventosEspaña #TodaEspaña #Proximamente
 
 ---
 
@@ -158,16 +158,16 @@ Take your events to the world.
 
 ### 🇪🇸 Spanish
 
-El verdadero España no está en los guías turísticos. 🇪🇸
+La España de verdad no está en los guías turísticos. 🇪🇸
 
-Está en la feria medieval de un pueblo de Teruel. En el mercado de productores del domingo en un pueblo de la Cataluña interior. En el concierto de jazz en una plaza que no sale en ningún mapa.
+Está en la feria medieval de un pueblo de Aragón. En el mercado de productores del domingo en un pueblo de la España interior. En el concierto de jazz en una plaza que no sale en ningún mapa.
 
 **QuéHay** te lo muestra todo. Eventos locales auténticos en España — actualizados por la gente que los organiza, no por algoritmos.
 
 Descarga la app y descubre qué hay de verdad cerca de ti.
 🌐 quehayagendalocal.com
 
-#QuéHay #EspañaRural #DescubreEspaña #TurismoRural #EspañaAuténtica #ViajarEspaña #HiddenSpain #TeruelExiste #Catalunya #EventosLocales #AgendaLocal
+#QuéHay #EspañaRural #DescubreEspaña #TurismoRural #EspañaAuténtica #ViajarEspaña #HiddenSpain #TodaEspaña #EventosLocales #AgendaLocal
 
 ---
 
@@ -175,7 +175,7 @@ Descarga la app y descubre qué hay de verdad cerca de ti.
 
 The real Spain isn't in the guidebooks. 🇪🇸
 
-It's at a medieval fair in a village in Teruel. At a Sunday farmers' market in the Catalan countryside. At a jazz concert in a square that doesn't appear on any map.
+It's at a medieval fair in an Aragonese village. At a Sunday farmers' market deep in rural Spain. At a jazz concert in a square that doesn't appear on any map.
 
 **QuéHay** shows you all of it. Authentic local events across Spain — updated by the people who organise them, not by algorithms.
 

@@ -3,6 +3,7 @@
     "name": "QuéHay",
     "slug": "quehay-agenda-local",
     "version": "1.0.0",
+    "description": "Descubre eventos locales auténticos en toda España. Ferias medievales, mercados de artesanía, conciertos, fiestas patronales y mucho más — publicados por la gente que los organiza.",
     "runtimeVersion": {
       "policy": "appVersion"
     },

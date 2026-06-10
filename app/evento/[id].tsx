@@ -14,7 +14,7 @@ import { useLocalSearchParams, router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { formatDateRange } from '../../data/mockData';
 import { Colors } from '../../constants/colors';
-import { CATEGORIES, SOURCE_LABELS, SIZE_CONFIG } from '../../constants/categories';
+import { CATEGORIES, SOURCE_LABELS, SIZE_CONFIG, getRegionLabel } from '../../constants/categories';
 import { useApp } from '../../store/AppContext';
 import { useLanguage } from '../../store/LanguageContext';
 import { translateEvent, TranslatedEventFields, getCachedTranslation } from '../../lib/translateEvent';
@@ -143,7 +143,7 @@ export default function EventoDetailScreen() {
             <InfoCard emoji="🗓" label={t.infoDate} value={formatDateRange(event.dateStart, event.dateEnd)} />
             <InfoCard emoji="🕐" label={t.infoTime} value={event.time} />
             <InfoCard emoji="📍" label={t.infoPlace} value={displayLocation} />
-            <InfoCard emoji="🏘️" label={t.infoTown} value={`${event.town}, ${event.region === 'teruel' ? t.regionTeruel : t.regionCatalunya}`} />
+            <InfoCard emoji="🏘️" label={t.infoTown} value={`${event.town}, ${getRegionLabel(event.region)}`} />
             {!event.isFree && event.price && (
               <InfoCard emoji="🎟" label={t.infoPrice} value={event.price} highlight />
             )}

@@ -11,18 +11,29 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import { router } from 'expo-router';
 import { Colors } from '../../constants/colors';
-import { CATEGORIES } from '../../constants/categories';
-import { Event } from '../../types';
+import { CATEGORIES, REGIONS } from '../../constants/categories';
+import { Event, Region } from '../../types';
 import { useApp } from '../../store/AppContext';
 import { useLanguage } from '../../store/LanguageContext';
 
 const { height } = Dimensions.get('window');
 
-const SPAIN_REGION = {
-  latitude: 41.0,
-  longitude: 0.5,
-  latitudeDelta: 5.5,
-  longitudeDelta: 5.5,
+type MapViewport = { latitude: number; longitude: number; latitudeDelta: number; longitudeDelta: number };
+
+const REGION_VIEWPORTS: Record<string, MapViewport> = {
+  'todas':         { latitude: 40.2, longitude: -2.5, latitudeDelta: 8.5,  longitudeDelta: 8.5 },
+  'aragon':        { latitude: 41.5, longitude: -0.5, latitudeDelta: 2.5,  longitudeDelta: 2.5 },
+  'cataluña':      { latitude: 41.7, longitude:  1.8, latitudeDelta: 2.8,  longitudeDelta: 2.8 },
+  'madrid':        { latitude: 40.5, longitude: -3.7, latitudeDelta: 1.5,  longitudeDelta: 1.5 },
+  'andalucia':     { latitude: 37.5, longitude: -4.5, latitudeDelta: 3.5,  longitudeDelta: 3.5 },
+  'valencia':      { latitude: 39.5, longitude: -0.4, latitudeDelta: 2.5,  longitudeDelta: 2.5 },
+  'pais-vasco':    { latitude: 43.1, longitude: -2.4, latitudeDelta: 1.2,  longitudeDelta: 1.2 },
+  'galicia':       { latitude: 42.7, longitude: -8.0, latitudeDelta: 2.0,  longitudeDelta: 2.0 },
+  'castilla-leon': { latitude: 41.7, longitude: -4.7, latitudeDelta: 3.5,  longitudeDelta: 3.5 },
+  'murcia':        { latitude: 37.9, longitude: -1.5, latitudeDelta: 1.5,  longitudeDelta: 1.5 },
+  'extremadura':   { latitude: 39.2, longitude: -6.2, latitudeDelta: 2.5,  longitudeDelta: 2.5 },
+  'canarias':      { latitude: 28.2, longitude:-15.5, latitudeDelta: 3.0,  longitudeDelta: 3.0 },
+  'baleares':      { latitude: 39.6, longitude:  2.9, latitudeDelta: 2.0,  longitudeDelta: 2.0 },
 };
 
 export default function MapaScreen() {
@@ -30,21 +41,7 @@ export default function MapaScreen() {
   const { filters, events } = useApp();
   const mapRef = useRef<MapView>(null);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-  const [activeRegion, setActiveRegion] = useState<'todas' | 'teruel' | 'cataluña'>('todas');
-
-  const TERUEL_REGION = {
-    latitude: 40.5,
-    longitude: -0.6,
-    latitudeDelta: 2.2,
-    longitudeDelta: 2.2,
-  };
-
-  const CAT_REGION = {
-    latitude: 41.7,
-    longitude: 1.8,
-    latitudeDelta: 2.8,
-    longitudeDelta: 2.8,
-  };
+  const [activeRegion, setActiveRegion] = useState<Region>('todas');
 
   const visibleEvents = useMemo(() => {
     const withCoords = events.filter(
@@ -62,10 +59,9 @@ export default function MapaScreen() {
     return regionFiltered;
   }, [events, activeRegion]);
 
-  function goToRegion(region: 'todas' | 'teruel' | 'cataluña') {
+  function goToRegion(region: Region) {
     setActiveRegion(region);
-    const target =
-      region === 'teruel' ? TERUEL_REGION : region === 'cataluña' ? CAT_REGION : SPAIN_REGION;
+    const target = REGION_VIEWPORTS[region] ?? REGION_VIEWPORTS['todas'];
     mapRef.current?.animateToRegion(target, 800);
   }
 
@@ -80,22 +76,28 @@ export default function MapaScreen() {
       </View>
 
       {/* Region selector */}
-      <View style={styles.regionBar}>
-        {(['todas', 'teruel', 'cataluña'] as const).map((r) => (
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.regionBar}
+        contentContainerStyle={styles.regionBarInner}
+      >
+        {REGIONS.map((r) => (
           <TouchableOpacity
-            key={r}
-            style={[styles.regionChip, activeRegion === r && styles.regionChipActive]}
-            onPress={() => goToRegion(r)}
+            key={r.id}
+            style={[styles.regionChip, activeRegion === r.id && styles.regionChipActive]}
+            onPress={() => goToRegion(r.id as Region)}
           >
-            <Text style={[styles.regionText, activeRegion === r && styles.regionTextActive]}>
-              {r === 'todas' ? t.mapRegionAll : r === 'teruel' ? t.mapRegionTeruel : t.mapRegionCatalunya}
+            <Text style={styles.regionFlag}>{r.flag}</Text>
+            <Text style={[styles.regionText, activeRegion === r.id && styles.regionTextActive]}>
+              {r.label}
             </Text>
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
 
       {/* Map */}
-      <MapView ref={mapRef} style={styles.map} initialRegion={SPAIN_REGION}>
+      <MapView ref={mapRef} style={styles.map} initialRegion={REGION_VIEWPORTS['todas']}>
         {visibleEvents.map((event) => {
           const cat = CATEGORIES.find((c) => c.id === event.category);
           return (
@@ -204,15 +206,22 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
   },
   regionBar: {
-    flexDirection: 'row',
-    paddingHorizontal: 16,
     paddingBottom: 8,
+  },
+  regionBarInner: {
+    paddingHorizontal: 16,
     gap: 8,
+    flexDirection: 'row',
+  },
+  regionFlag: {
+    fontSize: 13,
   },
   regionChip: {
-    flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: 4,
     paddingVertical: 7,
+    paddingHorizontal: 12,
     borderRadius: 20,
     borderWidth: 1.5,
     borderColor: Colors.border,

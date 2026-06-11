@@ -21,7 +21,10 @@
       "Bash(rm scripts/generate-icons.js scripts/icon.svg)",
       "Bash(npm uninstall *)",
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\langm\\\\Desktop\\\\ProjectSunrise\" -Recurse -Directory)",
-      "Bash(Select-Object FullName)"
+      "Bash(Select-Object FullName)",
+      "Bash(python -c \"from PIL import Image; print\\('PIL OK'\\)\")",
+      "Bash(pip install *)",
+      "Bash(Remove-Item *)"
     ]
   }
 }

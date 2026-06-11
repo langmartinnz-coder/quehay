@@ -10,6 +10,7 @@ import {
   Dimensions,
   ActivityIndicator,
 } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import { useLocalSearchParams, router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { formatDateRange } from '../../data/mockData';
@@ -103,7 +104,7 @@ export default function EventoDetailScreen() {
               <Text style={styles.heroActionEmoji}>{fav ? '❤️' : '🤍'}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.heroActionBtn} onPress={handleShare}>
-              <Text style={styles.heroActionEmoji}>↑</Text>
+              <Feather name="share-2" size={18} color={Colors.white} />
             </TouchableOpacity>
           </View>
           <View style={styles.heroBottom}>

@@ -18,8 +18,10 @@ import EmptyState from '../../components/EmptyState';
 import { Colors } from '../../constants/colors';
 import { useLanguage } from '../../store/LanguageContext';
 
+const LANG_CYCLE: Record<string, 'es' | 'en' | 'ca'> = { es: 'en', en: 'ca', ca: 'es' };
+
 export default function HomeScreen() {
-  const { t } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
   const { filters, setFilters, isFavorite, toggleFavorite, filteredEvents, eventsLoading } = useApp();
 
   const events = filteredEvents;
@@ -40,12 +42,20 @@ export default function HomeScreen() {
           </Text>
           <Text style={styles.subtitle}>{t.tagline}</Text>
         </View>
-        <TouchableOpacity
-          style={styles.mapBtn}
-          onPress={() => router.push('/mapa')}
-        >
-          <Text style={styles.mapBtnText}>🗺️</Text>
-        </TouchableOpacity>
+        <View style={styles.headerRight}>
+          <TouchableOpacity
+            style={styles.langBtn}
+            onPress={() => setLanguage(LANG_CYCLE[language])}
+          >
+            <Text style={styles.langBtnText}>{language.toUpperCase()}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.mapBtn}
+            onPress={() => router.push('/mapa')}
+          >
+            <Text style={styles.mapBtnText}>🗺️</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <FlatList
@@ -122,6 +132,27 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.textSecondary,
     marginTop: -2,
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  langBtn: {
+    height: 32,
+    paddingHorizontal: 10,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1.5,
+    borderColor: Colors.primary,
+    backgroundColor: Colors.surface,
+  },
+  langBtnText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: Colors.primary,
+    letterSpacing: 0.5,
   },
   mapBtn: {
     backgroundColor: Colors.surfaceVariant,

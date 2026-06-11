@@ -9,6 +9,7 @@ import {
   Image,
   Alert,
   ActivityIndicator,
+  Modal,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as ImagePicker from 'expo-image-picker';
@@ -61,6 +62,7 @@ export default function EnviarScreen() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [extractError, setExtractError] = useState<string | null>(null);
+  const [regionOpen, setRegionOpen] = useState(false);
 
   function resetAll() {
     setImage(null);
@@ -390,25 +392,74 @@ export default function EnviarScreen() {
 
           {/* Region picker */}
           <Text style={styles.fieldLabel}>{t.fieldRegion}</Text>
-          <View style={styles.pickerRow}>
-            {REGIONS.filter((r) => r.id !== 'todas').map((r) => (
-              <TouchableOpacity
-                key={r.id}
-                style={[styles.pickerChip, form.region === r.id && styles.pickerChipActive]}
-                onPress={() => setForm((p) => ({ ...p, region: r.id }))}
-              >
-                <Text style={styles.pickerChipEmoji}>{r.flag}</Text>
-                <Text
-                  style={[
-                    styles.pickerChipText,
-                    form.region === r.id && styles.pickerChipTextActive,
-                  ]}
-                >
-                  {r.label}
+          <TouchableOpacity
+            style={[styles.dropdownTrigger, regionOpen && styles.dropdownTriggerOpen]}
+            onPress={() => setRegionOpen(true)}
+            activeOpacity={0.7}
+          >
+            {form.region ? (
+              <View style={styles.dropdownValue}>
+                <Text style={styles.dropdownValueFlag}>
+                  {REGIONS.find((r) => r.id === form.region)?.flag}
                 </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+                <Text style={styles.dropdownValueText}>
+                  {REGIONS.find((r) => r.id === form.region)?.label}
+                </Text>
+              </View>
+            ) : (
+              <Text style={styles.dropdownPlaceholder}>{t.fieldRegionSelect}</Text>
+            )}
+            <Text style={styles.dropdownChevron}>{regionOpen ? '▲' : '▼'}</Text>
+          </TouchableOpacity>
+
+          <Modal
+            visible={regionOpen}
+            transparent
+            animationType="fade"
+            onRequestClose={() => setRegionOpen(false)}
+          >
+            <TouchableOpacity
+              style={styles.modalBackdrop}
+              activeOpacity={1}
+              onPress={() => setRegionOpen(false)}
+            />
+            <View style={styles.modalSheet}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>{t.fieldRegion}</Text>
+                <TouchableOpacity onPress={() => setRegionOpen(false)}>
+                  <Text style={styles.modalClose}>✕</Text>
+                </TouchableOpacity>
+              </View>
+              <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
+                {REGIONS.filter((r) => r.id !== 'todas').map((r) => (
+                  <TouchableOpacity
+                    key={r.id}
+                    style={[
+                      styles.modalOption,
+                      form.region === r.id && styles.modalOptionActive,
+                    ]}
+                    onPress={() => {
+                      setForm((p) => ({ ...p, region: r.id }));
+                      setRegionOpen(false);
+                    }}
+                  >
+                    <Text style={styles.modalOptionFlag}>{r.flag}</Text>
+                    <Text
+                      style={[
+                        styles.modalOptionText,
+                        form.region === r.id && styles.modalOptionTextActive,
+                      ]}
+                    >
+                      {r.label}
+                    </Text>
+                    {form.region === r.id && (
+                      <Text style={styles.modalOptionCheck}>✓</Text>
+                    )}
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+          </Modal>
 
           {/* Category picker */}
           <Text style={styles.fieldLabel}>{t.fieldCategory}</Text>
@@ -682,6 +733,71 @@ const styles = StyleSheet.create({
   },
   submitBtnText: { color: Colors.white, fontWeight: '800', fontSize: 16 },
   disclaimer: { fontSize: 11, color: Colors.textLight, textAlign: 'center', lineHeight: 16 },
+  dropdownTrigger: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: Colors.surface,
+    borderRadius: 12,
+    borderWidth: 1.5,
+    borderColor: Colors.border,
+    paddingHorizontal: 12,
+    paddingVertical: 11,
+    marginBottom: 14,
+  },
+  dropdownTriggerOpen: {
+    borderColor: Colors.primary,
+  },
+  dropdownValue: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    flex: 1,
+  },
+  dropdownValueFlag: { fontSize: 16 },
+  dropdownValueText: { fontSize: 14, fontWeight: '600', color: Colors.text },
+  dropdownPlaceholder: { fontSize: 14, color: Colors.textLight, flex: 1 },
+  dropdownChevron: { fontSize: 10, color: Colors.textSecondary, marginLeft: 8 },
+  modalBackdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.45)',
+  },
+  modalSheet: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: Colors.background,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: '70%',
+    paddingBottom: 32,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
+  },
+  modalTitle: { fontSize: 16, fontWeight: '700', color: Colors.text },
+  modalClose: { fontSize: 16, color: Colors.textLight, fontWeight: '700', padding: 4 },
+  modalOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    gap: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
+  },
+  modalOptionActive: { backgroundColor: '#FEF5EF' },
+  modalOptionFlag: { fontSize: 20 },
+  modalOptionText: { fontSize: 15, color: Colors.text, flex: 1 },
+  modalOptionTextActive: { fontWeight: '700', color: Colors.primary },
+  modalOptionCheck: { fontSize: 16, color: Colors.primary, fontWeight: '700' },
   successWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32, gap: 12 },
   successEmoji: { fontSize: 64 },
   successTitle: { fontSize: 26, fontWeight: '800', color: Colors.text },

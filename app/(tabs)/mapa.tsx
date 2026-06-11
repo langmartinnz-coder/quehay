@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView, { Marker, Callout } from 'react-native-maps';
@@ -15,8 +14,6 @@ import { CATEGORIES, REGIONS } from '../../constants/categories';
 import { Event, Region } from '../../types';
 import { useApp } from '../../store/AppContext';
 import { useLanguage } from '../../store/LanguageContext';
-
-const { height } = Dimensions.get('window');
 
 type MapViewport = { latitude: number; longitude: number; latitudeDelta: number; longitudeDelta: number };
 
@@ -38,7 +35,7 @@ const REGION_VIEWPORTS: Record<string, MapViewport> = {
 
 export default function MapaScreen() {
   const { t } = useLanguage();
-  const { filters, events } = useApp();
+  const { events } = useApp();
   const mapRef = useRef<MapView>(null);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [activeRegion, setActiveRegion] = useState<Region>('todas');
@@ -49,9 +46,6 @@ export default function MapaScreen() {
     );
     const regionFiltered = withCoords.filter(
       (e) => activeRegion === 'todas' || e.region === activeRegion,
-    );
-    console.log(
-      `[mapa] events in context=${events.length}  with valid coords=${withCoords.length}  visible (region=${activeRegion})=${regionFiltered.length}`,
     );
     if (events.length > 0 && withCoords.length === 0) {
       console.warn('[mapa] All verified events have lat=0,lng=0 — set coordinates in the admin panel to show them on the map');
@@ -67,36 +61,7 @@ export default function MapaScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.title}>
-          <Text style={styles.titlePunct}>¿</Text>QuéHay<Text style={styles.titlePunct}>?</Text>
-        </Text>
-        <Text style={styles.subtitle}>{t.eventsCount(visibleEvents.length)}</Text>
-      </View>
-
-      {/* Region selector */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.regionBar}
-        contentContainerStyle={styles.regionBarInner}
-      >
-        {REGIONS.map((r) => (
-          <TouchableOpacity
-            key={r.id}
-            style={[styles.regionChip, activeRegion === r.id && styles.regionChipActive]}
-            onPress={() => goToRegion(r.id as Region)}
-          >
-            <Text style={styles.regionFlag}>{r.flag}</Text>
-            <Text style={[styles.regionText, activeRegion === r.id && styles.regionTextActive]}>
-              {r.label}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-
-      {/* Map */}
+      {/* Map fills entire container */}
       <MapView ref={mapRef} style={styles.map} initialRegion={REGION_VIEWPORTS['todas']}>
         {visibleEvents.map((event) => {
           const cat = CATEGORIES.find((c) => c.id === event.category);
@@ -121,6 +86,34 @@ export default function MapaScreen() {
           );
         })}
       </MapView>
+
+      {/* Floating top overlay: title + compact region chips */}
+      <View style={styles.topOverlay}>
+        <View style={styles.topBar}>
+          <Text style={styles.title}>
+            <Text style={styles.titlePunct}>¿</Text>QuéHay<Text style={styles.titlePunct}>?</Text>
+          </Text>
+          <Text style={styles.subtitle}>{t.eventsCount(visibleEvents.length)}</Text>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.regionBarInner}
+        >
+          {REGIONS.map((r) => (
+            <TouchableOpacity
+              key={r.id}
+              style={[styles.regionChip, activeRegion === r.id && styles.regionChipActive]}
+              onPress={() => goToRegion(r.id as Region)}
+            >
+              <Text style={styles.regionFlag}>{r.flag}</Text>
+              <Text style={[styles.regionText, activeRegion === r.id && styles.regionTextActive]}>
+                {r.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
 
       {/* Selected event bottom card */}
       {selectedEvent && (
@@ -186,15 +179,34 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
-  header: {
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+
+  /* ── Top overlay ─────────────────────────────────────── */
+  topOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(250,247,242,0.96)',
+    paddingBottom: 8,
+    shadowColor: '#2C1810',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 6,
+  },
+  topBar: {
     flexDirection: 'row',
     alignItems: 'baseline',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingHorizontal: 16,
+    paddingTop: 6,
+    paddingBottom: 6,
     gap: 8,
   },
   title: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: '800',
     color: Colors.text,
   },
@@ -202,46 +214,42 @@ const styles = StyleSheet.create({
     color: Colors.primary,
   },
   subtitle: {
-    fontSize: 13,
+    fontSize: 12,
     color: Colors.textSecondary,
   },
-  regionBar: {
-    paddingBottom: 8,
-  },
   regionBarInner: {
-    paddingHorizontal: 16,
-    gap: 8,
+    paddingHorizontal: 12,
+    gap: 6,
     flexDirection: 'row',
   },
   regionFlag: {
-    fontSize: 13,
+    fontSize: 11,
   },
   regionChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    paddingVertical: 7,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    borderWidth: 1.5,
+    gap: 3,
+    paddingVertical: 5,
+    paddingHorizontal: 9,
+    borderRadius: 14,
+    borderWidth: 1,
     borderColor: Colors.border,
-    backgroundColor: Colors.surface,
+    backgroundColor: 'rgba(255,255,255,0.9)',
   },
   regionChipActive: {
     backgroundColor: Colors.primary,
     borderColor: Colors.primary,
   },
   regionText: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '600',
     color: Colors.textSecondary,
   },
   regionTextActive: {
     color: Colors.white,
   },
-  map: {
-    flex: 1,
-  },
+
+  /* ── Markers & callouts ──────────────────────────────── */
   marker: {
     width: 36,
     height: 36,
@@ -279,6 +287,8 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     marginTop: 2,
   },
+
+  /* ── Bottom card ─────────────────────────────────────── */
   bottomCard: {
     position: 'absolute',
     bottom: 80,
@@ -339,6 +349,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 14,
   },
+
+  /* ── Legend ──────────────────────────────────────────── */
   legend: {
     position: 'absolute',
     bottom: 140,

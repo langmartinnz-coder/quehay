@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -21,7 +21,9 @@ import { submitEvent } from '../../lib/api';
 import { extractPosterData } from '../../lib/extractPoster';
 import { supabase } from '../../lib/supabase';
 import { useLanguage } from '../../store/LanguageContext';
-import { resolveCoordinates } from '../../lib/geocode';
+import { resolveCoordinates, coordsToRegion } from '../../lib/geocode';
+import { useShareIntentContext } from 'expo-share-intent';
+import { File as FSFile } from 'expo-file-system';
 
 interface FormState {
   name: string;
@@ -63,6 +65,63 @@ export default function EnviarScreen() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [extractError, setExtractError] = useState<string | null>(null);
   const [regionOpen, setRegionOpen] = useState(false);
+  const [regionAutoFilled, setRegionAutoFilled] = useState(false);
+
+  // Share intent — app was opened via the OS share sheet with an image
+  const { hasShareIntent, shareIntent, resetShareIntent } = useShareIntentContext();
+  const processedSharePath = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!hasShareIntent) return;
+    const file = shareIntent.files?.[0];
+    if (!file || !file.mimeType.startsWith('image/')) return;
+    if (processedSharePath.current === file.path) return;
+
+    // Capture stable values before the async closure (avoids stale reference issues)
+    const filePath = file.path;
+    const fileMime = file.mimeType;
+    processedSharePath.current = filePath;
+
+    async function loadAndExtract() {
+      try {
+        const fileUri = filePath.startsWith('file://') ? filePath : `file://${filePath}`;
+        const base64 = await new FSFile(fileUri).base64();
+        resetAll();
+        setImage(fileUri);
+        setImageBase64(base64);
+        setImageMimeType(fileMime);
+        resetShareIntent();
+        extractFromPoster(base64, fileMime);
+      } catch (err) {
+        console.error('[enviar] Failed to load shared image:', err);
+      }
+    }
+
+    loadAndExtract();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasShareIntent, shareIntent]);
+
+  // Auto-detect region from geocoded town coordinates (debounced 800 ms).
+  // Only fires when town has ≥3 characters; updates region unless the user
+  // has manually overridden it (regionAutoFilled tracks who last set it).
+  useEffect(() => {
+    const town = form.town.trim();
+    if (town.length < 3) return;
+    const timer = setTimeout(async () => {
+      try {
+        const coords = await resolveCoordinates(town);
+        if (coords.lat === 0 && coords.lng === 0) return;
+        const detected = coordsToRegion(coords.lat, coords.lng);
+        if (detected) {
+          setForm((p) => ({ ...p, region: detected }));
+          setRegionAutoFilled(true);
+        }
+      } catch {
+        // silently ignore — user can pick manually
+      }
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [form.town]);
 
   function resetAll() {
     setImage(null);
@@ -71,6 +130,8 @@ export default function EnviarScreen() {
     setExtracted(false);
     setSubmitError(null);
     setExtractError(null);
+    setRegionAutoFilled(false);
+    processedSharePath.current = null;
   }
 
   async function pickImage(useCamera: boolean) {
@@ -95,12 +156,14 @@ export default function EnviarScreen() {
     }
   }
 
-  async function extractFromPoster() {
-    if (!imageBase64) return;
+  async function extractFromPoster(base64Override?: string, mimeOverride?: string) {
+    const b64 = base64Override ?? imageBase64;
+    const mime = mimeOverride ?? imageMimeType;
+    if (!b64) return;
     setIsExtracting(true);
     setExtractError(null);
     try {
-      const data = await extractPosterData(imageBase64, imageMimeType);
+      const data = await extractPosterData(b64, mime);
       setForm((prev) => ({
         ...prev,
         ...(data.name && { name: data.name }),
@@ -318,7 +381,7 @@ export default function EnviarScreen() {
         {image && !extracted && !extractError && (
           <TouchableOpacity
             style={[styles.extractBtn, isExtracting && { opacity: 0.7 }]}
-            onPress={extractFromPoster}
+            onPress={() => extractFromPoster()}
             disabled={isExtracting}
           >
             {isExtracting ? (
@@ -405,6 +468,11 @@ export default function EnviarScreen() {
                 <Text style={styles.dropdownValueText}>
                   {REGIONS.find((r) => r.id === form.region)?.label}
                 </Text>
+                {regionAutoFilled && (
+                  <View style={styles.autoTag}>
+                    <Text style={styles.autoTagText}>auto</Text>
+                  </View>
+                )}
               </View>
             ) : (
               <Text style={styles.dropdownPlaceholder}>{t.fieldRegionSelect}</Text>
@@ -440,6 +508,7 @@ export default function EnviarScreen() {
                     ]}
                     onPress={() => {
                       setForm((p) => ({ ...p, region: r.id }));
+                      setRegionAutoFilled(false);
                       setRegionOpen(false);
                     }}
                   >
@@ -757,6 +826,21 @@ const styles = StyleSheet.create({
   dropdownValueFlag: { fontSize: 16 },
   dropdownValueText: { fontSize: 14, fontWeight: '600', color: Colors.text },
   dropdownPlaceholder: { fontSize: 14, color: Colors.textLight, flex: 1 },
+  autoTag: {
+    backgroundColor: '#FEF0E8',
+    borderRadius: 4,
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+    borderWidth: 1,
+    borderColor: Colors.secondaryLight,
+  },
+  autoTagText: {
+    fontSize: 9,
+    fontWeight: '700',
+    color: Colors.primary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
   dropdownChevron: { fontSize: 10, color: Colors.textSecondary, marginLeft: 8 },
   modalBackdrop: {
     ...StyleSheet.absoluteFillObject,

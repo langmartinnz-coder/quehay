@@ -24,7 +24,13 @@
       "Bash(Select-Object FullName)",
       "Bash(python -c \"from PIL import Image; print\\('PIL OK'\\)\")",
       "Bash(pip install *)",
-      "Bash(Remove-Item *)"
+      "Bash(Remove-Item *)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(npm info *)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('version:', d.get\\('version'\\)\\); print\\('last 5 versions:', list\\(d.get\\('versions', {}\\).keys\\(\\)\\)[-5:]\\)\")",
+      "WebFetch(domain:registry.npmjs.org)"
     ]
   }
 }

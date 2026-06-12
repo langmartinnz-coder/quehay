@@ -28,6 +28,7 @@
     },
     "ios": {
       "supportsTablet": true,
+      "bundleIdentifier": "com.marsu123.quehay",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "QuéHay usa tu ubicación para mostrarte eventos cercanos.",
         "NSPhotoLibraryUsageDescription": "QuéHay necesita acceso a tus fotos para subir pósteres de eventos.",
@@ -66,7 +67,19 @@
       ],
       "expo-localization",
       "expo-updates",
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "expo-share-intent",
+        {
+          "iosActivationRules": {
+            "NSExtensionActivationSupportsImageWithMaxCount": 1
+          },
+          "androidIntentFilters": ["image/*"],
+          "androidMainActivityAttributes": {
+            "android:launchMode": "singleTask"
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

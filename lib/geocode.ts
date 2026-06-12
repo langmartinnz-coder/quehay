@@ -1,5 +1,42 @@
 type Coords = { lat: number; lng: number };
 
+// Priority-ordered bounding boxes — checked top-to-bottom, first match wins.
+// Isolated regions (islands, narrow coastal strips) come first to avoid
+// false-positives from larger overlapping mainland boxes.
+const REGION_BOUNDS: {
+  region: string;
+  latMin: number; latMax: number;
+  lngMin: number; lngMax: number;
+}[] = [
+  { region: 'canarias',      latMin: 27.4, latMax: 29.5, lngMin: -18.5, lngMax: -13.0 },
+  { region: 'baleares',      latMin: 38.4, latMax: 40.3, lngMin:   1.0, lngMax:   4.5 },
+  { region: 'galicia',       latMin: 41.8, latMax: 44.0, lngMin:  -9.4, lngMax:  -6.8 },
+  // Tighten País Vasco lat/lng so Navarra/Cantabria towns fall through correctly
+  { region: 'pais-vasco',    latMin: 42.75, latMax: 43.55, lngMin: -3.4, lngMax: -1.7 },
+  // Catalunya before Aragón: their eastern edges overlap around lng 0.5
+  { region: 'cataluña',      latMin: 40.4, latMax: 42.9, lngMin:   0.5, lngMax:   3.4 },
+  { region: 'aragon',        latMin: 39.9, latMax: 43.0, lngMin:  -2.3, lngMax:   0.8 },
+  // Madrid before Castilla-León (smaller, fully contained)
+  { region: 'madrid',        latMin: 39.8, latMax: 41.2, lngMin:  -4.7, lngMax:  -2.9 },
+  // Extremadura before Andalucía (overlapping southern lat band)
+  { region: 'extremadura',   latMin: 37.8, latMax: 40.5, lngMin:  -7.7, lngMax:  -4.7 },
+  // Murcia before Valencia and Andalucía (overlapping southeast corner)
+  { region: 'murcia',        latMin: 37.3, latMax: 38.6, lngMin:  -2.5, lngMax:  -0.6 },
+  { region: 'andalucia',     latMin: 35.8, latMax: 38.8, lngMin:  -7.6, lngMax:  -1.5 },
+  { region: 'valencia',      latMin: 37.7, latMax: 40.9, lngMin:  -1.5, lngMax:   0.6 },
+  // Castilla-León is the large central catchall
+  { region: 'castilla-leon', latMin: 40.0, latMax: 43.3, lngMin:  -7.3, lngMax:  -1.7 },
+];
+
+export function coordsToRegion(lat: number, lng: number): string | null {
+  for (const b of REGION_BOUNDS) {
+    if (lat >= b.latMin && lat <= b.latMax && lng >= b.lngMin && lng <= b.lngMax) {
+      return b.region;
+    }
+  }
+  return null;
+}
+
 function normalize(s: string): string {
   return s
     .toLowerCase()

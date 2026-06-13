@@ -77,7 +77,8 @@
           "androidIntentFilters": ["image/*"],
           "androidMainActivityAttributes": {
             "android:launchMode": "singleTask"
-          }
+          },
+          "disableAndroid": true
         }
       ]
     ],

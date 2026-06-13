@@ -11,13 +11,13 @@ import WelcomeScreen from '../components/WelcomeScreen';
 
 function RootContent() {
   const { isFirstLaunch, langLoaded } = useLanguage();
-  const { hasShareIntent, shareIntent } = useShareIntentContext();
+  const { isReady: shareIntentReady, hasShareIntent, shareIntent } = useShareIntentContext();
   const navigatedForIntentRef = useRef(false);
 
   // When an image share intent arrives after the navigation stack is ready,
   // navigate directly to the submit screen. The enviar screen handles loading.
   useEffect(() => {
-    if (!hasShareIntent) {
+    if (!shareIntentReady || !hasShareIntent) {
       navigatedForIntentRef.current = false;
       return;
     }
@@ -29,7 +29,7 @@ function RootContent() {
 
     navigatedForIntentRef.current = true;
     router.push('/(tabs)/enviar');
-  }, [hasShareIntent, shareIntent, isFirstLaunch, langLoaded]);
+  }, [shareIntentReady, hasShareIntent, shareIntent, isFirstLaunch, langLoaded]);
 
   if (!langLoaded) {
     return <View style={{ flex: 1, backgroundColor: Colors.background }} />;

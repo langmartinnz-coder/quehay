@@ -24,6 +24,7 @@ import { useLanguage } from '../../store/LanguageContext';
 import { resolveCoordinates, coordsToRegion } from '../../lib/geocode';
 import { useShareIntentContext } from 'expo-share-intent';
 import { File as FSFile } from 'expo-file-system';
+import { copyAsync, cacheDirectory } from 'expo-file-system/legacy';
 
 interface FormState {
   name: string;
@@ -68,11 +69,11 @@ export default function EnviarScreen() {
   const [regionAutoFilled, setRegionAutoFilled] = useState(false);
 
   // Share intent — app was opened via the OS share sheet with an image
-  const { hasShareIntent, shareIntent, resetShareIntent } = useShareIntentContext();
+  const { isReady: shareIntentReady, hasShareIntent, shareIntent, resetShareIntent } = useShareIntentContext();
   const processedSharePath = useRef<string | null>(null);
 
   useEffect(() => {
-    if (!hasShareIntent) return;
+    if (!shareIntentReady || !hasShareIntent) return;
     const file = shareIntent.files?.[0];
     if (!file || !file.mimeType.startsWith('image/')) return;
     if (processedSharePath.current === file.path) return;
@@ -84,8 +85,25 @@ export default function EnviarScreen() {
 
     async function loadAndExtract() {
       try {
-        const fileUri = filePath.startsWith('file://') ? filePath : `file://${filePath}`;
-        const base64 = await new FSFile(fileUri).base64();
+        // Normalize to a URI: raw paths get file:// prefix; content:// and file:// pass through
+        let fileUri: string;
+        if (filePath.startsWith('file://') || filePath.startsWith('content://')) {
+          fileUri = filePath;
+        } else {
+          fileUri = `file://${filePath}`;
+        }
+
+        // Android shares often arrive as content:// URIs. The new File API only handles
+        // file:// — copy to cache first so we can read base64.
+        let readUri = fileUri;
+        if (fileUri.startsWith('content://')) {
+          const ext = fileMime.includes('png') ? 'png' : 'jpg';
+          const dest = `${cacheDirectory}shared_${Date.now()}.${ext}`;
+          await copyAsync({ from: fileUri, to: dest });
+          readUri = dest;
+        }
+
+        const base64 = await new FSFile(readUri).base64();
         resetAll();
         setImage(fileUri);
         setImageBase64(base64);
@@ -99,7 +117,7 @@ export default function EnviarScreen() {
 
     loadAndExtract();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasShareIntent, shareIntent]);
+  }, [shareIntentReady, hasShareIntent, shareIntent]);
 
   // Auto-detect region from geocoded town coordinates (debounced 800 ms).
   // Only fires when town has ≥3 characters; updates region unless the user

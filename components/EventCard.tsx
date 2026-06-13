@@ -12,6 +12,7 @@ import { Colors } from '../constants/colors';
 import { CATEGORIES, SOURCE_LABELS, SIZE_CONFIG, getRegionLabel } from '../constants/categories';
 import { formatDateRange } from '../data/mockData';
 import { useLanguage } from '../store/LanguageContext';
+import { formatDistance } from '../lib/distance';
 
 interface EventCardProps {
   event: Event;
@@ -19,6 +20,7 @@ interface EventCardProps {
   onFavoriteToggle: () => void;
   onPress: () => void;
   showSize?: boolean;
+  distanceKm?: number;
 }
 
 export default function EventCard({
@@ -27,6 +29,7 @@ export default function EventCard({
   onFavoriteToggle,
   onPress,
   showSize = false,
+  distanceKm,
 }: EventCardProps) {
   const { t } = useLanguage();
   const category = CATEGORIES.find((c) => c.id === event.category);
@@ -82,10 +85,14 @@ export default function EventCard({
 
         <View style={styles.metaRow}>
           <Text style={styles.metaIcon}>📍</Text>
-          <Text style={styles.metaText} numberOfLines={1}>
-            {event.town}
-            {`, ${getRegionLabel(event.region)}`}
+          <Text style={[styles.metaText, { flexShrink: 1 }]} numberOfLines={1}>
+            {event.town}{`, ${getRegionLabel(event.region)}`}
           </Text>
+          {distanceKm !== undefined && (
+            <View style={styles.distancePill}>
+              <Text style={styles.distancePillText}>{formatDistance(distanceKm)}</Text>
+            </View>
+          )}
         </View>
 
         {!event.isFree && event.price && (
@@ -236,5 +243,18 @@ const styles = StyleSheet.create({
   sourceText: {
     fontSize: 11,
     flex: 1,
+  },
+  distancePill: {
+    backgroundColor: '#FEF0E8',
+    borderRadius: 8,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    marginLeft: 4,
+    flexShrink: 0,
+  },
+  distancePillText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: Colors.primary,
   },
 });

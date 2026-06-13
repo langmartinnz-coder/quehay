@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useRef, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -17,14 +17,65 @@ import FilterBar from '../../components/FilterBar';
 import EmptyState from '../../components/EmptyState';
 import { Colors } from '../../constants/colors';
 import { useLanguage } from '../../store/LanguageContext';
+import { useUserLocation } from '../../hooks/useUserLocation';
+import { haversineKm, formatDistance } from '../../lib/distance';
+import { Event } from '../../types';
 
 const LANG_CYCLE: Record<string, 'es' | 'en' | 'ca'> = { es: 'en', en: 'ca', ca: 'es' };
+
+type SortOrder = 'date' | 'distance';
+
+function getEventDistance(
+  event: Event,
+  userLat: number,
+  userLng: number,
+): number {
+  if (event.coordinates.latitude === 0 && event.coordinates.longitude === 0) {
+    return Infinity;
+  }
+  return haversineKm(
+    userLat,
+    userLng,
+    event.coordinates.latitude,
+    event.coordinates.longitude,
+  );
+}
 
 export default function HomeScreen() {
   const { t, language, setLanguage } = useLanguage();
   const { filters, setFilters, isFavorite, toggleFavorite, filteredEvents, eventsLoading } = useApp();
+  const { location } = useUserLocation();
 
-  const events = filteredEvents;
+  const [sortOrder, setSortOrder] = useState<SortOrder>('date');
+  // Auto-switch to nearest-first once location is resolved — only once
+  const didAutoSort = useRef(false);
+  useEffect(() => {
+    if (location && !didAutoSort.current) {
+      didAutoSort.current = true;
+      setSortOrder('distance');
+    }
+  }, [location]);
+
+  // Distance from user to each event (only when location is available)
+  const distanceMap = useMemo<Map<string, number>>(() => {
+    if (!location) return new Map();
+    const map = new Map<string, number>();
+    for (const event of filteredEvents) {
+      map.set(event.id, getEventDistance(event, location.latitude, location.longitude));
+    }
+    return map;
+  }, [filteredEvents, location]);
+
+  // Sort filtered events by chosen order
+  const sortedEvents = useMemo(() => {
+    if (sortOrder === 'distance' && location) {
+      return [...filteredEvents].sort(
+        (a, b) => (distanceMap.get(a.id) ?? Infinity) - (distanceMap.get(b.id) ?? Infinity),
+      );
+    }
+    // 'date' — filteredEvents is already sorted by dateStart ascending from applyFilters
+    return filteredEvents;
+  }, [filteredEvents, sortOrder, location, distanceMap]);
 
   const activeFiltersCount = [
     filters.category !== 'all',
@@ -59,7 +110,7 @@ export default function HomeScreen() {
       </View>
 
       <FlatList
-        data={events}
+        data={sortedEvents}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
@@ -73,9 +124,11 @@ export default function HomeScreen() {
               onChange={(c) => setFilters({ category: c })}
             />
             <FilterBar filters={filters} onFilterChange={setFilters} />
+
+            {/* Results count + clear filters */}
             <View style={styles.resultsRow}>
               <Text style={styles.resultsText}>
-                {events.length} {events.length === 1 ? t.eventSingular : t.eventPlural}
+                {sortedEvents.length} {sortedEvents.length === 1 ? t.eventSingular : t.eventPlural}
               </Text>
               {activeFiltersCount > 0 && (
                 <TouchableOpacity
@@ -89,6 +142,28 @@ export default function HomeScreen() {
                 </TouchableOpacity>
               )}
             </View>
+
+            {/* Sort chips — only shown when location is available */}
+            {location && (
+              <View style={styles.sortRow}>
+                <TouchableOpacity
+                  style={[styles.sortChip, sortOrder === 'date' && styles.sortChipActive]}
+                  onPress={() => setSortOrder('date')}
+                >
+                  <Text style={[styles.sortChipText, sortOrder === 'date' && styles.sortChipTextActive]}>
+                    🗓 {t.sortByDate}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.sortChip, sortOrder === 'distance' && styles.sortChipActive]}
+                  onPress={() => setSortOrder('distance')}
+                >
+                  <Text style={[styles.sortChipText, sortOrder === 'distance' && styles.sortChipTextActive]}>
+                    📍 {t.sortByDistance}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </>
         }
         renderItem={({ item }) => (
@@ -97,9 +172,14 @@ export default function HomeScreen() {
             isFavorite={isFavorite(item.id)}
             onFavoriteToggle={() => toggleFavorite(item.id)}
             onPress={() => router.push(`/evento/${item.id}`)}
+            distanceKm={distanceMap.get(item.id)}
           />
         )}
-        ListEmptyComponent={eventsLoading ? <ActivityIndicator style={{ marginTop: 40 }} color={Colors.primary} /> : <EmptyState />}
+        ListEmptyComponent={
+          eventsLoading
+            ? <ActivityIndicator style={{ marginTop: 40 }} color={Colors.primary} />
+            : <EmptyState />
+        }
         contentContainerStyle={styles.list}
       />
     </SafeAreaView>
@@ -172,7 +252,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingVertical: 8,
+    paddingTop: 8,
+    paddingBottom: 4,
   },
   resultsText: {
     fontSize: 14,
@@ -183,6 +264,34 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.primary,
     fontWeight: '600',
+  },
+  sortRow: {
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    paddingBottom: 8,
+    gap: 8,
+  },
+  sortChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: 16,
+    borderWidth: 1.5,
+    borderColor: Colors.border,
+    backgroundColor: Colors.surface,
+  },
+  sortChipActive: {
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
+  },
+  sortChipText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: Colors.textSecondary,
+  },
+  sortChipTextActive: {
+    color: Colors.white,
   },
   list: {
     paddingBottom: 20,

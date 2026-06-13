@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import { CATEGORIES, REGIONS } from '../../constants/categories';
 import { Event, Region } from '../../types';
 import { useApp } from '../../store/AppContext';
 import { useLanguage } from '../../store/LanguageContext';
+import { useUserLocation } from '../../hooks/useUserLocation';
 
 type MapViewport = { latitude: number; longitude: number; latitudeDelta: number; longitudeDelta: number };
 
@@ -39,6 +40,24 @@ export default function MapaScreen() {
   const mapRef = useRef<MapView>(null);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [activeRegion, setActiveRegion] = useState<Region>('todas');
+  const { location } = useUserLocation();
+  const hasCenteredOnUser = useRef(false);
+
+  // Auto-center on the user's location once it resolves (only on first mount)
+  useEffect(() => {
+    if (location && !hasCenteredOnUser.current) {
+      hasCenteredOnUser.current = true;
+      mapRef.current?.animateToRegion(
+        {
+          latitude: location.latitude,
+          longitude: location.longitude,
+          latitudeDelta: 0.5,
+          longitudeDelta: 0.5,
+        },
+        800,
+      );
+    }
+  }, [location]);
 
   const visibleEvents = useMemo(() => {
     const withCoords = events.filter(
@@ -157,6 +176,26 @@ export default function MapaScreen() {
             })()}
           </View>
         </View>
+      )}
+
+      {/* Locate-me button — only shown when location is available */}
+      {location && (
+        <TouchableOpacity
+          style={styles.locateBtn}
+          onPress={() =>
+            mapRef.current?.animateToRegion(
+              {
+                latitude: location.latitude,
+                longitude: location.longitude,
+                latitudeDelta: 0.5,
+                longitudeDelta: 0.5,
+              },
+              600,
+            )
+          }
+        >
+          <Text style={styles.locateBtnText}>🎯</Text>
+        </TouchableOpacity>
       )}
 
       {/* Legend */}
@@ -348,6 +387,29 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontWeight: '700',
     fontSize: 14,
+  },
+
+  /* ── Locate button ───────────────────────────────────── */
+  locateBtn: {
+    position: 'absolute',
+    bottom: 196,
+    right: 16,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: Colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#2C1810',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 6,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  locateBtnText: {
+    fontSize: 20,
   },
 
   /* ── Legend ──────────────────────────────────────────── */

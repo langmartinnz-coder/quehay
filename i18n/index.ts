@@ -179,6 +179,10 @@ const es = {
   translating: 'Traduciendo...',
   translatedNote: 'Traducido por IA · Puede no ser exacto',
   translatedBadge: '🌐 Traducido',
+
+  // Sort
+  sortByDate: 'Por fecha',
+  sortByDistance: 'Más cercanos',
 };
 
 const en: typeof es = {
@@ -324,6 +328,10 @@ const en: typeof es = {
   translating: 'Translating...',
   translatedNote: 'Translated by AI · May not be exact',
   translatedBadge: '🌐 Translated',
+
+  // Sort
+  sortByDate: 'By date',
+  sortByDistance: 'Nearest',
 };
 
 const ca: typeof es = {
@@ -467,6 +475,10 @@ const ca: typeof es = {
   translating: 'Traduint...',
   translatedNote: "Traduït per IA · Pot no ser exacte",
   translatedBadge: '🌐 Traduït',
+
+  // Sort
+  sortByDate: 'Per data',
+  sortByDistance: 'Propers',
 };
 
 export type Translations = typeof es;

@@ -30,7 +30,8 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(npm info *)",
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('version:', d.get\\('version'\\)\\); print\\('last 5 versions:', list\\(d.get\\('versions', {}\\).keys\\(\\)\\)[-5:]\\)\")",
-      "WebFetch(domain:registry.npmjs.org)"
+      "WebFetch(domain:registry.npmjs.org)",
+      "Bash(npx expo-doctor *)"
     ]
   }
 }

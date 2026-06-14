@@ -74,13 +74,16 @@
           "iosActivationRules": {
             "NSExtensionActivationSupportsImageWithMaxCount": 1
           },
-          "androidIntentFilters": ["image/*"],
+          "androidIntentFilters": [
+            "image/*"
+          ],
           "androidMainActivityAttributes": {
             "android:launchMode": "singleTask"
           },
           "disableAndroid": true
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true

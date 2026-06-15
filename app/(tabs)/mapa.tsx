@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import MapView, { Marker, Callout } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { router } from 'expo-router';
 import { Colors } from '../../constants/colors';
 import { CATEGORIES, REGIONS } from '../../constants/categories';
@@ -88,19 +88,14 @@ export default function MapaScreen() {
             <Marker
               key={event.id}
               coordinate={event.coordinates}
-              onPress={() => setSelectedEvent(event)}
+              onPress={() => {
+                console.log('[mapa] marker pressed:', event.id, event.name);
+                setSelectedEvent(event);
+              }}
             >
               <View style={[styles.marker, { backgroundColor: cat?.color ?? Colors.primary }]}>
                 <Text style={styles.markerEmoji}>{cat?.emoji}</Text>
               </View>
-              <Callout tooltip>
-                <View style={styles.callout}>
-                  <Text style={styles.calloutName} numberOfLines={2}>
-                    {event.name}
-                  </Text>
-                  <Text style={styles.calloutMeta}>{event.town}</Text>
-                </View>
-              </Callout>
             </Marker>
           );
         })}
@@ -306,27 +301,6 @@ const styles = StyleSheet.create({
   markerEmoji: {
     fontSize: 16,
   },
-  callout: {
-    backgroundColor: Colors.white,
-    borderRadius: 12,
-    padding: 10,
-    maxWidth: 160,
-    shadowColor: '#2C1810',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-  },
-  calloutName: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: Colors.text,
-  },
-  calloutMeta: {
-    fontSize: 11,
-    color: Colors.textSecondary,
-    marginTop: 2,
-  },
-
   /* ── Bottom card ─────────────────────────────────────── */
   bottomCard: {
     position: 'absolute',

@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { router } from 'expo-router';
 import { Colors } from '../../constants/colors';
 import { CATEGORIES, REGIONS } from '../../constants/categories';
@@ -34,6 +34,8 @@ const REGION_VIEWPORTS: Record<string, MapViewport> = {
   'baleares':      { latitude: 39.6, longitude:  2.9, latitudeDelta: 2.0,  longitudeDelta: 2.0 },
 };
 
+type MapStatus = 'loading' | 'ready' | 'loaded' | 'timeout';
+
 export default function MapaScreen() {
   const { t } = useLanguage();
   const { events } = useApp();
@@ -42,6 +44,27 @@ export default function MapaScreen() {
   const [activeRegion, setActiveRegion] = useState<Region>('todas');
   const { location } = useUserLocation();
   const hasCenteredOnUser = useRef(false);
+  const [mapStatus, setMapStatus] = useState<MapStatus>('loading');
+  const [mapError, setMapError] = useState<string | null>(null);
+  const mapTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Surface a diagnostic message if the map SDK never fires onMapReady
+  useEffect(() => {
+    mapTimeoutRef.current = setTimeout(() => {
+      setMapStatus((prev) => {
+        if (prev === 'loading') {
+          const msg = 'Map SDK did not initialise after 10 s — check API key, Maps SDK for Android is enabled in Cloud Console, and billing is active.';
+          console.error('[mapa]', msg);
+          setMapError(msg);
+          return 'timeout';
+        }
+        return prev;
+      });
+    }, 10000);
+    return () => {
+      if (mapTimeoutRef.current) clearTimeout(mapTimeoutRef.current);
+    };
+  }, []);
 
   // Auto-center on the user's location once it resolves (only on first mount)
   useEffect(() => {
@@ -81,7 +104,21 @@ export default function MapaScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       {/* Map fills entire container */}
-      <MapView ref={mapRef} style={styles.map} initialRegion={REGION_VIEWPORTS['todas']}>
+      <MapView
+        ref={mapRef}
+        style={styles.map}
+        provider={PROVIDER_GOOGLE}
+        initialRegion={REGION_VIEWPORTS['todas']}
+        onMapReady={() => {
+          console.log('[mapa] onMapReady — Google Maps SDK initialised successfully');
+          setMapStatus('ready');
+          if (mapTimeoutRef.current) clearTimeout(mapTimeoutRef.current);
+        }}
+        onMapLoaded={() => {
+          console.log('[mapa] onMapLoaded — tiles rendered');
+          setMapStatus('loaded');
+        }}
+      >
         {visibleEvents.map((event) => {
           const cat = CATEGORIES.find((c) => c.id === event.category);
           return (
@@ -191,6 +228,19 @@ export default function MapaScreen() {
         >
           <Text style={styles.locateBtnText}>🎯</Text>
         </TouchableOpacity>
+      )}
+
+      {/* Map diagnostic banner — visible when loading or failed */}
+      {mapStatus !== 'loaded' && (
+        <View style={[styles.mapBanner, mapStatus === 'timeout' && styles.mapBannerError]}>
+          <Text style={styles.mapBannerText}>
+            {mapStatus === 'timeout'
+              ? `⚠️ ${mapError}`
+              : mapStatus === 'ready'
+              ? '⏳ Map ready — loading tiles…'
+              : '⏳ Initialising map…'}
+          </Text>
+        </View>
       )}
 
       {/* Legend */}
@@ -384,6 +434,25 @@ const styles = StyleSheet.create({
   },
   locateBtnText: {
     fontSize: 20,
+  },
+
+  /* ── Map diagnostic banner ──────────────────────────── */
+  mapBanner: {
+    position: 'absolute',
+    bottom: 200,
+    left: 16,
+    right: 16,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    borderRadius: 8,
+    padding: 10,
+  },
+  mapBannerError: {
+    backgroundColor: 'rgba(180,0,0,0.85)',
+  },
+  mapBannerText: {
+    color: '#fff',
+    fontSize: 12,
+    lineHeight: 18,
   },
 
   /* ── Legend ──────────────────────────────────────────── */

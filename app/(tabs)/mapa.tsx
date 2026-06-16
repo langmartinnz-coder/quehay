@@ -243,17 +243,17 @@ export default function MapaScreen() {
         </View>
       )}
 
-      {/* Legend */}
-      <View style={styles.legend}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.legendInner}>
+      {/* Legend — hidden while event card is open to avoid overlap */}
+      {!selectedEvent && (
+        <View style={styles.legend}>
           {CATEGORIES.filter((c) => c.id !== 'all').map((cat) => (
             <View key={cat.id} style={styles.legendItem}>
               <View style={[styles.legendDot, { backgroundColor: cat.color }]} />
               <Text style={styles.legendLabel}>{cat.label}</Text>
             </View>
           ))}
-        </ScrollView>
-      </View>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
@@ -458,27 +458,30 @@ const styles = StyleSheet.create({
   /* ── Legend ──────────────────────────────────────────── */
   legend: {
     position: 'absolute',
-    bottom: 140,
-    left: 0,
-    right: 0,
-  },
-  legendInner: {
-    paddingHorizontal: 16,
-    gap: 8,
+    bottom: 90,
+    left: 16,
+    right: 16,
+    backgroundColor: 'rgba(255,255,255,0.95)',
+    borderRadius: 12,
+    padding: 8,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+    shadowColor: '#2C1810',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 4,
   },
   legendItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.92)',
-    borderRadius: 12,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    gap: 4,
+    gap: 5,
   },
   legendDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: 9,
+    height: 9,
+    borderRadius: 5,
   },
   legendLabel: {
     fontSize: 11,

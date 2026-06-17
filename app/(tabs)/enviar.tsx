@@ -356,18 +356,16 @@ export default function EnviarScreen() {
           <Text style={styles.subtitle}>{t.submitSubtitle}</Text>
         </View>
 
-        {/* Image preview — rendered directly when URI is set */}
+        {/* Image preview with change-image overlay */}
         {image && (
-          <Image
-            source={{ uri: image }}
-            style={{ width: '100%', height: 220 }}
-            resizeMode="cover"
-          />
-        )}
-        {image && (
-          <TouchableOpacity style={styles.changeImgBtn} onPress={resetAll}>
-            <Text style={styles.changeImgText}>{t.changeImage}</Text>
-          </TouchableOpacity>
+          <View style={styles.previewWrap}>
+            <Image source={{ uri: image }} style={styles.previewImg} resizeMode="cover" />
+            {!isExtracting && !extracted && (
+              <TouchableOpacity style={styles.changeImgBtn} onPress={resetAll}>
+                <Text style={styles.changeImgText}>{t.changeImage}</Text>
+              </TouchableOpacity>
+            )}
+          </View>
         )}
 
         {/* Upload box — shown when no image selected */}
@@ -737,9 +735,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primaryDark,
   },
   uploadBtnText: { color: Colors.white, fontWeight: '700', fontSize: 14 },
-  previewWrap: { borderRadius: 16, overflow: 'hidden', width: '100%', height: 220 },
+  previewWrap: { width: '100%', height: 220 },
   previewImg: { width: '100%', height: 220 },
-  changeImgBtn: { position: 'absolute', bottom: 10, right: 10, backgroundColor: 'rgba(0,0,0,0.6)', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8 },
+  changeImgBtn: { position: 'absolute', top: 10, right: 10, backgroundColor: 'rgba(0,0,0,0.55)', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8 },
   changeImgText: { color: Colors.white, fontSize: 12, fontWeight: '700' },
   extractBtn: {
     flexDirection: 'row',

@@ -40,6 +40,11 @@ Guía de categorías:
 - deportes: carreras, torneos, eventos deportivos
 - comunidad: eventos culturales, charlas, talleres, exposiciones
 
+Reglas para el campo "date":
+- Si el año no aparece en el cartel, usa siempre 2026 como año predeterminado.
+- No intentes adivinar si la fecha ya pasó — devuelve siempre 2026 cuando no haya año visible.
+- Si el cartel muestra un año explícito, úsalo tal cual.
+
 Si un campo no es visible en el cartel, devuelve null para ese campo.`;
 
 const CORS_HEADERS = {
@@ -50,25 +55,13 @@ const CORS_HEADERS = {
 const MODEL = 'claude-sonnet-4-5';
 
 function fixYear(dateStr: string): string {
-  const now = new Date();
-  const currentYear = now.getUTCFullYear();
-  const currentMonth = now.getUTCMonth() + 1; // 1-12
-  const currentDay = now.getUTCDate();
-
+  const currentYear = new Date().getUTCFullYear();
   const [yearStr, monthStr, dayStr] = dateStr.split('-');
   const extractedYear = parseInt(yearStr, 10);
-  const month = parseInt(monthStr, 10);
-  const day = parseInt(dayStr, 10);
-
-  if (extractedYear >= currentYear) return dateStr; // already current or future
-
-  // Month-day has already passed this year → bump to next year
-  const alreadyPassedThisYear =
-    month < currentMonth || (month === currentMonth && day < currentDay);
-
-  return alreadyPassedThisYear
-    ? `${currentYear + 1}-${monthStr}-${dayStr}`
-    : `${currentYear}-${monthStr}-${dayStr}`;
+  // Claude was told to use 2026 when no year is visible, so the only remaining
+  // correction needed is lifting obviously stale years (e.g. 2024) to current.
+  if (extractedYear >= currentYear) return dateStr;
+  return `${currentYear}-${monthStr}-${dayStr}`;
 }
 
 function json(body: unknown, status = 200): Response {

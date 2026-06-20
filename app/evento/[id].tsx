@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   Share,
+  Linking,
   Dimensions,
   ActivityIndicator,
 } from 'react-native';
@@ -21,6 +22,11 @@ import { useLanguage } from '../../store/LanguageContext';
 import { translateEvent, TranslatedEventFields, getCachedTranslation } from '../../lib/translateEvent';
 
 const { width } = Dimensions.get('window');
+
+// ── Affiliate IDs ─────────────────────────────────────────────────────────────
+// Update BOOKING_AID once CJ Affiliate approval is confirmed.
+const BOOKING_AID = 'BOOKING_AID';
+const TRAVELPAYOUTS_ID = '740715';
 
 export default function EventoDetailScreen() {
   const { t, language } = useLanguage();
@@ -157,6 +163,38 @@ export default function EventoDetailScreen() {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>{t.sectionAbout}</Text>
             <Text style={styles.description}>{displayDesc}</Text>
+          </View>
+
+          {/* Plan your visit */}
+          <View style={styles.planSection}>
+            <Text style={styles.sectionTitle}>{t.planVisitTitle}</Text>
+            <View style={styles.planBtns}>
+              <TouchableOpacity
+                style={styles.planBtn}
+                onPress={() => Linking.openURL(
+                  `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(event.town)}&aid=${BOOKING_AID}`
+                )}
+              >
+                <Text style={styles.planBtnText}>{t.planWhereStay}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.planBtn}
+                onPress={() => Linking.openURL(
+                  `https://www.tiqets.com/en/search/?q=${encodeURIComponent(event.town)}&partner=${TRAVELPAYOUTS_ID}`
+                )}
+              >
+                <Text style={styles.planBtnText}>{t.planThingsDo}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.planBtn}
+                onPress={() => Linking.openURL(
+                  `https://www.klook.com/search/result/?query=${encodeURIComponent(event.town)}&aid=${TRAVELPAYOUTS_ID}`
+                )}
+              >
+                <Text style={styles.planBtnText}>{t.planTours}</Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.affiliateDisclosure}>{t.affiliateDisclosure}</Text>
           </View>
 
           {/* Tags */}
@@ -398,4 +436,28 @@ const styles = StyleSheet.create({
   notFound: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12 },
   notFoundText: { fontSize: 18, color: Colors.textSecondary },
   backLink: { fontSize: 16, color: Colors.primary, fontWeight: '700' },
+
+  /* ── Plan your visit ─────────────────────────────────── */
+  planSection: { gap: 10 },
+  planBtns: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  planBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 14,
+    paddingVertical: 9,
+    borderRadius: 20,
+    backgroundColor: '#FEF0E8',
+    borderWidth: 1,
+    borderColor: Colors.secondaryLight,
+  },
+  planBtnText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: Colors.primary,
+  },
+  affiliateDisclosure: {
+    fontSize: 10,
+    color: Colors.textLight,
+    marginTop: 2,
+  },
 });

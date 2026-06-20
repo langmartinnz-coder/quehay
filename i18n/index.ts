@@ -183,6 +183,13 @@ const es = {
   // Sort
   sortByDate: 'Por fecha',
   sortByDistance: 'Más cercanos',
+
+  // Plan your visit (affiliate section)
+  planVisitTitle: 'Planea tu visita',
+  planWhereStay: '🏨 Dónde alojarte',
+  planThingsDo: '🎭 Cosas que hacer cerca',
+  planTours: '🗺️ Tours y actividades',
+  affiliateDisclosure: 'Enlaces de afiliado',
 };
 
 const en: typeof es = {
@@ -332,6 +339,13 @@ const en: typeof es = {
   // Sort
   sortByDate: 'By date',
   sortByDistance: 'Nearest',
+
+  // Plan your visit (affiliate section)
+  planVisitTitle: 'Plan your visit',
+  planWhereStay: '🏨 Where to stay',
+  planThingsDo: '🎭 Things to do nearby',
+  planTours: '🗺️ Tours & activities',
+  affiliateDisclosure: 'Affiliate links',
 };
 
 const ca: typeof es = {
@@ -479,6 +493,13 @@ const ca: typeof es = {
   // Sort
   sortByDate: 'Per data',
   sortByDistance: 'Propers',
+
+  // Plan your visit (affiliate section)
+  planVisitTitle: 'Planeja la teva visita',
+  planWhereStay: '🏨 On allotjar-se',
+  planThingsDo: '🎭 Coses a fer a prop',
+  planTours: "🗺️ Tours i activitats",
+  affiliateDisclosure: "Enllaços d'afiliat",
 };
 
 export type Translations = typeof es;

@@ -28,6 +28,23 @@ const { width } = Dimensions.get('window');
 const BOOKING_AID = 'BOOKING_AID';
 const TRAVELPAYOUTS_ID = '740715';
 
+// Spanish region names for affiliate search queries (small towns → region fallback for Klook).
+// 'todas' is intentionally absent so klookRegion is undefined when region is unset.
+const REGION_NAMES_ES: Record<string, string> = {
+  aragon: 'Aragón',
+  'cataluña': 'Cataluña',
+  madrid: 'Madrid',
+  andalucia: 'Andalucía',
+  valencia: 'Valencia',
+  'pais-vasco': 'País Vasco',
+  galicia: 'Galicia',
+  'castilla-leon': 'Castilla y León',
+  murcia: 'Murcia',
+  extremadura: 'Extremadura',
+  canarias: 'Canarias',
+  baleares: 'Baleares',
+};
+
 export default function EventoDetailScreen() {
   const { t, language } = useLanguage();
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -86,6 +103,13 @@ export default function EventoDetailScreen() {
   const displayName     = (language === 'en' && translation?.name)        || event.name;
   const displayLocation = (language === 'en' && translation?.location)    || event.location;
   const displayDesc     = (language === 'en' && translation?.description) || event.description;
+
+  // Affiliate button visibility
+  const klookRegion = REGION_NAMES_ES[event.region];
+  const showBooking = !!event.town;
+  const showTiqets  = !!event.town;
+  const showKlook   = !!klookRegion;
+  const showPlanSection = showBooking || showTiqets || showKlook;
 
   async function handleShare() {
     if (!event) return;
@@ -166,36 +190,44 @@ export default function EventoDetailScreen() {
           </View>
 
           {/* Plan your visit */}
-          <View style={styles.planSection}>
-            <Text style={styles.sectionTitle}>{t.planVisitTitle}</Text>
-            <View style={styles.planBtns}>
-              <TouchableOpacity
-                style={styles.planBtn}
-                onPress={() => Linking.openURL(
-                  `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(event.town)}&aid=${BOOKING_AID}`
+          {showPlanSection && (
+            <View style={styles.planSection}>
+              <Text style={styles.sectionTitle}>{t.planVisitTitle}</Text>
+              <View style={styles.planBtns}>
+                {showBooking && (
+                  <TouchableOpacity
+                    style={styles.planBtn}
+                    onPress={() => Linking.openURL(
+                      `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(event.town)}&aid=${BOOKING_AID}`
+                    )}
+                  >
+                    <Text style={styles.planBtnText}>{t.planWhereStay}</Text>
+                  </TouchableOpacity>
                 )}
-              >
-                <Text style={styles.planBtnText}>{t.planWhereStay}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.planBtn}
-                onPress={() => Linking.openURL(
-                  `https://www.tiqets.com/en/search/?q=${encodeURIComponent(event.town)}&partner=${TRAVELPAYOUTS_ID}`
+                {showTiqets && (
+                  <TouchableOpacity
+                    style={styles.planBtn}
+                    onPress={() => Linking.openURL(
+                      `https://www.tiqets.com/en/search/?q=${encodeURIComponent(event.town)}&partner=${TRAVELPAYOUTS_ID}`
+                    )}
+                  >
+                    <Text style={styles.planBtnText}>{t.planThingsDo}</Text>
+                  </TouchableOpacity>
                 )}
-              >
-                <Text style={styles.planBtnText}>{t.planThingsDo}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.planBtn}
-                onPress={() => Linking.openURL(
-                  `https://www.klook.com/search/result/?query=${encodeURIComponent(event.town)}&aid=${TRAVELPAYOUTS_ID}`
+                {showKlook && (
+                  <TouchableOpacity
+                    style={styles.planBtn}
+                    onPress={() => Linking.openURL(
+                      `https://www.klook.com/search/result/?query=${encodeURIComponent(klookRegion!)}&aid=${TRAVELPAYOUTS_ID}`
+                    )}
+                  >
+                    <Text style={styles.planBtnText}>{t.planTours}</Text>
+                  </TouchableOpacity>
                 )}
-              >
-                <Text style={styles.planBtnText}>{t.planTours}</Text>
-              </TouchableOpacity>
+              </View>
+              <Text style={styles.affiliateDisclosure}>{t.affiliateDisclosure}</Text>
             </View>
-            <Text style={styles.affiliateDisclosure}>{t.affiliateDisclosure}</Text>
-          </View>
+          )}
 
           {/* Tags */}
           {event.tags.length > 0 && (

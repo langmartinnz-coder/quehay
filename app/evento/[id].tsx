@@ -104,12 +104,9 @@ export default function EventoDetailScreen() {
   const displayLocation = (language === 'en' && translation?.location)    || event.location;
   const displayDesc     = (language === 'en' && translation?.description) || event.description;
 
-  // Affiliate button visibility
+  // Affiliate button visibility (fixed-link buttons always show; Klook needs a mapped region)
   const klookRegion = REGION_NAMES_ES[event.region];
-  const showBooking = !!event.town;
-  const showTiqets  = !!event.town;
   const showKlook   = !!klookRegion;
-  const showPlanSection = showBooking || showTiqets || showKlook;
 
   async function handleShare() {
     if (!event) return;
@@ -190,44 +187,34 @@ export default function EventoDetailScreen() {
           </View>
 
           {/* Plan your visit */}
-          {showPlanSection && (
-            <View style={styles.planSection}>
-              <Text style={styles.sectionTitle}>{t.planVisitTitle}</Text>
-              <View style={styles.planBtns}>
-                {showBooking && (
-                  <TouchableOpacity
-                    style={styles.planBtn}
-                    onPress={() => Linking.openURL(
-                      `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(event.town)}&aid=${BOOKING_AID}`
-                    )}
-                  >
-                    <Text style={styles.planBtnText}>{t.planWhereStay}</Text>
-                  </TouchableOpacity>
-                )}
-                {showTiqets && (
-                  <TouchableOpacity
-                    style={styles.planBtn}
-                    onPress={() => Linking.openURL(
-                      `https://www.tiqets.com/en/search/?q=${encodeURIComponent(event.town)}&partner=${TRAVELPAYOUTS_ID}`
-                    )}
-                  >
-                    <Text style={styles.planBtnText}>{t.planThingsDo}</Text>
-                  </TouchableOpacity>
-                )}
-                {showKlook && (
-                  <TouchableOpacity
-                    style={styles.planBtn}
-                    onPress={() => Linking.openURL(
-                      `https://www.klook.com/search/result/?query=${encodeURIComponent(klookRegion!)}&aid=${TRAVELPAYOUTS_ID}`
-                    )}
-                  >
-                    <Text style={styles.planBtnText}>{t.planTours}</Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-              <Text style={styles.affiliateDisclosure}>{t.affiliateDisclosure}</Text>
+          <View style={styles.planSection}>
+            <Text style={styles.sectionTitle}>{t.planVisitTitle}</Text>
+            <View style={styles.planBtns}>
+              <TouchableOpacity
+                style={styles.planBtn}
+                onPress={() => Linking.openURL('https://economybookings.tpo.li/SZWoSqmm')}
+              >
+                <Text style={styles.planBtnText}>{t.planWhereStay}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.planBtn}
+                onPress={() => Linking.openURL('https://kkday.tpo.li/4fF9Rzew')}
+              >
+                <Text style={styles.planBtnText}>{t.planTours}</Text>
+              </TouchableOpacity>
+              {showKlook && (
+                <TouchableOpacity
+                  style={styles.planBtn}
+                  onPress={() => Linking.openURL(
+                    `https://www.klook.com/search/result/?query=${encodeURIComponent(klookRegion!)}&aid=${TRAVELPAYOUTS_ID}`
+                  )}
+                >
+                  <Text style={styles.planBtnText}>{t.planActivities}</Text>
+                </TouchableOpacity>
+              )}
             </View>
-          )}
+            <Text style={styles.affiliateDisclosure}>{t.affiliateDisclosure}</Text>
+          </View>
 
           {/* Tags */}
           {event.tags.length > 0 && (

@@ -189,6 +189,7 @@ const es = {
   planWhereStay: '🏨 Dónde alojarte',
   planThingsDo: '🎭 Cosas que hacer cerca',
   planTours: '🗺️ Tours y actividades',
+  planActivities: '🎿 Actividades cercanas',
   affiliateDisclosure: 'Enlaces de afiliado',
 };
 
@@ -345,6 +346,7 @@ const en: typeof es = {
   planWhereStay: '🏨 Where to stay',
   planThingsDo: '🎭 Things to do nearby',
   planTours: '🗺️ Tours & activities',
+  planActivities: '🎿 Nearby activities',
   affiliateDisclosure: 'Affiliate links',
 };
 
@@ -499,6 +501,7 @@ const ca: typeof es = {
   planWhereStay: '🏨 On allotjar-se',
   planThingsDo: '🎭 Coses a fer a prop',
   planTours: "🗺️ Tours i activitats",
+  planActivities: '🎿 Activitats a prop',
   affiliateDisclosure: "Enllaços d'afiliat",
 };
 

@@ -4,6 +4,11 @@ module.exports = ({ config }) => ({
   ...config,
   android: {
     ...config.android,
+    splash: {
+      image: './assets/icon-512.png',
+      resizeMode: 'contain',
+      backgroundColor: '#FAF7F2',
+    },
     config: {
       googleMaps: {
         apiKey: process.env.GOOGLE_MAPS_API_KEY,

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <!-- Open Graph / WhatsApp / Telegram -->
+  <!-- Note: these are static defaults; event-specific data is rendered client-side -->
+  <title>QuéHay – Evento</title>
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="QuéHay – Agenda local de España" />
+  <meta property="og:title"       content="QuéHay – Descubre este evento" />
+  <meta property="og:description" content="Abre QuéHay para ver todos los detalles y descubrir más eventos locales en España." />
+  <meta property="og:image"       content="https://quehayagendalocal.com/assets/icon-512.png" />
+  <meta property="og:url"         content="https://quehayagendalocal.com/evento/" />
+  <meta name="twitter:card"       content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:      #C4622D;
+      --primary-dark: #A34F22;
+      --bg:           #FAF7F2;
+      --surface:      #FFFFFF;
+      --text:         #2C1810;
+      --text-sec:     #7A6B5D;
+      --text-light:   #B5A99A;
+      --border:       #EDE8E0;
+      --tint:         #FEF0E8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(250,247,242,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      height: 56px;
+    }
+    .logo {
+      font-size: 1.3rem; font-weight: 800;
+      color: var(--text); text-decoration: none;
+    }
+    .logo span { color: var(--primary); }
+
+    /* ── LAYOUT ── */
+    .wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px 16px 120px;
+    }
+
+    /* ── SKELETON ── */
+    .skeleton {
+      background: linear-gradient(90deg, #EDE8E0 25%, #F5F0EA 50%, #EDE8E0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 10px;
+    }
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    .sk-image { width: 100%; height: 220px; border-radius: 16px; margin-bottom: 20px; }
+    .sk-line { height: 15px; margin-bottom: 10px; }
+    .sk-line.wide   { width: 80%; }
+    .sk-line.medium { width: 55%; }
+    .sk-line.short  { width: 38%; }
+
+    /* ── EVENT CARD ── */
+    .event-card {
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(44,24,16,0.08);
+      margin-bottom: 20px;
+    }
+    .event-img { width: 100%; height: 220px; object-fit: cover; display: block; }
+    .event-img-placeholder {
+      width: 100%; height: 220px;
+      background: var(--tint);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+    }
+    .event-body { padding: 20px; }
+    .event-name {
+      font-size: 1.2rem; font-weight: 800;
+      color: var(--text); line-height: 1.35;
+      margin-bottom: 16px;
+    }
+    .event-meta { display: flex; flex-direction: column; gap: 10px; }
+    .meta-row {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.9rem; color: var(--text-sec);
+    }
+    .meta-icon { font-size: 1rem; flex-shrink: 0; width: 20px; text-align: center; }
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px;
+      margin-left: 6px; vertical-align: middle;
+    }
+    .badge-free  { background: #F0FFF4; color: #16A34A; border: 1px solid #BBF7D0; }
+    .badge-price { background: var(--tint); color: var(--primary); border: 1px solid #F9CEAD; }
+
+    /* ── ERROR ── */
+    .error-state {
+      text-align: center;
+      padding: 48px 20px;
+    }
+    .error-emoji { font-size: 3.5rem; margin-bottom: 14px; }
+    .error-title { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .error-desc  { font-size: 0.9rem; color: var(--text-sec); line-height: 1.5; }
+
+    /* ── POWERED BY ── */
+    .powered {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-light);
+      margin-top: 16px;
+    }
+    .powered a { color: var(--primary); text-decoration: none; font-weight: 600; }
+
+    /* ── STICKY CTA ── */
+    .cta-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 12px 16px;
+      padding-bottom: calc(12px + env(safe-area-inset-bottom));
+      box-shadow: 0 -4px 20px rgba(44,24,16,0.06);
+    }
+    .cta-btn {
+      display: block;
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 800;
+      border: none;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      -webkit-tap-highlight-color: transparent;
+      letter-spacing: 0.01em;
+    }
+    .cta-btn:active { background: var(--primary-dark); transform: scale(0.98); }
+    .cta-note {
+      text-align: center;
+      font-size: 0.73rem;
+      color: var(--text-light);
+      margin-top: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+<nav class="nav">
+  <a href="/" class="logo"><span>¿</span>QuéHay<span>?</span></a>
+</nav>
+
+<div class="wrap">
+  <!-- Skeleton shown while loading -->
+  <div id="skeleton">
+    <div class="skeleton sk-image"></div>
+    <div class="skeleton sk-line wide"></div>
+    <div class="skeleton sk-line medium"></div>
+    <div class="skeleton sk-line short"></div>
+  </div>
+
+  <!-- Event content injected here -->
+  <div id="event-mount" style="display:none;"></div>
+
+  <!-- Error state injected here -->
+  <div id="error-mount" style="display:none;"></div>
+
+  <p class="powered">
+    Más eventos en <a href="https://quehayagendalocal.com">quehayagendalocal.com</a>
+  </p>
+</div>
+
+<!-- Sticky CTA — shown after event loads -->
+<div class="cta-bar" id="cta-bar" style="display:none;">
+  <button class="cta-btn" onclick="openInApp()">📱 Abrir en QuéHay</button>
+  <p class="cta-note">Si no tienes la app, te llevamos a la tienda</p>
+</div>
+
+<script>
+  const SUPABASE_URL     = 'https://snpvqftqdsmarwhmmolk.supabase.co';
+  const SUPABASE_ANON    = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNucHZxZnRxZHNtYXJ3aG1tb2xrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyNjUwOTUsImV4cCI6MjA5NDg0MTA5NX0.1WJ9mSwm8X9wtHPRVU6a_-63RXmkiECEEJ_FqEru0ok';
+  const PLAY_STORE_URL   = 'https://play.google.com/store/apps/details?id=com.marsu123.quehay';
+
+  const REGION_LABELS = {
+    'aragon':       'Aragón',
+    'cataluña':     'Catalunya',
+    'madrid':       'Madrid',
+    'andalucia':    'Andalucía',
+    'valencia':     'Valencia',
+    'pais-vasco':   'País Vasco',
+    'galicia':      'Galicia',
+    'castilla-leon':'Castilla y León',
+    'murcia':       'Murcia',
+    'extremadura':  'Extremadura',
+    'canarias':     'Canarias',
+    'baleares':     'Baleares',
+  };
+
+  function fmtDate(start, end) {
+    function fmt(s) {
+      var d = new Date(s + 'T00:00:00');
+      return String(d.getDate()).padStart(2,'0') + '/' +
+             String(d.getMonth() + 1).padStart(2,'0') + '/' +
+             d.getFullYear();
+    }
+    return end ? 'Del ' + fmt(start) + ' al ' + fmt(end) : fmt(start);
+  }
+
+  function esc(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  var currentEventId = null;
+
+  // ── Parse event ID from ?id= query param ──────────────────────────
+  var params    = new URLSearchParams(window.location.search);
+  var eventId   = params.get('id');
+
+  async function init() {
+    if (!eventId) {
+      showError('Enlace no válido', 'No se especificó ningún evento. Comprueba que el enlace es correcto.');
+      return;
+    }
+    currentEventId = eventId;
+
+    try {
+      var res = await fetch(
+        SUPABASE_URL + '/rest/v1/events?id=eq.' + encodeURIComponent(eventId) +
+        '&select=id,name,date_start,date_end,town,region,image_url,is_free,price&limit=1',
+        { headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + SUPABASE_ANON } }
+      );
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      var rows = await res.json();
+      if (!rows.length) {
+        showError('Evento no encontrado', 'Es posible que el evento haya sido eliminado o el enlace sea incorrecto.');
+        return;
+      }
+      renderEvent(rows[0]);
+    } catch (e) {
+      showError('No se pudo cargar el evento', 'Comprueba tu conexión e inténtalo de nuevo.');
+    }
+  }
+
+  function renderEvent(ev) {
+    document.getElementById('skeleton').style.display = 'none';
+    document.getElementById('cta-bar').style.display  = 'block';
+
+    // Update browser tab title
+    document.title = esc(ev.name) + ' – QuéHay';
+
+    var region  = REGION_LABELS[ev.region] || ev.region;
+    var dateStr = fmtDate(ev.date_start, ev.date_end);
+
+    var priceHtml = ev.is_free
+      ? '<span class="badge badge-free">GRATIS</span>'
+      : (ev.price ? '<span class="badge badge-price">' + esc(ev.price) + '</span>' : '');
+
+    var imgHtml = ev.image_url
+      ? '<img class="event-img" src="' + esc(ev.image_url) + '" alt="' + esc(ev.name) + '" loading="lazy" />'
+      : '<div class="event-img-placeholder">🎉</div>';
+
+    document.getElementById('event-mount').innerHTML =
+      '<div class="event-card">' +
+        imgHtml +
+        '<div class="event-body">' +
+          '<p class="event-name">' + esc(ev.name) + '</p>' +
+          '<div class="event-meta">' +
+            '<div class="meta-row"><span class="meta-icon">📅</span><span>' + esc(dateStr) + priceHtml + '</span></div>' +
+            '<div class="meta-row"><span class="meta-icon">📍</span><span>' + esc(ev.town) + ', ' + esc(region) + '</span></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    document.getElementById('event-mount').style.display = 'block';
+  }
+
+  function showError(title, desc) {
+    document.getElementById('skeleton').style.display = 'none';
+    document.getElementById('error-mount').innerHTML =
+      '<div class="error-state">' +
+        '<div class="error-emoji">🔍</div>' +
+        '<p class="error-title">' + esc(title) + '</p>' +
+        '<p class="error-desc">' + esc(desc) + '</p>' +
+      '</div>';
+    document.getElementById('error-mount').style.display = 'block';
+  }
+
+  // ── Deep link with Play Store fallback ────────────────────────────
+  function openInApp() {
+    if (!currentEventId) return;
+
+    // After 800 ms with no app response, send to Play Store
+    var timer = setTimeout(function () {
+      window.location.href = PLAY_STORE_URL;
+    }, 800);
+
+    // If the app opened, the page loses focus — cancel the redirect
+    function cancel() { clearTimeout(timer); }
+    window.addEventListener('blur', cancel, { once: true });
+    document.addEventListener('visibilitychange', function onHide() {
+      if (document.hidden) { cancel(); document.removeEventListener('visibilitychange', onHide); }
+    });
+
+    window.location.href = 'quehay://evento/' + currentEventId;
+  }
+
+  init();
+</script>
+</body>
+</html>

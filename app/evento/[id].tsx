@@ -113,9 +113,11 @@ export default function EventoDetailScreen() {
 
   async function handleShare() {
     if (!event) return;
+    const url = `https://quehayagendalocal.com/evento/?id=${event.id}`;
+    const regionEs = REGION_NAMES_ES[event.region] ?? event.region;
     await Share.share({
       title: displayName,
-      message: `${displayName}\n📍 ${event.town}\n🗓 ${formatDateRange(event.dateStart, event.dateEnd)}\n\n${t.shareVia}`,
+      message: `🎉 ${displayName}\n📅 ${formatDateRange(event.dateStart, event.dateEnd)}\n📍 ${event.town}, ${regionEs}\n\nDescúbrelo en QuéHay 👇\n${url}`,
     });
   }
 

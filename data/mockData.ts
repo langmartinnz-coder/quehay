@@ -570,14 +570,13 @@ export function getDistanceKm(lat1: number, lng1: number, lat2: number, lng2: nu
 }
 
 export function formatDateRange(dateStart: string, dateEnd?: string): string {
-  const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+  function fmt(d: Date): string {
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    return `${dd}/${mm}/${d.getFullYear()}`;
+  }
   const start = new Date(dateStart + 'T00:00:00');
-  if (!dateEnd) {
-    return `${start.getDate()} ${months[start.getMonth()]} ${start.getFullYear()}`;
-  }
+  if (!dateEnd) return fmt(start);
   const end = new Date(dateEnd + 'T00:00:00');
-  if (start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear()) {
-    return `${start.getDate()} – ${end.getDate()} ${months[start.getMonth()]} ${start.getFullYear()}`;
-  }
-  return `${start.getDate()} ${months[start.getMonth()]} – ${end.getDate()} ${months[end.getMonth()]} ${start.getFullYear()}`;
+  return `Del ${fmt(start)} al ${fmt(end)}`;
 }

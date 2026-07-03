@@ -6,7 +6,8 @@ type EventCategory = typeof VALID_CATEGORIES[number];
 
 interface PosterExtraction {
   name?: string;
-  date?: string;        // YYYY-MM-DD
+  date?: string;        // YYYY-MM-DD (start date)
+  dateEnd?: string;     // YYYY-MM-DD (end date, multi-day events)
   time?: string;        // HH:MM
   town?: string;
   description?: string;
@@ -23,6 +24,7 @@ Formato exacto:
 {
   "name": "nombre completo del evento",
   "date": "fecha de inicio en formato YYYY-MM-DD, o null",
+  "date_end": "fecha de fin en formato YYYY-MM-DD si el evento dura varios días, o null si es de un solo día",
   "time": "hora en formato HH:MM, o null",
   "town": "municipio o ciudad donde se celebra, o null",
   "description": "descripción breve en español, 1-2 frases, o null",
@@ -40,10 +42,12 @@ Guía de categorías:
 - deportes: carreras, torneos, eventos deportivos
 - comunidad: eventos culturales, charlas, talleres, exposiciones
 
-Reglas para el campo "date":
+Reglas para los campos de fecha:
 - Si el año no aparece en el cartel, usa siempre 2026 como año predeterminado.
 - No intentes adivinar si la fecha ya pasó — devuelve siempre 2026 cuando no haya año visible.
 - Si el cartel muestra un año explícito, úsalo tal cual.
+- Si el evento dura varios días (ej: "del 10 al 14 de julio"), pon la primera fecha en "date" y la última en "date_end".
+- Si el evento es de un solo día, devuelve null en "date_end".
 
 Si un campo no es visible en el cartel, devuelve null para ese campo.`;
 
@@ -197,6 +201,16 @@ Deno.serve(async (req: Request) => {
     result.date = corrected;
   } else if (parsed.date !== null && parsed.date !== undefined) {
     log(`date field rejected (value: ${JSON.stringify(parsed.date)})`);
+  }
+
+  if (typeof parsed.date_end === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(parsed.date_end)) {
+    const corrected = fixYear(parsed.date_end);
+    if (corrected !== parsed.date_end) {
+      log(`date_end year corrected: ${parsed.date_end} → ${corrected}`);
+    }
+    result.dateEnd = corrected;
+  } else if (parsed.date_end !== null && parsed.date_end !== undefined) {
+    log(`date_end field rejected (value: ${JSON.stringify(parsed.date_end)})`);
   }
 
   if (typeof parsed.time === 'string' && /^\d{1,2}:\d{2}$/.test(parsed.time))

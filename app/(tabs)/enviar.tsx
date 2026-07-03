@@ -29,6 +29,7 @@ import { copyAsync, cacheDirectory } from 'expo-file-system/legacy';
 interface FormState {
   name: string;
   date: string;
+  dateEnd: string;
   time: string;
   town: string;
   region: string;
@@ -42,6 +43,7 @@ interface FormState {
 const EMPTY_FORM: FormState = {
   name: '',
   date: '',
+  dateEnd: '',
   time: '',
   town: '',
   region: '',
@@ -186,6 +188,7 @@ export default function EnviarScreen() {
         ...prev,
         ...(data.name && { name: data.name }),
         ...(data.date && { date: data.date }),
+        ...(data.dateEnd && { dateEnd: data.dateEnd }),
         ...(data.time && { time: data.time }),
         ...(data.town && { town: data.town }),
         ...(data.description && { description: data.description }),
@@ -257,6 +260,7 @@ export default function EnviarScreen() {
       await submitEvent({
         name: form.name,
         dateStart: form.date,
+        dateEnd: form.dateEnd || undefined,
         time: form.time,
         town: form.town,
         region: form.region,
@@ -453,14 +457,21 @@ export default function EnviarScreen() {
             </View>
             <View style={{ flex: 1 }}>
               <FormField
-                label={t.fieldTime}
-                value={form.time}
-                onChangeText={(v) => setForm((p) => ({ ...p, time: v }))}
-                placeholder="20:00"
-                highlighted={extracted && !!form.time}
+                label={t.fieldDateEnd}
+                value={form.dateEnd}
+                onChangeText={(v) => setForm((p) => ({ ...p, dateEnd: v }))}
+                placeholder="2026-07-14"
+                highlighted={extracted && !!form.dateEnd}
               />
             </View>
           </View>
+          <FormField
+            label={t.fieldTime}
+            value={form.time}
+            onChangeText={(v) => setForm((p) => ({ ...p, time: v }))}
+            placeholder="20:00"
+            highlighted={extracted && !!form.time}
+          />
           <FormField
             label={t.fieldTown}
             value={form.town}

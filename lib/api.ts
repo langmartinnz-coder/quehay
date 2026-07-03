@@ -101,6 +101,7 @@ export async function submitEvent(
   form: {
     name: string;
     dateStart: string;
+    dateEnd?: string;
     time: string;
     town: string;
     region: string;
@@ -118,6 +119,7 @@ export async function submitEvent(
     id: `usr_${Date.now()}`,
     name: form.name,
     date_start: form.dateStart,
+    date_end: form.dateEnd ?? null,
     time: form.time || 'Por confirmar',
     location: form.town,
     town: form.town,

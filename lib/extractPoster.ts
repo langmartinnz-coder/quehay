@@ -3,7 +3,8 @@ import { supabase } from './supabase';
 
 export interface PosterExtraction {
   name?: string;
-  date?: string;        // YYYY-MM-DD
+  date?: string;        // YYYY-MM-DD (start date)
+  dateEnd?: string;     // YYYY-MM-DD (end date, multi-day events)
   time?: string;        // HH:MM
   town?: string;
   description?: string;

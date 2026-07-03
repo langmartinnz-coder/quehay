@@ -10,6 +10,8 @@ import {
   Linking,
   Dimensions,
   ActivityIndicator,
+  Modal,
+  StatusBar,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useLocalSearchParams, router } from 'expo-router';
@@ -21,7 +23,7 @@ import { useApp } from '../../store/AppContext';
 import { useLanguage } from '../../store/LanguageContext';
 import { translateEvent, TranslatedEventFields, getCachedTranslation } from '../../lib/translateEvent';
 
-const { width } = Dimensions.get('window');
+const { width, height: screenHeight } = Dimensions.get('window');
 
 // ── Affiliate IDs ─────────────────────────────────────────────────────────────
 // Update BOOKING_AID once CJ Affiliate approval is confirmed.
@@ -51,6 +53,7 @@ export default function EventoDetailScreen() {
   const { isFavorite, toggleFavorite, events, eventsLoading } = useApp();
   const event = events.find((e) => e.id === (id ?? ''));
 
+  const [viewerOpen, setViewerOpen] = useState(false);
   const [translation, setTranslation] = useState<TranslatedEventFields | null>(
     () => getCachedTranslation(id ?? ''),
   );
@@ -121,7 +124,9 @@ export default function EventoDetailScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Hero image */}
         <View style={styles.heroWrap}>
-          <Image source={{ uri: event.imageUrl }} style={styles.hero} resizeMode="cover" />
+          <TouchableOpacity activeOpacity={0.92} onPress={() => setViewerOpen(true)}>
+            <Image source={{ uri: event.imageUrl }} style={styles.hero} resizeMode="cover" />
+          </TouchableOpacity>
           <View style={styles.heroOverlay} />
           <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
             <Text style={styles.backBtnText}>←</Text>
@@ -259,6 +264,37 @@ export default function EventoDetailScreen() {
           </TouchableOpacity>
         </View>
       </ScrollView>
+
+      {/* Full-screen image viewer */}
+      <Modal
+        visible={viewerOpen}
+        transparent={false}
+        animationType="fade"
+        statusBarTranslucent
+        onRequestClose={() => setViewerOpen(false)}
+      >
+        <StatusBar hidden />
+        <View style={styles.viewer}>
+          <ScrollView
+            style={{ flex: 1 }}
+            contentContainerStyle={styles.viewerContent}
+            minimumZoomScale={1}
+            maximumZoomScale={4}
+            centerContent
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+          >
+            <Image
+              source={{ uri: event.imageUrl }}
+              style={{ width, height: screenHeight }}
+              resizeMode="contain"
+            />
+          </ScrollView>
+          <TouchableOpacity style={styles.viewerClose} onPress={() => setViewerOpen(false)}>
+            <Text style={styles.viewerCloseText}>✕</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -479,4 +515,20 @@ const styles = StyleSheet.create({
     color: Colors.textLight,
     marginTop: 2,
   },
+
+  /* ── Full-screen image viewer ────────────────────────── */
+  viewer: { flex: 1, backgroundColor: '#000' },
+  viewerContent: { width, height: screenHeight, alignItems: 'center', justifyContent: 'center' },
+  viewerClose: {
+    position: 'absolute',
+    top: 50,
+    right: 16,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  viewerCloseText: { color: '#fff', fontSize: 18, fontWeight: '700' },
 });

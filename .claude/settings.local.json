@@ -36,7 +36,8 @@
       "Bash(ls -d android)",
       "Bash(git restore *)",
       "Bash(cd C:\\\\Users\\\\langm\\\\Desktop\\\\ProjectSunrise *)",
-      "Bash(Test-Path C:\\\\Users\\\\langm\\\\Desktop\\\\ProjectSunrise\\\\evento *)"
+      "Bash(Test-Path C:\\\\Users\\\\langm\\\\Desktop\\\\ProjectSunrise\\\\evento *)",
+      "Bash(curl *)"
     ]
   }
 }

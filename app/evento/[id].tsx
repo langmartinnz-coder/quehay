@@ -129,7 +129,7 @@ export default function EventoDetailScreen() {
           <TouchableOpacity activeOpacity={0.92} onPress={() => setViewerOpen(true)}>
             <Image source={{ uri: event.imageUrl }} style={styles.hero} resizeMode="cover" />
           </TouchableOpacity>
-          <View style={styles.heroOverlay} />
+          <View style={styles.heroOverlay} pointerEvents="none" />
           <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
             <Text style={styles.backBtnText}>←</Text>
           </TouchableOpacity>

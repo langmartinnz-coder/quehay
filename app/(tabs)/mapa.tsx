@@ -15,6 +15,7 @@ import { Event, Region } from '../../types';
 import { useApp } from '../../store/AppContext';
 import { useLanguage } from '../../store/LanguageContext';
 import { useUserLocation } from '../../hooks/useUserLocation';
+import { formatDateRange } from '../../data/mockData';
 
 type MapViewport = { latitude: number; longitude: number; latitudeDelta: number; longitudeDelta: number };
 
@@ -192,7 +193,7 @@ export default function MapaScreen() {
                   </View>
                   <Text style={styles.bottomEventName}>{selectedEvent.name}</Text>
                   <Text style={styles.bottomEventMeta}>
-                    📍 {selectedEvent.town} · 🗓 {selectedEvent.dateStart}
+                    📍 {selectedEvent.town} · 🗓 {formatDateRange(selectedEvent.dateStart, selectedEvent.dateEnd)}
                   </Text>
                   <TouchableOpacity
                     style={styles.viewBtn}

@@ -18,6 +18,7 @@ import { CATEGORIES, REGIONS } from '../../constants/categories';
 import { EventCategory } from '../../types';
 import { useApp } from '../../store/AppContext';
 import { submitEvent } from '../../lib/api';
+import { formatDateRange } from '../../data/mockData';
 import { extractPosterData } from '../../lib/extractPoster';
 import { supabase } from '../../lib/supabase';
 import { useLanguage } from '../../store/LanguageContext';
@@ -312,7 +313,7 @@ export default function EnviarScreen() {
       if (duplicate) {
         Alert.alert(
           t.duplicateTitle,
-          t.duplicateMsg(duplicate.name, duplicate.date_start),
+          t.duplicateMsg(duplicate.name, formatDateRange(duplicate.date_start)),
           [
             { text: t.duplicateCancel, style: 'cancel' },
             { text: t.duplicateSubmitAnyway, onPress: doSubmit },

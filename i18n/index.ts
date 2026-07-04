@@ -47,6 +47,7 @@ const es = {
   saveFavorite: '🤍 Guardar en favoritos',
   savedFavorite: '❤️ Guardado en favoritos',
   shareVia: 'Via QuéHay – Agenda local',
+  shareCta: 'Descúbrelo en QuéHay 👇',
 
   // Profile screen
   profileTitle: 'Mi perfil',
@@ -223,6 +224,7 @@ const en: typeof es = {
   saveFavorite: '🤍 Save to favourites',
   savedFavorite: '❤️ Saved to favourites',
   shareVia: 'Via QuéHay – Local events',
+  shareCta: 'Discover it on QuéHay 👇',
   profileTitle: 'My profile',
   accountConnected: 'Account connected',
   syncBadge: '✓ Sync',
@@ -381,6 +383,7 @@ const ca: typeof es = {
   saveFavorite: '🤍 Guardar als preferits',
   savedFavorite: '❤️ Guardat als preferits',
   shareVia: 'Via QuéHay – Agenda local',
+  shareCta: 'Descobreix-lo a QuéHay 👇',
   profileTitle: 'El meu perfil',
   accountConnected: 'Compte connectat',
   syncBadge: '✓ Sync',

@@ -10,8 +10,12 @@ import {
   Alert,
   ActivityIndicator,
   Modal,
+  PanResponder,
+  Dimensions,
+  StatusBar,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
 import { Colors } from '../../constants/colors';
 import { CATEGORIES, REGIONS } from '../../constants/categories';
@@ -26,6 +30,8 @@ import { resolveCoordinates, coordsToRegion } from '../../lib/geocode';
 import { useShareIntentContext } from 'expo-share-intent';
 import { File as FSFile } from 'expo-file-system';
 import { copyAsync, cacheDirectory } from 'expo-file-system/legacy';
+
+type CropSource = { uri: string; base64: string | null; mime: string; width: number; height: number };
 
 interface FormState {
   name: string;
@@ -70,6 +76,8 @@ export default function EnviarScreen() {
   const [extractError, setExtractError] = useState<string | null>(null);
   const [regionOpen, setRegionOpen] = useState(false);
   const [regionAutoFilled, setRegionAutoFilled] = useState(false);
+  const [cropMode, setCropMode] = useState(false);
+  const [cropSource, setCropSource] = useState<CropSource | null>(null);
 
   // Share intent — app was opened via the OS share sheet with an image
   const { isReady: shareIntentReady, hasShareIntent, shareIntent, resetShareIntent } = useShareIntentContext();
@@ -168,13 +176,35 @@ export default function EnviarScreen() {
     if (!result.canceled && result.assets[0]) {
       const asset = result.assets[0];
       console.log('[enviar] image URI:', asset.uri);
-      setImage(asset.uri);
-      setImageBase64(asset.base64 ?? null);
-      setImageMimeType(asset.mimeType ?? 'image/jpeg');
+      setCropSource({
+        uri: asset.uri,
+        base64: asset.base64 ?? null,
+        mime: asset.mimeType ?? 'image/jpeg',
+        width: asset.width,
+        height: asset.height,
+      });
+      setCropMode(true);
       setExtracted(false);
       setExtractError(null);
       setForm(EMPTY_FORM);
     }
+  }
+
+  function handleCropDone(croppedUri: string, croppedBase64: string | null, mime: string) {
+    setCropMode(false);
+    setCropSource(null);
+    setImage(croppedUri);
+    setImageBase64(croppedBase64);
+    setImageMimeType(mime);
+  }
+
+  function handleCropSkip() {
+    if (!cropSource) return;
+    setCropMode(false);
+    setImage(cropSource.uri);
+    setImageBase64(cropSource.base64);
+    setImageMimeType(cropSource.mime);
+    setCropSource(null);
   }
 
   async function extractFromPoster(base64Override?: string, mimeOverride?: string) {
@@ -353,6 +383,7 @@ export default function EnviarScreen() {
   }
 
   return (
+    <>
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
         {/* Header */}
@@ -658,6 +689,16 @@ export default function EnviarScreen() {
         </View>
       </ScrollView>
     </SafeAreaView>
+    {cropMode && cropSource && (
+      <CropModal
+        uri={cropSource.uri}
+        imgWidth={cropSource.width}
+        imgHeight={cropSource.height}
+        onConfirm={handleCropDone}
+        onSkip={handleCropSkip}
+      />
+    )}
+    </>
   );
 }
 
@@ -693,6 +734,177 @@ function FormField({
         numberOfLines={multiline ? 3 : 1}
       />
     </View>
+  );
+}
+
+function CropModal({
+  uri,
+  imgWidth,
+  imgHeight,
+  onConfirm,
+  onSkip,
+}: {
+  uri: string;
+  imgWidth: number;
+  imgHeight: number;
+  onConfirm: (croppedUri: string, base64: string | null, mime: string) => void;
+  onSkip: () => void;
+}) {
+  const { width: W, height: H } = Dimensions.get('window');
+  const insets = useSafeAreaInsets();
+  const HANDLE_SZ = 30;
+  const HS = HANDLE_SZ / 2;
+  const MIN_SIZE = 60;
+  const BUTTON_H = 110 + insets.bottom;
+  const IMG_H = H - BUTTON_H;
+
+  const [rect, setRect] = useState({ x1: W * 0.05, y1: IMG_H * 0.05, x2: W * 0.95, y2: IMG_H * 0.95 });
+  const [applying, setApplying] = useState(false);
+  const rectRef = React.useRef(rect);
+  rectRef.current = rect;
+
+  function makePan(corner: 'TL' | 'TR' | 'BL' | 'BR') {
+    return PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderMove: (_, gs) => {
+        setRect((prev) => {
+          let { x1, y1, x2, y2 } = prev;
+          const nx = Math.max(0, Math.min(W, gs.moveX));
+          const ny = Math.max(0, Math.min(IMG_H, gs.moveY));
+          if (corner === 'TL') {
+            x1 = Math.min(nx, x2 - MIN_SIZE);
+            y1 = Math.min(ny, y2 - MIN_SIZE);
+          } else if (corner === 'TR') {
+            x2 = Math.max(nx, x1 + MIN_SIZE);
+            y1 = Math.min(ny, y2 - MIN_SIZE);
+          } else if (corner === 'BL') {
+            x1 = Math.min(nx, x2 - MIN_SIZE);
+            y2 = Math.max(ny, y1 + MIN_SIZE);
+          } else {
+            x2 = Math.max(nx, x1 + MIN_SIZE);
+            y2 = Math.max(ny, y1 + MIN_SIZE);
+          }
+          return { x1, y1, x2, y2 };
+        });
+      },
+    });
+  }
+
+  const panTL = React.useRef(makePan('TL')).current;
+  const panTR = React.useRef(makePan('TR')).current;
+  const panBL = React.useRef(makePan('BL')).current;
+  const panBR = React.useRef(makePan('BR')).current;
+
+  async function applyCrop() {
+    setApplying(true);
+    try {
+      const { x1, y1, x2, y2 } = rectRef.current;
+
+      // Map screen crop rect → image pixel rect (contain-mode transform)
+      const scale = Math.min(W / imgWidth, IMG_H / imgHeight);
+      const dW = imgWidth * scale;
+      const dH = imgHeight * scale;
+      const ox = (W - dW) / 2;
+      const oy = (IMG_H - dH) / 2;
+
+      const imgX1 = Math.max(0, (x1 - ox) / scale);
+      const imgY1 = Math.max(0, (y1 - oy) / scale);
+      const imgX2 = Math.min(imgWidth, (x2 - ox) / scale);
+      const imgY2 = Math.min(imgHeight, (y2 - oy) / scale);
+
+      const cropW = Math.round(imgX2 - imgX1);
+      const cropH = Math.round(imgY2 - imgY1);
+
+      if (cropW < 20 || cropH < 20) { onSkip(); return; }
+
+      const result = await manipulateAsync(
+        uri,
+        [{ crop: { originX: Math.round(imgX1), originY: Math.round(imgY1), width: cropW, height: cropH } }],
+        { compress: 0.85, format: SaveFormat.JPEG, base64: true },
+      );
+      onConfirm(result.uri, result.base64 ?? null, 'image/jpeg');
+    } catch (err) {
+      console.error('[crop] manipulateAsync error:', err);
+      onSkip();
+    } finally {
+      setApplying(false);
+    }
+  }
+
+  const { x1, y1, x2, y2 } = rect;
+  const cropW = x2 - x1;
+  const cropH = y2 - y1;
+
+  return (
+    <Modal visible transparent={false} animationType="slide" statusBarTranslucent onRequestClose={onSkip}>
+      <StatusBar hidden />
+      <View style={{ flex: 1, backgroundColor: '#000' }}>
+        {/* Image display */}
+        <View style={{ width: W, height: IMG_H }}>
+          <Image source={{ uri }} style={{ width: W, height: IMG_H }} resizeMode="contain" />
+
+          {/* Dark mask outside crop area */}
+          <View pointerEvents="none" style={StyleSheet.absoluteFill}>
+            <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: y1, backgroundColor: 'rgba(0,0,0,0.55)' }} />
+            <View style={{ position: 'absolute', top: y2, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.55)' }} />
+            <View style={{ position: 'absolute', top: y1, left: 0, width: x1, height: cropH, backgroundColor: 'rgba(0,0,0,0.55)' }} />
+            <View style={{ position: 'absolute', top: y1, left: x2, right: 0, height: cropH, backgroundColor: 'rgba(0,0,0,0.55)' }} />
+          </View>
+
+          {/* Crop border */}
+          <View pointerEvents="none" style={{ position: 'absolute', left: x1, top: y1, width: cropW, height: cropH, borderWidth: 1.5, borderColor: '#fff' }} />
+
+          {/* Rule-of-thirds grid */}
+          <View pointerEvents="none" style={{ position: 'absolute', left: x1 + cropW / 3, top: y1, width: 1, height: cropH, backgroundColor: 'rgba(255,255,255,0.28)' }} />
+          <View pointerEvents="none" style={{ position: 'absolute', left: x1 + (2 * cropW) / 3, top: y1, width: 1, height: cropH, backgroundColor: 'rgba(255,255,255,0.28)' }} />
+          <View pointerEvents="none" style={{ position: 'absolute', left: x1, top: y1 + cropH / 3, width: cropW, height: 1, backgroundColor: 'rgba(255,255,255,0.28)' }} />
+          <View pointerEvents="none" style={{ position: 'absolute', left: x1, top: y1 + (2 * cropH) / 3, width: cropW, height: 1, backgroundColor: 'rgba(255,255,255,0.28)' }} />
+
+          {/* Corner handles — terracotta L-shapes */}
+          <View {...panTL.panHandlers} style={{ position: 'absolute', left: x1 - HS, top: y1 - HS, width: HANDLE_SZ, height: HANDLE_SZ }}>
+            <View style={{ position: 'absolute', top: 0, left: 0, width: HANDLE_SZ, height: 4, backgroundColor: Colors.primary, borderRadius: 2 }} />
+            <View style={{ position: 'absolute', top: 0, left: 0, width: 4, height: HANDLE_SZ, backgroundColor: Colors.primary, borderRadius: 2 }} />
+          </View>
+          <View {...panTR.panHandlers} style={{ position: 'absolute', left: x2 - HS, top: y1 - HS, width: HANDLE_SZ, height: HANDLE_SZ }}>
+            <View style={{ position: 'absolute', top: 0, right: 0, width: HANDLE_SZ, height: 4, backgroundColor: Colors.primary, borderRadius: 2 }} />
+            <View style={{ position: 'absolute', top: 0, right: 0, width: 4, height: HANDLE_SZ, backgroundColor: Colors.primary, borderRadius: 2 }} />
+          </View>
+          <View {...panBL.panHandlers} style={{ position: 'absolute', left: x1 - HS, top: y2 - HS, width: HANDLE_SZ, height: HANDLE_SZ }}>
+            <View style={{ position: 'absolute', bottom: 0, left: 0, width: HANDLE_SZ, height: 4, backgroundColor: Colors.primary, borderRadius: 2 }} />
+            <View style={{ position: 'absolute', bottom: 0, left: 0, width: 4, height: HANDLE_SZ, backgroundColor: Colors.primary, borderRadius: 2 }} />
+          </View>
+          <View {...panBR.panHandlers} style={{ position: 'absolute', left: x2 - HS, top: y2 - HS, width: HANDLE_SZ, height: HANDLE_SZ }}>
+            <View style={{ position: 'absolute', bottom: 0, right: 0, width: HANDLE_SZ, height: 4, backgroundColor: Colors.primary, borderRadius: 2 }} />
+            <View style={{ position: 'absolute', bottom: 0, right: 0, width: 4, height: HANDLE_SZ, backgroundColor: Colors.primary, borderRadius: 2 }} />
+          </View>
+        </View>
+
+        {/* Controls */}
+        <View style={{ height: BUTTON_H, backgroundColor: '#111', paddingHorizontal: 16, paddingTop: 14, paddingBottom: insets.bottom + 14, gap: 10 }}>
+          <Text style={{ color: 'rgba(255,255,255,0.6)', textAlign: 'center', fontSize: 13 }}>
+            Arrastra las esquinas para recortar el póster
+          </Text>
+          <View style={{ flexDirection: 'row', gap: 10 }}>
+            <TouchableOpacity
+              onPress={onSkip}
+              style={{ flex: 1, borderRadius: 12, paddingVertical: 13, alignItems: 'center', borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.25)' }}
+            >
+              <Text style={{ color: '#fff', fontWeight: '600', fontSize: 14 }}>Sin recorte</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={applyCrop}
+              disabled={applying}
+              style={{ flex: 2, borderRadius: 12, paddingVertical: 13, alignItems: 'center', backgroundColor: Colors.primary, opacity: applying ? 0.7 : 1 }}
+            >
+              {applying
+                ? <ActivityIndicator color="#fff" size="small" />
+                : <Text style={{ color: '#fff', fontWeight: '800', fontSize: 15 }}>✓ Confirmar recorte</Text>}
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </Modal>
   );
 }
 

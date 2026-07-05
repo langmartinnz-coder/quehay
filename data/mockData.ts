@@ -575,8 +575,10 @@ export function formatDateRange(dateStart: string, dateEnd?: string): string {
     const mm = String(d.getMonth() + 1).padStart(2, '0');
     return `${dd}/${mm}/${d.getFullYear()}`;
   }
-  const start = new Date(dateStart + 'T00:00:00');
+  // Normalize: strip any time/timezone component so we always parse in local midnight
+  const toLocal = (s: string) => new Date(s.slice(0, 10) + 'T00:00:00');
+  const start = toLocal(dateStart);
   if (!dateEnd) return fmt(start);
-  const end = new Date(dateEnd + 'T00:00:00');
+  const end = toLocal(dateEnd);
   return `Del ${fmt(start)} al ${fmt(end)}`;
 }

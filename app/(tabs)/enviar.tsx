@@ -175,7 +175,7 @@ export default function EnviarScreen() {
 
     if (!result.canceled && result.assets[0]) {
       const asset = result.assets[0];
-      console.log('[enviar] image URI:', asset.uri);
+      console.log('[enviar] image picked — uri:', asset.uri, 'size:', asset.width, 'x', asset.height);
       setCropSource({
         uri: asset.uri,
         base64: asset.base64 ?? null,
@@ -187,6 +187,9 @@ export default function EnviarScreen() {
       setExtracted(false);
       setExtractError(null);
       setForm(EMPTY_FORM);
+      console.log('[enviar] cropMode → true, CropModal should appear');
+    } else {
+      console.log('[enviar] image picker cancelled or no asset');
     }
   }
 
@@ -689,15 +692,14 @@ export default function EnviarScreen() {
         </View>
       </ScrollView>
     </SafeAreaView>
-    {cropMode && cropSource && (
-      <CropModal
-        uri={cropSource.uri}
-        imgWidth={cropSource.width}
-        imgHeight={cropSource.height}
-        onConfirm={handleCropDone}
-        onSkip={handleCropSkip}
-      />
-    )}
+    <CropModal
+      visible={cropMode && !!cropSource}
+      uri={cropSource?.uri ?? ''}
+      imgWidth={cropSource?.width ?? 0}
+      imgHeight={cropSource?.height ?? 0}
+      onConfirm={handleCropDone}
+      onSkip={handleCropSkip}
+    />
     </>
   );
 }
@@ -738,12 +740,14 @@ function FormField({
 }
 
 function CropModal({
+  visible,
   uri,
   imgWidth,
   imgHeight,
   onConfirm,
   onSkip,
 }: {
+  visible: boolean;
   uri: string;
   imgWidth: number;
   imgHeight: number;
@@ -837,7 +841,7 @@ function CropModal({
   const cropH = y2 - y1;
 
   return (
-    <Modal visible transparent={false} animationType="slide" statusBarTranslucent onRequestClose={onSkip}>
+    <Modal visible={visible} transparent={false} animationType="slide" statusBarTranslucent onRequestClose={onSkip}>
       <StatusBar hidden />
       <View style={{ flex: 1, backgroundColor: '#000' }}>
         {/* Image display */}

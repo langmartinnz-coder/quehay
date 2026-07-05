@@ -333,9 +333,11 @@ export default function EnviarScreen() {
 
     const now = new Date();
     const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-    const submittedDate = form.date.trim();
-    const isPast = submittedDate < todayStr;
-    console.log('[enviar] date validation — today:', todayStr, '| submitted:', JSON.stringify(submittedDate), '| submitted < today:', isPast);
+    // If there's an end date, check that; otherwise check the start date.
+    // This allows ongoing events (e.g. exhibitions) that started in the past but end in the future.
+    const dateToCheck = form.dateEnd.trim() || form.date.trim();
+    const isPast = dateToCheck < todayStr;
+    console.log('[enviar] date validation — today:', todayStr, '| checking:', dateToCheck, '| isPast:', isPast);
     if (isPast) {
       Alert.alert(t.pastDateTitle, t.pastDateMsg);
       return;
@@ -347,10 +349,7 @@ export default function EnviarScreen() {
         Alert.alert(
           t.duplicateTitle,
           t.duplicateMsg(duplicate.name, formatDateRange(duplicate.date_start)),
-          [
-            { text: t.duplicateCancel, style: 'cancel' },
-            { text: t.duplicateSubmitAnyway, onPress: doSubmit },
-          ],
+          [{ text: t.duplicateCancel, style: 'cancel' }],
         );
         return;
       }

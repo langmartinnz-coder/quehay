@@ -578,7 +578,7 @@ export function formatDateRange(dateStart: string, dateEnd?: string): string {
   // Normalize: strip any time/timezone component so we always parse in local midnight
   const toLocal = (s: string) => new Date(s.slice(0, 10) + 'T00:00:00');
   const start = toLocal(dateStart);
-  if (!dateEnd) return fmt(start);
-  const end = toLocal(dateEnd);
-  return `Del ${fmt(start)} al ${fmt(end)}`;
+  const result = !dateEnd ? fmt(start) : `Del ${fmt(start)} al ${fmt(toLocal(dateEnd))}`;
+  console.log('[fmt] raw:', JSON.stringify(dateStart), JSON.stringify(dateEnd), '→', result);
+  return result;
 }

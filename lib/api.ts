@@ -150,9 +150,10 @@ export function applyFilters(events: Event[], filters: AppFilters): Event[] {
       if (filters.category !== 'all' && event.category !== filters.category) return false;
       if (filters.region !== 'todas' && event.region !== filters.region) return false;
 
-      const eventDate = new Date(event.dateStart + 'T00:00:00');
+      const [ey, em, ed] = event.dateStart.split('-').map(Number);
+      const eventDate = new Date(ey, em - 1, ed);
       if (filters.dateFilter === 'hoy') {
-        const todayStr = today.toISOString().split('T')[0];
+        const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
         if (event.dateStart !== todayStr) return false;
       } else if (filters.dateFilter === 'semana') {
         const weekEnd = new Date(today);

@@ -575,8 +575,8 @@ export function formatDateRange(dateStart: string, dateEnd?: string): string {
     const mm = String(d.getMonth() + 1).padStart(2, '0');
     return `${dd}/${mm}/${d.getFullYear()}`;
   }
-  // Normalize: strip any time/timezone component so we always parse in local midnight
-  const toLocal = (s: string) => new Date(s.slice(0, 10) + 'T00:00:00');
+  // Parse as local midnight using the year/month/day constructor — avoids UTC-shift bugs
+  const toLocal = (s: string) => { const [y, m, d] = s.slice(0, 10).split('-').map(Number); return new Date(y, m - 1, d); };
   const start = toLocal(dateStart);
   const result = !dateEnd ? fmt(start) : `Del ${fmt(start)} al ${fmt(toLocal(dateEnd))}`;
   console.log('[fmt] raw:', JSON.stringify(dateStart), JSON.stringify(dateEnd), '→', result);

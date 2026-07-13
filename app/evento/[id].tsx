@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useLocalSearchParams, router } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { formatDateRange } from '../../data/mockData';
 import { Colors } from '../../constants/colors';
 import { CATEGORIES, SOURCE_LABELS, SIZE_CONFIG, getRegionLabel } from '../../constants/categories';
@@ -51,6 +51,7 @@ export default function EventoDetailScreen() {
   const { t, language } = useLanguage();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { isFavorite, toggleFavorite, events, eventsLoading } = useApp();
+  const insets = useSafeAreaInsets();
   const event = events.find((e) => e.id === (id ?? ''));
 
   const [viewerOpen, setViewerOpen] = useState(false);
@@ -258,7 +259,7 @@ export default function EventoDetailScreen() {
           )}
 
           {/* CTA */}
-          <TouchableOpacity style={styles.favBtn} onPress={() => toggleFavorite(event.id)}>
+          <TouchableOpacity style={[styles.favBtn, { marginBottom: insets.bottom + 8 }]} onPress={() => toggleFavorite(event.id)}>
             <Text style={styles.favBtnText}>
               {fav ? t.savedFavorite : t.saveFavorite}
             </Text>
@@ -486,7 +487,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 16,
     alignItems: 'center',
-    marginBottom: 8,
   },
   favBtnText: { color: Colors.white, fontWeight: '800', fontSize: 15 },
   notFound: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12 },

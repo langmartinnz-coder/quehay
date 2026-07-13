@@ -61,6 +61,18 @@ const EMPTY_FORM: FormState = {
   price: '',
 };
 
+// YYYY-MM-DD (from AI / Supabase) → DD/MM/YYYY (visible in form fields)
+function isoToDisplay(s: string): string {
+  const m = s.trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  return m ? `${m[3]}/${m[2]}/${m[1]}` : s;
+}
+
+// DD/MM/YYYY (user-visible form value) → YYYY-MM-DD (for Supabase)
+function displayToISO(s: string): string {
+  const m = s.trim().match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  return m ? `${m[3]}-${m[2]}-${m[1]}` : '';
+}
+
 export default function EnviarScreen() {
   const { t } = useLanguage();
   const { user } = useApp();
@@ -221,8 +233,8 @@ export default function EnviarScreen() {
       setForm((prev) => ({
         ...prev,
         ...(data.name && { name: data.name }),
-        ...(data.date && { date: data.date }),
-        ...(data.dateEnd && { dateEnd: data.dateEnd }),
+        ...(data.date && { date: isoToDisplay(data.date) }),
+        ...(data.dateEnd && { dateEnd: isoToDisplay(data.dateEnd) }),
         ...(data.time && { time: data.time }),
         ...(data.town && { town: data.town }),
         ...(data.description && { description: data.description }),
@@ -293,8 +305,8 @@ export default function EnviarScreen() {
       ]);
       await submitEvent({
         name: form.name,
-        dateStart: form.date,
-        dateEnd: form.dateEnd || undefined,
+        dateStart: displayToISO(form.date) || form.date,
+        dateEnd: form.dateEnd ? (displayToISO(form.dateEnd) || form.dateEnd) : undefined,
         time: form.time,
         town: form.town,
         region: form.region,
@@ -334,17 +346,18 @@ export default function EnviarScreen() {
     const now = new Date();
     const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     // If there's an end date, check that; otherwise check the start date.
-    // This allows ongoing events (e.g. exhibitions) that started in the past but end in the future.
-    const dateToCheck = form.dateEnd.trim() || form.date.trim();
-    const isPast = dateToCheck < todayStr;
-    console.log('[enviar] date validation — today:', todayStr, '| checking:', dateToCheck, '| isPast:', isPast);
+    // Dates are stored as DD/MM/YYYY in form state — convert to ISO for comparison.
+    const displayToCheck = form.dateEnd.trim() || form.date.trim();
+    const isoToCheck = displayToISO(displayToCheck) || displayToCheck;
+    const isPast = !!isoToCheck && isoToCheck < todayStr;
+    console.log('[enviar] date validation — today:', todayStr, '| checking:', isoToCheck, '| isPast:', isPast);
     if (isPast) {
       Alert.alert(t.pastDateTitle, t.pastDateMsg);
       return;
     }
 
     try {
-      const duplicate = await checkForDuplicates(form.name, form.date);
+      const duplicate = await checkForDuplicates(form.name, displayToISO(form.date) || form.date);
       if (duplicate) {
         Alert.alert(
           t.duplicateTitle,
@@ -485,7 +498,7 @@ export default function EnviarScreen() {
                 label={t.fieldDateStart}
                 value={form.date}
                 onChangeText={(v) => setForm((p) => ({ ...p, date: v }))}
-                placeholder="2026-07-10"
+                placeholder="DD/MM/AAAA"
                 highlighted={extracted && !!form.date}
               />
             </View>
@@ -494,7 +507,7 @@ export default function EnviarScreen() {
                 label={t.fieldDateEnd}
                 value={form.dateEnd}
                 onChangeText={(v) => setForm((p) => ({ ...p, dateEnd: v }))}
-                placeholder="2026-07-14"
+                placeholder="DD/MM/AAAA"
                 highlighted={extracted && !!form.dateEnd}
               />
             </View>

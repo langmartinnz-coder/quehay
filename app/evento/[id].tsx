@@ -180,7 +180,7 @@ export default function EventoDetailScreen() {
               <TouchableOpacity
                 style={styles.planBtn}
                 onPress={() => Linking.openURL(
-                  `https://www.economybookings.com/search?city=${encodeURIComponent(event.town)}&lang=es`
+                  `https://www.economybookings.com/?s=${encodeURIComponent(event.town)}`
                 )}
               >
                 <Text style={styles.planBtnText}>{t.planWhereStay}</Text>
@@ -188,7 +188,7 @@ export default function EventoDetailScreen() {
               <TouchableOpacity
                 style={styles.planBtn}
                 onPress={() => Linking.openURL(
-                  `https://www.kkday.com/es-es/resultlist.php?cate=&q=${encodeURIComponent(event.town)}`
+                  `https://www.kkday.com/en-us/product-list/?q=${encodeURIComponent(event.town)}`
                 )}
               >
                 <Text style={styles.planBtnText}>{t.planTours}</Text>

@@ -30,6 +30,25 @@ const { width, height: screenHeight } = Dimensions.get('window');
 const BOOKING_AID = 'BOOKING_AID';
 const TRAVELPAYOUTS_ID = '740715';
 
+// Klook has strong inventory only in specific Spanish destinations.
+// Unmapped regions fall back to a generic Spain search.
+const KLOOK_REGION_MAP: Record<string, string> = {
+  'cataluña':      'Barcelona',
+  'madrid':        'Madrid',
+  'andalucia':     'Seville',
+  'valencia':      'Valencia',
+  'pais-vasco':    'Bilbao',
+  'baleares':      'Mallorca',
+  'canarias':      'Tenerife',
+};
+const KLOOK_FALLBACK_URL = 'https://www.klook.com/en-US/search/?query=spain';
+function getKlookUrl(region: string): string {
+  const dest = KLOOK_REGION_MAP[region];
+  return dest
+    ? `https://www.klook.com/en-US/search/?query=${encodeURIComponent(dest)}&aid=${TRAVELPAYOUTS_ID}`
+    : KLOOK_FALLBACK_URL;
+}
+
 
 export default function EventoDetailScreen() {
   const { t, language } = useLanguage();
@@ -179,27 +198,21 @@ export default function EventoDetailScreen() {
             <View style={styles.planBtns}>
               <TouchableOpacity
                 style={styles.planBtn}
-                onPress={() => Linking.openURL(
-                  `https://www.economybookings.com/?s=${encodeURIComponent(event.town)}`
-                )}
-              >
-                <Text style={styles.planBtnText}>{t.planWhereStay}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.planBtn}
-                onPress={() => Linking.openURL(
-                  `https://www.kkday.com/en-us/product-list/?q=${encodeURIComponent(event.town)}`
-                )}
+                onPress={() => Linking.openURL(getKlookUrl(event.region))}
               >
                 <Text style={styles.planBtnText}>{t.planTours}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.planBtn}
-                onPress={() => Linking.openURL(
-                  `https://www.klook.com/search/result/?query=${encodeURIComponent(event.town)}&aid=${TRAVELPAYOUTS_ID}`
-                )}
+                onPress={() => Linking.openURL('https://www.kkday.com/en-us/country/spain/')}
               >
                 <Text style={styles.planBtnText}>{t.planActivities}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.planBtn}
+                onPress={() => Linking.openURL('https://localrent.tpo.li/pXILGwbu')}
+              >
+                <Text style={styles.planBtnText}>{t.planCarRental}</Text>
               </TouchableOpacity>
             </View>
             <Text style={styles.affiliateDisclosure}>{t.affiliateDisclosure}</Text>

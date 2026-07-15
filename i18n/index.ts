@@ -190,7 +190,8 @@ const es = {
   planWhereStay: '🏨 Dónde alojarte',
   planThingsDo: '🎭 Cosas que hacer cerca',
   planTours: '🗺️ Tours y actividades',
-  planActivities: '🎿 Actividades cercanas',
+  planActivities: '🎯 Más experiencias',
+  planCarRental: '🚗 Alquiler de coche',
   affiliateDisclosure: 'Enlaces de afiliado',
 };
 
@@ -348,7 +349,8 @@ const en: typeof es = {
   planWhereStay: '🏨 Where to stay',
   planThingsDo: '🎭 Things to do nearby',
   planTours: '🗺️ Tours & activities',
-  planActivities: '🎿 Nearby activities',
+  planActivities: '🎯 More experiences',
+  planCarRental: '🚗 Car rental',
   affiliateDisclosure: 'Affiliate links',
 };
 
@@ -504,7 +506,8 @@ const ca: typeof es = {
   planWhereStay: '🏨 On allotjar-se',
   planThingsDo: '🎭 Coses a fer a prop',
   planTours: "🗺️ Tours i activitats",
-  planActivities: '🎿 Activitats a prop',
+  planActivities: '🎯 Més experiències',
+  planCarRental: '🚗 Lloguer de cotxe',
   affiliateDisclosure: "Enllaços d'afiliat",
 };
 

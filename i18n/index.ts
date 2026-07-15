@@ -192,6 +192,7 @@ const es = {
   planTours: '🗺️ Tours y actividades',
   planActivities: '🎯 Más experiencias',
   planCarRental: '🚗 Alquiler de coche',
+  planBikeRental: '🚲 Alquiler de bici',
   affiliateDisclosure: 'Enlaces de afiliado',
 };
 
@@ -351,6 +352,7 @@ const en: typeof es = {
   planTours: '🗺️ Tours & activities',
   planActivities: '🎯 More experiences',
   planCarRental: '🚗 Car rental',
+  planBikeRental: '🚲 Bike rental',
   affiliateDisclosure: 'Affiliate links',
 };
 
@@ -508,6 +510,7 @@ const ca: typeof es = {
   planTours: "🗺️ Tours i activitats",
   planActivities: '🎯 Més experiències',
   planCarRental: '🚗 Lloguer de cotxe',
+  planBikeRental: '🚲 Lloguer de bici',
   affiliateDisclosure: "Enllaços d'afiliat",
 };
 

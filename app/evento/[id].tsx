@@ -214,6 +214,12 @@ export default function EventoDetailScreen() {
               >
                 <Text style={styles.planBtnText}>{t.planCarRental}</Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.planBtn}
+                onPress={() => Linking.openURL('https://bikesbooking.tpo.li/rVBT9oWh')}
+              >
+                <Text style={styles.planBtnText}>{t.planBikeRental}</Text>
+              </TouchableOpacity>
             </View>
             <Text style={styles.affiliateDisclosure}>{t.affiliateDisclosure}</Text>
           </View>

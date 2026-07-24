@@ -27,6 +27,7 @@ import { extractPosterData } from '../../lib/extractPoster';
 import { supabase } from '../../lib/supabase';
 import { useLanguage } from '../../store/LanguageContext';
 import { resolveCoordinates, coordsToRegion } from '../../lib/geocode';
+import { router } from 'expo-router';
 import { useShareIntentContext } from 'expo-share-intent';
 import { File as FSFile } from 'expo-file-system';
 import { copyAsync, cacheDirectory } from 'expo-file-system/legacy';
@@ -75,7 +76,7 @@ function displayToISO(s: string): string {
 
 export default function EnviarScreen() {
   const { t } = useLanguage();
-  const { user } = useApp();
+  const { user, authLoading } = useApp();
   const [image, setImage] = useState<string | null>(null);
   const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [imageMimeType, setImageMimeType] = useState<string>('image/jpeg');
@@ -371,6 +372,34 @@ export default function EnviarScreen() {
     }
 
     doSubmit();
+  }
+
+  if (authLoading) {
+    return (
+      <SafeAreaView style={styles.container} edges={['top']}>
+        <View style={styles.authGate}>
+          <ActivityIndicator color={Colors.primary} size="large" />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (!user) {
+    return (
+      <SafeAreaView style={styles.container} edges={['top']}>
+        <View style={styles.authGate}>
+          <Text style={styles.authGateEmoji}>🔐</Text>
+          <Text style={styles.authGateTitle}>{t.submitLoginRequired}</Text>
+          <Text style={styles.authGateMsg}>{t.submitLoginRequiredMsg}</Text>
+          <TouchableOpacity
+            style={styles.authGateBtn}
+            onPress={() => router.push('/(tabs)/perfil')}
+          >
+            <Text style={styles.authGateBtnText}>{t.submitLoginBtn}</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
   }
 
   if (submitted) {
@@ -1048,6 +1077,12 @@ const styles = StyleSheet.create({
   },
   submitBtnText: { color: Colors.white, fontWeight: '800', fontSize: 16 },
   disclaimer: { fontSize: 11, color: Colors.textLight, textAlign: 'center', lineHeight: 16 },
+  authGate: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32, gap: 14 },
+  authGateEmoji: { fontSize: 56 },
+  authGateTitle: { fontSize: 22, fontWeight: '800', color: Colors.text, textAlign: 'center' },
+  authGateMsg: { fontSize: 15, color: Colors.textSecondary, textAlign: 'center', lineHeight: 22 },
+  authGateBtn: { backgroundColor: Colors.primary, borderRadius: 12, paddingVertical: 15, paddingHorizontal: 28, marginTop: 4 },
+  authGateBtnText: { color: Colors.white, fontWeight: '800', fontSize: 15 },
   dropdownTrigger: {
     flexDirection: 'row',
     alignItems: 'center',

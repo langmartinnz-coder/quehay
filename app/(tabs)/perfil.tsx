@@ -54,9 +54,18 @@ export default function PerfilScreen() {
   async function handleOAuth() {
     setOauthLoading(true);
     setAuthError(null);
-    const { error } = await signInWithGoogle();
-    setOauthLoading(false);
-    if (error) setAuthError(error);
+    console.log('[perfil] handleOAuth: calling signInWithGoogle...');
+    try {
+      const { error } = await signInWithGoogle();
+      console.log('[perfil] signInWithGoogle returned — error:', error ?? 'none');
+      if (error) setAuthError(error);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error('[perfil] signInWithGoogle threw:', msg);
+      setAuthError(msg);
+    } finally {
+      setOauthLoading(false);
+    }
   }
 
   return (

@@ -38,7 +38,8 @@
       "Bash(cd C:\\\\Users\\\\langm\\\\Desktop\\\\ProjectSunrise *)",
       "Bash(Test-Path C:\\\\Users\\\\langm\\\\Desktop\\\\ProjectSunrise\\\\evento *)",
       "Bash(curl *)",
-      "Bash(Get-Content \"C:\\\\Users\\\\langm\\\\Desktop\\\\ProjectSunrise\\\\node_modules\\\\expo-image-manipulator\\\\src\\\\index.ts\")"
+      "Bash(Get-Content \"C:\\\\Users\\\\langm\\\\Desktop\\\\ProjectSunrise\\\\node_modules\\\\expo-image-manipulator\\\\src\\\\index.ts\")",
+      "Bash(npx expo-linking *)"
     ]
   }
 }

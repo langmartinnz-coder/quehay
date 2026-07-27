@@ -127,19 +127,40 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithOAuthProvider = useCallback(async (provider: 'google' | 'facebook') => {
     const redirectTo = Linking.createURL('auth-callback');
+    console.log(`[oauth] Starting ${provider} OAuth. redirectTo:`, redirectTo);
+
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
       options: { redirectTo, skipBrowserRedirect: true },
     });
-    if (error) return { error: error.message };
-    if (!data.url) return { error: 'No OAuth URL returned' };
+    if (error) {
+      console.error('[oauth] signInWithOAuth error:', error.message);
+      return { error: error.message };
+    }
+    if (!data.url) {
+      console.error('[oauth] signInWithOAuth returned no URL');
+      return { error: 'No OAuth URL returned' };
+    }
+    console.log('[oauth] Got OAuth URL, opening browser...');
 
     const result = await WebBrowser.openAuthSessionAsync(data.url, redirectTo);
+    console.log('[oauth] openAuthSessionAsync result.type:', result.type);
+
     if (result.type === 'success') {
+      console.log('[oauth] Browser redirect URL:', result.url);
       const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(result.url);
-      if (exchangeError) return { error: exchangeError.message };
+      if (exchangeError) {
+        console.error('[oauth] exchangeCodeForSession error:', exchangeError.message);
+        return { error: exchangeError.message };
+      }
+      console.log('[oauth] Session established via WebBrowser path');
       return { error: null };
     }
+
+    // result.type === 'cancel' | 'dismiss' — user closed browser or Android
+    // dispatched the deep link to auth-callback screen directly (singleTask).
+    // Either way the auth-callback screen handles the exchange.
+    console.log('[oauth] Browser closed without success result — auth-callback screen will handle exchange if needed');
     return { error: null };
   }, []);
 

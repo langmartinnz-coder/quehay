@@ -148,19 +148,28 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
     if (result.type === 'success') {
       console.log('[oauth] Browser redirect URL:', result.url);
-      const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(result.url);
-      if (exchangeError) {
-        console.error('[oauth] exchangeCodeForSession error:', exchangeError.message);
-        return { error: exchangeError.message };
+      // Implicit flow: tokens arrive in the URL hash fragment (#access_token=...&refresh_token=...)
+      const hash = result.url.split('#')[1] ?? '';
+      const params = new URLSearchParams(hash);
+      const accessToken = params.get('access_token');
+      const refreshToken = params.get('refresh_token');
+      if (accessToken && refreshToken) {
+        const { error: sessionError } = await supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+        if (sessionError) {
+          console.error('[oauth] setSession error:', sessionError.message);
+          return { error: sessionError.message };
+        }
+        console.log('[oauth] Session established via WebBrowser path');
+      } else {
+        console.warn('[oauth] No tokens in redirect URL hash — auth-callback screen will handle if deep link arrives');
       }
-      console.log('[oauth] Session established via WebBrowser path');
       return { error: null };
     }
 
     // result.type === 'cancel' | 'dismiss' — user closed browser or Android
     // dispatched the deep link to auth-callback screen directly (singleTask).
-    // Either way the auth-callback screen handles the exchange.
-    console.log('[oauth] Browser closed without success result — auth-callback screen will handle exchange if needed');
+    // auth-callback screen parses the hash and calls setSession.
+    console.log('[oauth] Browser closed without success result — auth-callback screen will handle token exchange');
     return { error: null };
   }, []);
 
